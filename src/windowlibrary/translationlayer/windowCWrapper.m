@@ -1,31 +1,42 @@
+#import <Cocoa/Cocoa.h>
 #import "windowCWrapper.h"
-#import "basicWindow.h"
-#import "colorFill.h"
 
-NSApplication *ataraxiaApplication() {
-    return [NSApplication sharedApplication];
+void *ataraxiaApplication() {
+    return (void *)[NSApplication sharedApplication];
 }
 
-NSWindow *createWindow(
-    NSRect frame, NSInteger style, 
-    NSString *title) 
+void *createWindow(CGRect frame, int32_t style, const char *title) 
 {
-    NSWindow *window = [[NSWindow alloc] initWithContentRect:frame
-    styleMask:style  backing:NSBackingStoreBuffered  defer:NO];
+    NSRect nsFrame = NSMakeRect(
+        frame.origin.x, frame.origin.y, 
+        frame.size.width, frame.size.height);
+    NSInteger nsStyle = 0;
 
-    [window setTitle:title];
-    [window.contentView setWantsLayer:YES];
-    window.contentView.layer.backgroundColor = 
-    [[ATARAXIA_CUSTOM_RED_01() colorUsingColorSpace:[
-        NSColorSpace deviceRGBColorSpace]] CGColor];
-    return window;
+    if (style & WINDOW_STYLE_TITLED) 
+        nsStyle |= NSWindowStyleMaskTitled;
+    if (style & WINDOW_STYLE_CLOSABLE) 
+        nsStyle |= NSWindowStyleMaskClosable;
+    if (style & WINDOW_STYLE_RESIZABLE) 
+        nsStyle |= NSWindowStyleMaskResizable;
+    if (style & WINDOW_STYLE_MINIATURIZABLE) 
+        nsStyle |= NSWindowStyleMaskMiniaturizable;
+
+    NSString *nsTitle = [NSString stringWithUTF8String:title];
+    NSWindow *window = [[NSWindow alloc] initWithContentRect:nsFrame
+                                                   styleMask:nsStyle
+                                                     backing:NSBackingStoreBuffered
+                                                       defer:NO];
+
+    [window setTitle:nsTitle];
+    return (void *)window;
 }
 
-void runApplication(
-    NSApplication *app, NSWindow *window) 
-{
-    [window makeKeyAndOrderFront:nil];
-    [app run];
+void runApplication(void *app, void *window) {
+    @autoreleasepool {
+        NSApplication *nsApp = (NSApplication *)app;
+        NSWindow *nsWindow = (NSWindow *)window;
+
+        [nsWindow makeKeyAndOrderFront:nil];
+        [nsApp run];
+    }
 }
-
-
