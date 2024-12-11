@@ -1,4 +1,5 @@
 #import "basicWindow.h"
+#import "windowCWrapper.h"
 
 int main (int argc, const char *argv[])
 {
