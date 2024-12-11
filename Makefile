@@ -2,8 +2,8 @@ CC = clang
 CFLAGS = -framework Cocoa
 
 TARGET = SimpleWindow
-SRC = src/main.m src/basicWindow.m
-HEADERS = src/basicWindow.h
+SRC = src/main.m src/basicWindow.m src/colorFill.m
+HEADERS = src/basicWindow.h src/colorFill.h
 
 all: $(TARGET)
 

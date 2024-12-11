@@ -6,7 +6,7 @@ int main (int argc, const char *argv[])
     {
         NSApplication *app = ataraxiaApplication();
 
-        NSRect frame = NSMakeRect(100, 100, 400, 300);
+        NSRect frame = NSMakeRect(300, 300, 600, 300);
         NSInteger style = NSWindowStyleMaskTitled |
         NSWindowStyleMaskClosable | NSWindowStyleMaskResizable;
 

@@ -1,4 +1,5 @@
 #import "basicWindow.h"
+#import "colorFill.h"
 
 /*Our function for calling the Ataraxia made
 application*/
@@ -18,6 +19,14 @@ NSWindow *createWindow(
     styleMask:style  backing:NSBackingStoreBuffered  defer:NO];
 
     [window setTitle:title];
+
+    [window.contentView setWantsLayer:YES];
+
+    /*We use this as means of setting a color for the application*/
+    window.contentView.layer.backgroundColor = 
+    [[ATARAXIA_CUSTOM_RED_01() colorUsingColorSpace:
+    [NSColorSpace deviceRGBColorSpace]] CGColor];
+
     return window;
 }
 
