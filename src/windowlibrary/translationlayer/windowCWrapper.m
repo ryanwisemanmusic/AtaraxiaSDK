@@ -1,3 +1,8 @@
+/*This is where we wrap our functions for implementation in C.
+Everytime we need to call on a particular task, these functions being
+in Obj-C can be used in the C project without compatiblity issues.
+
+This is why we call this part of our translation layer.*/
 #import <Cocoa/Cocoa.h>
 #import "windowCWrapper.h"
 
@@ -40,3 +45,12 @@ void runApplication(void *app, void *window) {
         [nsApp run];
     }
 }
+
+void setWindowBackgroundColor(void *window, void *color)
+{
+    NSWindow *nsWindow = (__bridge NSWindow *)window;
+    NSColor *nsColor = (__bridge NSColor *)color;
+    [nsWindow setBackgroundColor:nsColor];
+}
+
+

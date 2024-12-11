@@ -5,6 +5,7 @@
 #import <Cocoa/Cocoa.h>
 #endif
 
+
 #ifdef __OBJC__
 NSApplication *ataraxiaApplication();
 NSWindow *createWindow(
