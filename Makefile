@@ -1,5 +1,6 @@
 CC = clang
 CFLAGS = -framework Cocoa \
+		 -fobjc-arc \
          -I src/windowlibrary \
          -I src/windowlibrary/translationlayer \
          -I atarxia_app_c/window/c_translation
