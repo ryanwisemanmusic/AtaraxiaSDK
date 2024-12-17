@@ -5,6 +5,7 @@ in Obj-C can be used in the C project without compatiblity issues.
 This is why we call this part of our translation layer.*/
 #import "windowCWrapper.h"
 #import <Cocoa/Cocoa.h>
+#include "screen_management.h"
 
 /* For windowing events, we must create parameters that accept windowing
 actions. So far, we can launch a window, we must have it interface with
@@ -13,12 +14,20 @@ the rest of the code. */
 @end
 
 @implementation WindowDelegate
-
+/*This is our logic to closing the window. We set it as a bool
+since each flag can be handled with either a yes or no.*/
 - (BOOL)windowShouldClose:(NSWindow *)sender
 {
     NSLog(@"Window is closing.");
     [[NSApplication sharedApplication] terminate:nil];
     return YES;
+}
+
+/*We use mouseDown as a way of handling clicking within said window.*/
+-(void)mouseDown:(NSEvent *)event
+{
+    NSLog(@"Mouse clicked in window. Triggering screen transition.");
+    handleScreenTransition((__bridge void *)self);
 }
 
 @end
