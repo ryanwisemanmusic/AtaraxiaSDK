@@ -32,6 +32,17 @@ since each flag can be handled with either a yes or no.*/
 
 @end
 
+/*This is where we will set our logic for when we need to process
+colors for individual screens.*/
+NSColor *getColorForIntro()
+{
+    return [NSColor colorWithSRGBRed:0.0 green:0.0 blue:1.0 alpha:1.0];
+}
+NSColor *getColorForMain()
+{
+    return [NSColor colorWithSRGBRed:0.0 green:1.0 blue:0.0 alpha:1.0];
+}
+
 // Converts NSApplication to void* (non-owning)
 void *ataraxiaApplication()
 {

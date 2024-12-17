@@ -19,17 +19,24 @@ object we call upon in this project.*/
 extern "C" {
 #endif
 
-/*Anytime we want to pass through Obj-C code, we do it here
-This is where we will set up the bulk majority of our functions*/
+/*Anytime we want to pass through Obj-C code, we do it here.
+This is where we will set up the bulk majority of our functions.*/
 void *ataraxiaApplication(); 
 void *createWindow(
     CGRect frame, int32_t style, const char *title); 
 
-/*Make sure you do not use NS datatypes when it comes
-to what you reference in function calls. 
+/*We use this to get colors associated with the background
+Since we are working with both C and Obj-C, we must put some parameters
+for translating. */
+#ifdef __OBJC__
+NSColor *getColorForIntro();
+NSColor *getColorForMain();
+#else
+void *getColorForIntro();
+void *getColorForMain();
+#endif
 
-For example, NSColor was returning an error during compiling with
-make.*/
+/* Function to set the background color of the window */
 void setWindowBackgroundColor(void *window, void *color);
 
 /*Fix the return type consistency for runApplication*/
@@ -40,6 +47,7 @@ void runApplication(void *app, void *window);
 #endif
 
 #endif // WINDOW_C_WRAPPER_H
+
 
 
 
