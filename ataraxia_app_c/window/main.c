@@ -18,18 +18,22 @@ If you mess with this, the problem is on you
 #include "colorFill.h"
 #endif
 
-
-void setupWindow() {
+int main(int argc, const char *argv[])
+{
     void *app = ataraxiaApplication();
 
     CGRect frame = CGRectMake(0, 0, 800, 600);
     int32_t style = WINDOW_STYLE_TITLED;
+    
     const char *title = "Ataraxia App";
-
     void *window = createWindow(frame, style, title);
-    void *color = ATARAXIA_CUSTOM_RED_01;
 
-    setWindowBackgroundColor(window, color);
+    void *redColor = ATARAXIA_CUSTOM_RED_01();
+
+    setWindowBackgroundColor(window, redColor);
 
     runApplication(app, window);
+    
+    return 0;
+
 }
