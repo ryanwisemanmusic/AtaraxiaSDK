@@ -6,6 +6,23 @@ This is why we call this part of our translation layer.*/
 #import "windowCWrapper.h"
 #import <Cocoa/Cocoa.h>
 
+/* For windowing events, we must create parameters that accept windowing
+actions. So far, we can launch a window, we must have it interface with
+the rest of the code. */
+@interface WindowDelegate : NSObject <NSWindowDelegate>
+@end
+
+@implementation WindowDelegate
+
+- (BOOL)windowShouldClose:(NSWindow *)sender
+{
+    NSLog(@"Window is closing.");
+    [[NSApplication sharedApplication] terminate:nil];
+    return YES;
+}
+
+@end
+
 // Converts NSApplication to void* (non-owning)
 void *ataraxiaApplication()
 {
@@ -20,6 +37,11 @@ void *createWindow(CGRect frame, int32_t style, const char *title)
                                                      backing:NSBackingStoreBuffered
                                                        defer:NO];
     [window setTitle:[NSString stringWithUTF8String:title]];
+    
+    if (style & WINDOW_STYLE_CLOSABLE)
+    {
+        [window setAcceptsMouseMovedEvents:YES];
+    }
     return (__bridge void *)window;
 }
 
@@ -33,6 +55,11 @@ void runApplication(void *app, void *window)
 
         if (nsApp && nsWindow)
         {
+            //We use this to delegate window events
+            WindowDelegate *delegate = [[WindowDelegate alloc] init];
+            [nsWindow setDelegate:delegate];
+
+            //Then, we use this to close the events
             [nsWindow makeKeyAndOrderFront:nil];
             [nsApp run];
         }
