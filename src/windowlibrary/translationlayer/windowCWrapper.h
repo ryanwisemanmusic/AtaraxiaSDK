@@ -32,6 +32,7 @@ For example, NSColor was returning an error during compiling with
 make.*/
 void setWindowBackgroundColor(void *window, void *color);
 
+/*Fix the return type consistency for runApplication*/
 void runApplication(void *app, void *window);  
 
 #ifdef __cplusplus
@@ -39,6 +40,8 @@ void runApplication(void *app, void *window);
 #endif
 
 #endif // WINDOW_C_WRAPPER_H
+
+
 
 
 
