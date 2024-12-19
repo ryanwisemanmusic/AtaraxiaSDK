@@ -7,22 +7,28 @@ Obj-C), we must give some if statements that parse when we reference
 Obj-C.
 */
 
-#ifndef TRANSLATION_HEADER_H
-#define TRANSLATION_HEADER_H
+#ifndef WINDOW_OBJC_TRANS_H
+#define WINDOW_OBJC_TRANS_H
 
 #ifdef __OBJC__
 #import <Cocoa/Cocoa.h>
 #endif
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*If we are referencing Obj-C, define these objects. ifdef is the way
 we handle the bridge between the two languages. Since our backend
 is entirely in Obj-C, this is an important bridge*/
-#ifdef __OBJC__
-NSApplication *ataraxiaApplication();
-NSWindow *createWindow(
-    NSRect frame, NSInteger style, 
-    NSString *title);
-void runApplication(NSApplication *app, NSWindow *window);
+void *ataraxiaApplication(void);
+void *createWindow(
+    CGRect frame, int32_t style, 
+    const char *title);
+void runApplication(void*app, void *window);
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif
