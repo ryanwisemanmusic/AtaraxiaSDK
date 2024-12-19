@@ -9,8 +9,6 @@
 #include <CoreGraphics/CGGeometry.h> 
 #include <stdint.h> 
 
-/*This makes sure that we pass in Cocoa by reference for any
-object we call upon in this project.*/
 #ifdef __OBJC__
 #import <Cocoa/Cocoa.h>
 #endif
@@ -19,15 +17,17 @@ object we call upon in this project.*/
 extern "C" {
 #endif
 
-/*Anytime we want to pass through Obj-C code, we do it here.
-This is where we will set up the bulk majority of our functions.*/
+// Declare the WindowDelegate interface here
+#ifdef __OBJC__
+@interface WindowDelegate : NSObject <NSWindowDelegate>
+@end
+#endif
+
+// Function declarations
 void *ataraxiaApplication(); 
 void *createWindow(
     CGRect frame, int32_t style, const char *title); 
 
-/*We use this to get colors associated with the background
-Since we are working with both C and Obj-C, we must put some parameters
-for translating. */
 #ifdef __OBJC__
 NSColor *getColorForIntro();
 NSColor *getColorForMain();
@@ -36,10 +36,7 @@ void *getColorForIntro();
 void *getColorForMain();
 #endif
 
-/* Function to set the background color of the window */
 void setWindowBackgroundColor(void *window, void *color);
-
-/*Fix the return type consistency for runApplication*/
 void runApplication(void *app, void *window);  
 
 #ifdef __cplusplus
@@ -47,6 +44,7 @@ void runApplication(void *app, void *window);
 #endif
 
 #endif // WINDOW_C_WRAPPER_H
+
 
 
 

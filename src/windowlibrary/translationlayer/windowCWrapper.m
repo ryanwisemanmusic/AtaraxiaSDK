@@ -7,15 +7,9 @@ This is why we call this part of our translation layer.*/
 #import <Cocoa/Cocoa.h>
 #include "screen_management.h"
 
-/* For windowing events, we must create parameters that accept windowing
-actions. So far, we can launch a window, we must have it interface with
-the rest of the code. */
-@interface WindowDelegate : NSObject <NSWindowDelegate>
-@end
-
+// Implement WindowDelegate class (no need to declare it again)
 @implementation WindowDelegate
-/*This is our logic to closing the window. We set it as a bool
-since each flag can be handled with either a yes or no.*/
+
 - (BOOL)windowShouldClose:(NSWindow *)sender
 {
     NSLog(@"Window is closing.");
@@ -23,7 +17,6 @@ since each flag can be handled with either a yes or no.*/
     return YES;
 }
 
-/*We use mouseDown as a way of handling clicking within said window.*/
 -(void)mouseDown:(NSEvent *)event
 {
     NSLog(@"Mouse clicked in window. Triggering screen transition.");
@@ -32,24 +25,23 @@ since each flag can be handled with either a yes or no.*/
 
 @end
 
-/*This is where we will set our logic for when we need to process
-colors for individual screens.*/
+// Color functions
 NSColor *getColorForIntro()
 {
     return [NSColor colorWithSRGBRed:0.0 green:0.0 blue:1.0 alpha:1.0];
 }
+
 NSColor *getColorForMain()
 {
     return [NSColor colorWithSRGBRed:0.0 green:1.0 blue:0.0 alpha:1.0];
 }
 
-// Converts NSApplication to void* (non-owning)
+// Application and window functions
 void *ataraxiaApplication()
 {
     return (__bridge void *)[NSApplication sharedApplication];
 }
 
-// Converts NSWindow to void* (non-owning)
 void *createWindow(CGRect frame, int32_t style, const char *title)
 {
     NSWindow *window = [[NSWindow alloc] initWithContentRect:NSRectFromCGRect(frame)
@@ -70,9 +62,18 @@ void *createWindow(CGRect frame, int32_t style, const char *title)
 @end
 
 @implementation AppWrapper
+/*Since I am not getting anything to work with windowing,
+we are doing some debugging in this section*/
+-(instancetype)init {
+    self = [super init];
+    if (self) {
+        self.delegate = [[WindowDelegate alloc] init];
+        NSLog(@"WindowDelegate initialized.");
+    }
+    return self;
+}
 @end
 
-// Converts void* to NSApplication (owning)
 void runApplication(void *app, void *window)
 {
     @autoreleasepool
@@ -86,7 +87,10 @@ void runApplication(void *app, void *window)
             appWrapper.delegate = [[WindowDelegate alloc] init];
             [nsWindow setDelegate:appWrapper.delegate];
 
-            //Then, we use this to close the events
+            //Double checking if delegate was set
+            NSLog(@"WindowDelegate set on window: %@", nsWindow);
+            
+            // Start the window and run the app
             [nsWindow makeKeyAndOrderFront:nil];
             [nsApp run];
         }
@@ -115,12 +119,13 @@ void setWindowBackgroundColor(void *window, void *color)
 void **getScreenColors(void) {
     static void *colors[] = {NULL, NULL};
 
-    if (!colors[0] & !colors[1]) {
+    if (!colors[0] || !colors[1]) {
         colors[0] = (__bridge void *)[NSColor redColor];
         colors[1] = (__bridge void *)[NSColor blueColor];
     }
     return colors;
 }
+
 
 
 

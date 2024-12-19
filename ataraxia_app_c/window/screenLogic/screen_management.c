@@ -23,6 +23,9 @@ void handleScreenTransition(void *window)
 
     void **screenColors = getScreenColors();
 
+    printf("Transitioning to Screen %d with color %p\n", 
+            currentScreen + 1, screenColors[currentScreen]);
+    
     int nextScreen = (currentScreen + 1) % 2;
 
     printf("Transitioning to Screen %d\n", nextScreen + 1);

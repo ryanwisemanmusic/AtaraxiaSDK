@@ -18,27 +18,7 @@ If you mess with this, the problem is on you
 #include "colorFill.h"
 #endif
 
-int main(int argc, const char *argv[])
+void titleCommands()
 {
-    void *app = ataraxiaApplication();
-
-    CGRect frame = CGRectMake(0, 0, 800, 600);
-    int32_t style = WINDOW_STYLE_TITLED | WINDOW_STYLE_CLOSABLE;
     
-    const char *title = "Ataraxia App";
-    void *window = createWindow(frame, style, title);
-
-    /*One of my biggest errors with this code is forgetting
-    the paranthesis for this color reference*/
-    void *redColor = ATARAXIA_CUSTOM_RED_01();
-
-    /*Anytime you want to set a color within a window
-    we will use the setWindowBackgroundColor function
-    to do so.*/
-    setWindowBackgroundColor(window, redColor);
-
-    runApplication(app, window);
-    
-    return 0;
-
 }
