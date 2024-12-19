@@ -17,18 +17,17 @@ SRC = src/windowlibrary/main.m \
 # Update the HEADERS paths similarly.
 HEADERS = src/windowlibrary/basicWindow.h \
           src/windowlibrary/colorFill.h \
-          src/windowlibrary/translationlayer/windowCWrapper.h \
-          ataraxia_app_c/window/c_translation/windowObjCTrans.h \
-		  ataraxia_app_c/window/screenLogic/screen_management.h
+          src/windowlibrary/translationlayer/windowCWrapper.m \
+          ataraxia_app_c/window/main.c \
+		  ataraxia_app_c/window/screenLogic/screen_management.c
 
 # Add vpath to help make find the source and header files.
-vpath %.m src/windowlibrary src/windowlibrary/translationlayer atarxia_app_c/window
-vpath %.h src/windowlibrary src/windowlibrary/translationlayer atarxia_app_c/window/c_translation
+vpath %.h src/windowlibrary src/windowlibrary/translationlayer ataraxia_app_c/window/c_translation ataraxia_app_c/window/screenLogic
 
 all: $(TARGET)
 
 $(TARGET): $(SRC)
-	$(CC) $(CFLAGS) $(SRC) -o $(TARGET)
+	$(CC) $(CFLAGS) $^ -o $@
 
 clean:
 	rm -f $(TARGET)

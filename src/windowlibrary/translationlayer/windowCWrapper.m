@@ -65,6 +65,13 @@ void *createWindow(CGRect frame, int32_t style, const char *title)
     return (__bridge void *)window;
 }
 
+@interface AppWrapper : NSObject
+@property (strong, nonatomic) WindowDelegate *delegate;
+@end
+
+@implementation AppWrapper
+@end
+
 // Converts void* to NSApplication (owning)
 void runApplication(void *app, void *window)
 {
@@ -75,9 +82,9 @@ void runApplication(void *app, void *window)
 
         if (nsApp && nsWindow)
         {
-            //We use this to delegate window events
-            WindowDelegate *delegate = [[WindowDelegate alloc] init];
-            [nsWindow setDelegate:delegate];
+            AppWrapper *appWrapper = [[AppWrapper alloc] init];
+            appWrapper.delegate = [[WindowDelegate alloc] init];
+            [nsWindow setDelegate:appWrapper.delegate];
 
             //Then, we use this to close the events
             [nsWindow makeKeyAndOrderFront:nil];
@@ -103,6 +110,16 @@ void setWindowBackgroundColor(void *window, void *color)
     {
         NSLog(@"Window or Color is NULL");
     }
+}
+
+void **getScreenColors(void) {
+    static void *colors[] = {NULL, NULL};
+
+    if (!colors[0] & !colors[1]) {
+        colors[0] = (__bridge void *)[NSColor redColor];
+        colors[1] = (__bridge void *)[NSColor blueColor];
+    }
+    return colors;
 }
 
 

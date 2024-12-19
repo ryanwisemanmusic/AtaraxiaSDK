@@ -1,35 +1,33 @@
-#include <stdio.h>
 #include "screen_management.h" 
 #include "windowCWrapper.h"      
 
 void showIntroTitle(void)
 {
-    printf("Showing Intro Title Screen");
+    printf("Showing Intro Title Screen\n");
 }
 
 void showMainScreen1(void)
 {
-    printf("Showing Intro Title Screen");
+    printf("Showing Main Screen 1\n");
 }
+
 
 void handleScreenTransition(void *window)
 {
-    static int currentScreen = 1;
+    static int currentScreen = 0;
 
-    void *introColor = getColorForIntro();
-    void *mainScreen1Color = getColorForMain();
+    typedef void (*ScreenHandler)(void);
+    ScreenHandler screenHandlers[] = { 
+        showIntroTitle, showMainScreen1
+    };
 
-    if (currentScreen == 1)
-    {
-        showMainScreen1();
-        setWindowBackgroundColor(window, mainScreen1Color);
-        currentScreen = 2;
-    }
-    else
-    {
-        showIntroTitle();
-        setWindowBackgroundColor(window, introColor);
-        currentScreen = 1;
-    }
-    
+    void **screenColors = getScreenColors();
+
+    int nextScreen = (currentScreen + 1) % 2;
+
+    printf("Transitioning to Screen %d\n", nextScreen + 1);
+    screenHandlers[nextScreen]();
+    setWindowBackgroundColor(window, screenColors[nextScreen]);
+
+    currentScreen = nextScreen;
 }
