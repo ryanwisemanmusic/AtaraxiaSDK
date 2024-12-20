@@ -7,24 +7,6 @@ This is why we call this part of our translation layer.*/
 #import <Cocoa/Cocoa.h>
 #include "screen_management.h"
 
-// Implement WindowDelegate class (no need to declare it again)
-@implementation WindowDelegate
-
-- (BOOL)windowShouldClose:(NSWindow *)sender
-{
-    NSLog(@"Window is closing.");
-    [[NSApplication sharedApplication] terminate:nil];
-    return YES;
-}
-
--(void)mouseDown:(NSEvent *)event
-{
-    NSLog(@"Mouse clicked in window. Triggering screen transition.");
-    handleScreenTransition((__bridge void *)self);
-}
-
-@end
-
 // Color functions
 NSColor *getColorForIntro()
 {
@@ -57,14 +39,13 @@ void *createWindow(CGRect frame, int32_t style, const char *title)
     return (__bridge void *)window;
 }
 
-@interface AppWrapper : NSObject
+@interface AtaraxiaAppWrapper : NSObject
 @property (strong, nonatomic) WindowDelegate *delegate;
 @end
 
-@implementation AppWrapper
-/*Since I am not getting anything to work with windowing,
-we are doing some debugging in this section*/
--(instancetype)init {
+@implementation AtaraxiaAppWrapper
+
+- (instancetype)init {
     self = [super init];
     if (self) {
         self.delegate = [[WindowDelegate alloc] init];
@@ -72,6 +53,7 @@ we are doing some debugging in this section*/
     }
     return self;
 }
+
 @end
 
 void runApplication(void *app, void *window)
@@ -83,13 +65,13 @@ void runApplication(void *app, void *window)
 
         if (nsApp && nsWindow)
         {
-            AppWrapper *appWrapper = [[AppWrapper alloc] init];
+            AtaraxiaAppWrapper *appWrapper = [[AtaraxiaAppWrapper alloc] init]; // Renamed the variable
             appWrapper.delegate = [[WindowDelegate alloc] init];
             [nsWindow setDelegate:appWrapper.delegate];
 
-            //Double checking if delegate was set
+            // Double-checking if delegate was set
             NSLog(@"WindowDelegate set on window: %@", nsWindow);
-            
+
             // Start the window and run the app
             [nsWindow makeKeyAndOrderFront:nil];
             [nsApp run];
@@ -100,6 +82,7 @@ void runApplication(void *app, void *window)
         }
     }
 }
+
 
 void setWindowBackgroundColor(void *window, void *color)
 {
@@ -125,6 +108,8 @@ void **getScreenColors(void) {
     }
     return colors;
 }
+
+
 
 
 
