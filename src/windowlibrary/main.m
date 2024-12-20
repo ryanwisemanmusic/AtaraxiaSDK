@@ -5,28 +5,40 @@ function.
 */
 
 #import <Cocoa/Cocoa.h>
-#import "windowCWrapper.h"
+#import "WindowDelegate.h"
 #import "colorFill.h"
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
-        // This initializes the application using the function from windowCWrapper.h
-        void *app = ataraxiaApplication();
+        // Create the Cocoa application
+        NSLog(@"Application starting...");
+
+        NSApplication *app = [NSApplication sharedApplication];
         
-        // Create a window with the specified frame and style
-        CGRect frame = CGRectMake(0, 0, 800, 600);
-        int32_t style = WINDOW_STYLE_TITLED | WINDOW_STYLE_CLOSABLE;
-        const char *title = "Ataraxia App";
-        void *window = createWindow(frame, style, title);
+        // Create the main window
+        NSWindow *window = [[NSWindow alloc] initWithContentRect:NSMakeRect(0, 0, 800, 600)
+                                                      styleMask:(NSWindowStyleMaskTitled | NSWindowStyleMaskClosable)
+                                                        backing:NSBackingStoreBuffered
+                                                          defer:NO];
+        [window setTitle:@"Ataraxia App"];
+
+        NSLog(@"Window created: %@", window);
+
+        // Create and set the window delegate
+        WindowDelegate *delegate = [[WindowDelegate alloc] initWithWindow:window];
+        [window setDelegate:delegate];
         
-        // Retrieve the color reference for custom red
-        void *redColor = ATARAXIA_CUSTOM_RED_01();
+        // My custom red has some issues with being recognized,
+        [window setBackgroundColor:[NSColor redColor]]; 
         
-        // Set the window background color to custom red
-        setWindowBackgroundColor(window, redColor);
-        
-        // Run the application (handles events and UI)
-        runApplication(app, window);
+        // Show the window and start the application
+        [window makeKeyAndOrderFront:nil];
+
+        NSLog(@"Running the application");
+        // Start the application event loop
+        [app run];
+
+        NSLog(@"Application has exited.");
     }
-    return 0;
+    return 0; // Return 0 when the app exits
 }

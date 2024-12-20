@@ -65,7 +65,7 @@ void runApplication(void *app, void *window)
 
         if (nsApp && nsWindow)
         {
-            AtaraxiaAppWrapper *appWrapper = [[AtaraxiaAppWrapper alloc] init]; // Renamed the variable
+            AtaraxiaAppWrapper *appWrapper = [[AtaraxiaAppWrapper alloc] init];
             appWrapper.delegate = [[WindowDelegate alloc] init];
             [nsWindow setDelegate:appWrapper.delegate];
 

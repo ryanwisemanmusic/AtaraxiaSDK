@@ -6,14 +6,20 @@
 - (instancetype)initWithWindow:(NSWindow *)window {
     self = [super init];
     if (self) {
-        _window = window;
+        self.window = window; 
+        NSLog(@"WindowDelegate initialized with window: %@", window);
     }
     return self;
 }
 
 - (void)mouseDown:(NSEvent *)event {
     NSLog(@"Mouse clicked in window.");
-    [ScreenManager handleScreenTransition:self.window];
+    NSWindow *window = self.window;
+    [ScreenManager handleScreenTransition:window];
+}
+
+- (void)windowWillClose:(NSNotification *)notification {
+    NSLog(@"Window is about to close");
 }
 
 - (BOOL)windowShouldClose:(NSWindow *)sender {
@@ -23,4 +29,5 @@
 }
 
 @end
+
 
