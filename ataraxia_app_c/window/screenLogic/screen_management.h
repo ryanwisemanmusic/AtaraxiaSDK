@@ -1,24 +1,19 @@
 #ifndef SCREEN_MANAGEMENT_H
 #define SCREEN_MANAGEMENT_H
 
-#include <stdio.h>
-#include "windowCWrapper.h"
+#import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 
-#ifdef __cplusplus
-extern "c" {
+@interface ScreenManager : NSObject
+
++ (NSArray<NSColor *> *)getScreenColors;
++ (void)showIntroTitle;
++ (void)showMainScreen1;
++ (void)handleScreenTransition:(NSWindow *)window;
+
+@end
+
 #endif
 
-void **getScreenColors(void);
 
-#ifdef __cplusplus
-}
-#endif
 
-void showIntroTitle(void);
-void showMainScreen1(void);
-
-void handleScreenTransition(void *window);
-
-void **getScreenColors(void);
-
-#endif 
