@@ -29,7 +29,7 @@
 + (void)handleScreenTransition:(NSWindow *)window
 {
     static int currentScreen = 0;
-
+    NSLog(@"Current Screen is set to 0");
     NSArray<void (^)(void)> *screenHandlers = @[
         ^{ [self showIntroTitle]; },
         ^{ [self showMainScreen1]; }
