@@ -1,5 +1,5 @@
 #import "WindowDelegate.h"
-#import "screen_management.h"
+#import "screen_management.h"  // Assuming you have this header for your screen management
 
 @interface WindowDelegate ()
 
@@ -35,18 +35,49 @@
     return self;
 }
 
+// Mouse click event handling
 - (void)mouseDown:(NSEvent *)event {
     NSLog(@"Mouse clicked in window.");
     NSWindow *window = self.window;
     if (window) {
-        [self switchWindowColor:_colorSequence[self.currentColorIndex] forWindow:window];  // Pass the color to the method
+        [self switchWindowColor:_colorSequence[self.currentColorIndex] forWindow:window];
     } else {
         NSLog(@"Window referenced is nil.");
     }
 }
 
+// Mouse release event handling (Optional, you can modify based on your needs)
+- (void)mouseUp:(NSEvent *)event {
+    NSLog(@"Mouse release detected at: %@", NSStringFromPoint([event locationInWindow]));
+    // Transition to the next screen on mouse release if needed
+    [self transitionToNextScreen];
+}
+
+// Handle Spacebar press for screen transition
+- (void)keyDown:(NSEvent *)event {
+    if ([event keyCode] == 49) {  // 49 is the keycode for the spacebar
+        NSLog(@"Spacebar pressed. Switching to the next screen...");
+        [self switchToNextScreen];
+    }
+}
+
+// Transition to the next screen (Example color switching)
+- (void)transitionToNextScreen {
+    static int currentScreen = 0;
+    NSArray *colors = @[
+        [NSColor redColor],
+        [NSColor greenColor],
+        [NSColor blueColor],
+        [NSColor yellowColor]
+    ];
+    
+    currentScreen = (currentScreen + 1) % colors.count;
+    NSColor *nextColor = colors[currentScreen];
+    [self switchWindowColor:nextColor forWindow:self.window];
+}
+
+// Switch window color
 - (void)switchWindowColor:(NSColor *)nextColor forWindow:(NSWindow *)window {
-    // Cycle through each color and apply it to the window
     NSLog(@"switchWindowColor called with color: %@", nextColor);
     
     [window.contentView setWantsLayer:YES];
@@ -56,17 +87,21 @@
     NSLog(@"Window color switched to: %@", nextColor);
 }
 
-- (void)windowWillClose:(NSNotification *)notification {
-    NSLog(@"Window is about to close");
+// Switch to the next screen logic (For cleanup or other actions)
+- (void)switchToNextScreen {
+    NSLog(@"Switching to the next screen...");
+    // Add your screen transition logic here, if needed
 }
 
-- (BOOL)windowShouldClose:(NSWindow *)sender {
-    NSLog(@"Window is about to close. Terminating AtaraxiaSDK.");
-    [NSApp terminate:nil];
-    return YES;
+// Handle window close event
+- (void)windowWillClose:(NSNotification *)notification {
+    NSLog(@"Window has closed. Perform necessary actions.");
+    [self switchToNextScreen];  // Transition to the next screen or handle cleanup
+    [NSApp terminate:nil];  // Terminate the application if necessary
 }
 
 @end
+
 
 
 

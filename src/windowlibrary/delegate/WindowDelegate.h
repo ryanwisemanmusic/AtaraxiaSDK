@@ -6,19 +6,21 @@
 
 @class WindowDelegate;
 
-@interface WindowDelegate : NSObject <NSWindowDelegate> 
+@interface WindowDelegate : NSObject <NSWindowDelegate>
 
 @property (nonatomic, strong) NSWindow *window;
 
 - (instancetype)initWithWindow:(NSWindow *)window;
 - (void)mouseDown:(NSEvent *)event;
+- (void)mouseUp:(NSEvent *)event;  // Add mouseUp event handling if you want to use it
 - (void)switchWindowColor:(NSColor *)nextColor forWindow:(NSWindow *)window;
 - (void)windowWillClose:(NSNotification *)notification;
-- (BOOL)windowShouldClose:(NSWindow *)sender;
+- (void)switchToNextScreen;
 
 @end
 
 #endif
+
 
 
 
