@@ -13,6 +13,8 @@ LDFLAGS = -framework Cocoa
 
 # Target name (your executable)
 TARGET = SimpleWindow
+BUNDLE = $(TARGET).app
+EXECUTABLE = MyApp
 
 # Source files
 SRC = src/windowlibrary/main.m \
@@ -23,32 +25,41 @@ SRC = src/windowlibrary/main.m \
       ataraxia_app_c/window/main.c \
       ataraxia_app_c/window/screenLogic/screen_management.m
 
-# Header files (not used in the Makefile directly, but might be helpful for IDEs)
-HEADERS = src/windowlibrary/basicWindow.h \
-          src/windowlibrary/colorFill.h \
-          src/windowlibrary/translationlayer/windowCWrapper.h \
-          src/windowlibrary/delegate/WindowDelegate.h \
-          src/windowlibrary/delegate/MouseDelegate.h \
-          ataraxia_app_c/window/c_translation/window_ObjCTrans.h \
-          ataraxia_app_c/window/screenLogic/screen_management.h
-
-# Add header search paths
-vpath %.h src/windowlibrary src/windowlibrary/translationlayer src/windowlibrary/delegate ataraxia_app_c/window/c_translation ataraxia_app_c/window/screenLogic
-
 # Default target to build
-all: $(TARGET)
+all: $(BUNDLE)
 
 # Rule for creating the target
-$(TARGET): $(SRC)
-	$(CC) $(CFLAGS) $^ $(LDFLAGS) -o $@
+$(BUNDLE): $(SRC)
+	@echo "Creating $(BUNDLE)..."
+
+	mkdir -p $(BUNDLE)/Contents/MacOS
+	mkdir -p $(BUNDLE)/Contents/Resources
+
+	$(CC) $(CFLAGS) $^ $(LDFLAGS) -o $(BUNDLE)/Contents/MacOS/$(EXECUTABLE)
+
+	@echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" > $(BUNDLE)/Contents/Info.plist
+	@echo "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">" >> $(BUNDLE)/Contents/Info.plist
+	@echo "<plist version=\"1.0\">" >> $(BUNDLE)/Contents/Info.plist
+	@echo "<dict>" >> $(BUNDLE)/Contents/Info.plist
+	@echo "    <key>CFBundleName</key>" >> $(BUNDLE)/Contents/Info.plist
+	@echo "    <string>SimpleWindow</string>" >> $(BUNDLE)/Contents/Info.plist
+	@echo "    <key>CFBundleIdentifier</key>" >> $(BUNDLE)/Contents/Info.plist
+	@echo "    <string>com.yourcompany.SimpleWindow</string>" >> $(BUNDLE)/Contents/Info.plist
+	@echo "    <key>CFBundleVersion</key>" >> $(BUNDLE)/Contents/Info.plist
+	@echo "    <string>1.0</string>" >> $(BUNDLE)/Contents/Info.plist
+	@echo "    <key>CFBundleExecutable</key>" >> $(BUNDLE)/Contents/Info.plist
+	@echo "    <string>MyApp</string>" >> $(BUNDLE)/Contents/Info.plist
+	@echo "</dict>" >> $(BUNDLE)/Contents/Info.plist
+	@echo "</plist>" >> $(BUNDLE)/Contents/Info.plist
 
 # Clean target to remove generated files
 clean:
-	rm -f $(TARGET)
+	rm -rf $(BUNDLE)
 
 # Run target to execute the built app
-run: $(TARGET)
-	./$(TARGET)
+run: $(BUNDLE)
+	open $(BUNDLE)
+
 
 
 
