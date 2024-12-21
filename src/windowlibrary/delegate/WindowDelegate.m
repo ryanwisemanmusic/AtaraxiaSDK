@@ -1,5 +1,5 @@
 #import "WindowDelegate.h"
-#import "screen_management.h"  // Assuming you have this header for your screen management
+#import "screen_management.h"  // Assuming this header exists and handles screen management
 
 @interface WindowDelegate ()
 
@@ -101,6 +101,7 @@
 }
 
 @end
+
 
 
 
