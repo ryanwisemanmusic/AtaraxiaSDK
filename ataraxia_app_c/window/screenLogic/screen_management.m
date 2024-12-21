@@ -10,8 +10,8 @@
     if (!screenColors)
     {
         screenColors = @[
-            [NSColor redColor],
-            [NSColor blueColor]
+            [NSColor redColor],  // First screen color
+            [NSColor blueColor]  // Second screen color
         ];
     }
     return screenColors;
@@ -33,13 +33,17 @@
     NSArray<NSColor *> *screenColors = [self getScreenColors];
 
     int nextScreen = (currentScreen + 1) % screenColors.count;
+    NSColor *nextColor = screenColors[nextScreen];
 
-    NSLog(@"Transitioning to Screen %d with color %@", nextScreen, screenColors[nextScreen]);
+    NSLog(@"Transitioning to Screen %d with color %@", nextScreen, nextColor);
 
-    [windowDelegate switchWindowColor];
+    // Assuming `switchWindowColor` method is part of the WindowDelegate class.
+    // Make sure this method is properly switching the color after all initialization.
+    [windowDelegate switchWindowColor:nextColor forWindow:window];
 
     currentScreen = nextScreen;
 }
 
 @end
+
 
