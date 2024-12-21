@@ -83,35 +83,19 @@ void runApplication(void *app, void *window)
     }
 }
 
-
-void setWindowBackgroundColor(void *window, void *color)
-{
+void setWindowBackgroundColor(void *window, void *color) {
     NSWindow *nsWindow = (__bridge NSWindow *)window;
     NSColor *nsColor = (__bridge NSColor *)color;
 
-    if (nsWindow && nsColor)
-    {
-        [nsWindow setBackgroundColor:nsColor];
-    }
-    else
-    {
-        NSLog(@"Window or Color is NULL");
-    }
+    [nsWindow setBackgroundColor:nsColor];
 }
 
-void **getScreenColors(void) {
-    static void *colors[] = {NULL, NULL};
-
-    if (!colors[0] || !colors[1]) {
-        colors[0] = (__bridge void *)[NSColor redColor];
-        colors[1] = (__bridge void *)[NSColor blueColor];
-    }
-    return colors;
+// Updated getScreenColors function using NSArray
+NSArray<NSColor *> *getScreenColors(void) {
+    return @[
+        [NSColor redColor],
+        [NSColor greenColor],
+        [NSColor blueColor],
+        [NSColor yellowColor]
+    ];
 }
-
-
-
-
-
-
-
