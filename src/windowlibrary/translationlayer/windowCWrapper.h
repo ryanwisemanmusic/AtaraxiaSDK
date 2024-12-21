@@ -17,16 +17,9 @@
 extern "C" {
 #endif
 
-// Declare the WindowDelegate interface here
-#ifdef __OBJC__
-@interface WindowDelegate : NSObject <NSWindowDelegate>
-@end
-#endif
-
 // Function declarations
 void *ataraxiaApplication(); 
-void *createWindow(
-    CGRect frame, int32_t style, const char *title); 
+void *createWindow(CGRect frame, int32_t style, const char *title); 
 
 #ifdef __OBJC__
 NSColor *getColorForIntro();
@@ -44,6 +37,7 @@ void runApplication(void *app, void *window);
 #endif
 
 #endif // WINDOW_C_WRAPPER_H
+
 
 
 

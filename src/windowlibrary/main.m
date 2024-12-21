@@ -8,6 +8,7 @@ function.
 #import "WindowDelegate.h"
 #import "MouseDelegate.h"
 #import "colorFill.h"
+#import "screen_management.h" // Import screen management to access ScreenManager
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
@@ -29,6 +30,9 @@ int main(int argc, const char * argv[]) {
         WindowDelegate *delegate = [[WindowDelegate alloc] initWithWindow:window];
         [window setDelegate:delegate];
         
+        // Set the initial background color
+        [window setBackgroundColor:[NSColor redColor]]; 
+        
         // My custom red has some issues with being recognized,
         [window setBackgroundColor:[NSColor redColor]]; 
         
@@ -38,10 +42,14 @@ int main(int argc, const char * argv[]) {
         [contentView setWantsLayer:YES]; // Ensure the content view is layer-backed
         NSLog(@"Content view setup complete with mouse events enabled.");
 
+        // Add the mouse event listener
         [NSEvent addLocalMonitorForEventsMatchingMask:NSEventMaskLeftMouseDown handler:^NSEvent *(NSEvent *event) {
             NSLog(@"Mouse event detected at: %@", NSStringFromPoint(event.locationInWindow));
             return event; // Return the event to propagate it
-        }]; // Fixed missing closing bracket for the block
+        }];
+
+        // Call screen transition logic by passing window and window delegate
+        [ScreenManager handleScreenTransition:window withWindowDelegate:delegate];
 
         // Show the window and start the application
         [window makeKeyAndOrderFront:nil];
@@ -54,3 +62,4 @@ int main(int argc, const char * argv[]) {
     }
     return 0; // Return 0 when the app exits
 }
+
