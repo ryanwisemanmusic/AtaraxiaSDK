@@ -9,6 +9,7 @@ function.
 #import "MouseDelegate.h"
 #import "colorFill.h"
 #import "screen_management.h" // Import screen management to access ScreenManager
+#import "LogDelegate.h"       // Import LogDelegate to initialize the log viewer
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
@@ -55,6 +56,9 @@ int main(int argc, const char * argv[]) {
             }
         }
 
+        // Initialize LogDelegate to ensure the log viewer window is created
+        [LogDelegate sharedInstance]; // This will display the log window
+
         // Add mouse event listener for debugging purposes
         [NSEvent addLocalMonitorForEventsMatchingMask:NSEventMaskLeftMouseDown handler:^NSEvent *(NSEvent *event) {
             NSLog(@"Mouse event detected at: %@", NSStringFromPoint(event.locationInWindow));
@@ -64,7 +68,7 @@ int main(int argc, const char * argv[]) {
         // Call screen transition logic by passing window and window delegate
         [ScreenManager handleScreenTransition:window withWindowDelegate:delegate];
 
-        // Show the window and start the application
+        // Show the main application window
         [window makeKeyAndOrderFront:nil];
 
         NSLog(@"Running the application");
@@ -76,6 +80,7 @@ int main(int argc, const char * argv[]) {
     }
     return 0; // Return 0 when the app exits
 }
+
 
 
 
