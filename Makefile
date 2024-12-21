@@ -2,7 +2,8 @@
 CC = clang
 CFLAGS = -framework Cocoa \
          -fobjc-arc \
-         -I src/windowlibrary \
+         -I src/debugging \
+		 -I src/windowlibrary \
          -I src/windowlibrary/translationlayer \
          -I src/windowlibrary/delegate \
          -I ataraxia_app_c/window/c_translation \
@@ -17,9 +18,12 @@ BUNDLE = $(TARGET).app
 EXECUTABLE = MyApp
 
 # Source files
-SRC = src/windowlibrary/main.m \
+SRC = src/debugging/logLogic.m \
+	  src/debugging/logWindow.m \
+	  src/windowlibrary/main.m \
       src/windowlibrary/colorFill.m \
       src/windowlibrary/translationlayer/windowCWrapper.m \
+	  src/windowlibrary/delegate/LogDelegate.m \
       src/windowlibrary/delegate/WindowDelegate.m \
       src/windowlibrary/delegate/MouseDelegate.m \
       ataraxia_app_c/window/main.c \
@@ -59,9 +63,3 @@ clean:
 # Run target to execute the built app
 run: $(BUNDLE)
 	open $(BUNDLE)
-
-
-
-
-
-
