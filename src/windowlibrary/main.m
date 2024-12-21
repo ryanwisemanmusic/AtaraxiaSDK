@@ -30,19 +30,32 @@ int main(int argc, const char * argv[]) {
         WindowDelegate *delegate = [[WindowDelegate alloc] initWithWindow:window];
         [window setDelegate:delegate];
         
-        // Set the initial background color
-        [window setBackgroundColor:[NSColor redColor]]; 
-        
-        // My custom red has some issues with being recognized,
-        [window setBackgroundColor:[NSColor redColor]]; 
-        
-        // We are verifying the window and mouse events here
-        NSView *contentView = [window contentView];
-        contentView.allowedTouchTypes = NSTouchTypeMaskDirect; // Enable direct touch
-        [contentView setWantsLayer:YES]; // Ensure the content view is layer-backed
-        NSLog(@"Content view setup complete with mouse events enabled.");
+        // Verify the window delegate is set
+        NSLog(@"Window delegate set: %@", delegate);
 
-        // Add the mouse event listener
+        // Set the initial background color of the window
+        [window setBackgroundColor:[NSColor redColor]]; 
+        
+        // Get the content view and check if it's not nil
+        NSView *contentView = [window contentView];
+        if (!contentView) {
+            NSLog(@"Error: contentView is nil!");
+        } else {
+            NSLog(@"Content view successfully retrieved: %@", contentView);
+            // Ensure content view is layer-backed
+            [contentView setWantsLayer:YES];
+
+            // Check if the layer is properly created
+            if (contentView.layer) {
+                NSLog(@"Layer exists for content view.");
+                contentView.layer.backgroundColor = [NSColor redColor].CGColor; // Set background color using CALayer
+                NSLog(@"Background color set on content view layer.");
+            } else {
+                NSLog(@"Error: No layer for content view.");
+            }
+        }
+
+        // Add mouse event listener for debugging purposes
         [NSEvent addLocalMonitorForEventsMatchingMask:NSEventMaskLeftMouseDown handler:^NSEvent *(NSEvent *event) {
             NSLog(@"Mouse event detected at: %@", NSStringFromPoint(event.locationInWindow));
             return event; // Return the event to propagate it
@@ -55,6 +68,7 @@ int main(int argc, const char * argv[]) {
         [window makeKeyAndOrderFront:nil];
 
         NSLog(@"Running the application");
+
         // Start the application event loop
         [app run];
 
@@ -62,4 +76,6 @@ int main(int argc, const char * argv[]) {
     }
     return 0; // Return 0 when the app exits
 }
+
+
 
