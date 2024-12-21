@@ -84,11 +84,32 @@ void runApplication(void *app, void *window)
 }
 
 void setWindowBackgroundColor(void *window, void *color) {
+    // Bridge the passed window and color from void* to appropriate types
     NSWindow *nsWindow = (__bridge NSWindow *)window;
     NSColor *nsColor = (__bridge NSColor *)color;
 
+    // Log the color being set
+    NSLog(@"Setting background color to: %@", nsColor);
+
+    // Set the window's background color
     [nsWindow setBackgroundColor:nsColor];
+    
+    // Force a redraw of the window content with a slight delay to ensure the UI updates
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [nsWindow display]; // Ensures the content is displayed after the color change
+        NSLog(@"Window color set after delay: %@", nsColor);
+    });
+
+    // Get the content view of the window and force it to redraw immediately
+    NSView *contentView = [nsWindow contentView];
+    [contentView setNeedsDisplay:YES];  // Redraw the content view (this is correct)
+    NSLog(@"Window color set and content view redrawing initiated.");
 }
+
+
+
+
+
 
 // Updated getScreenColors function using NSArray
 NSArray<NSColor *> *getScreenColors(void) {
