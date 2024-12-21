@@ -1,4 +1,5 @@
 #import "screen_management.h"
+#import "WindowDelegate.h"
 #import <Cocoa/Cocoa.h>
 
 @implementation ScreenManager
@@ -26,25 +27,16 @@
     NSLog(@"Showing Main Screen 1");
 }
 
-+ (void)handleScreenTransition:(NSWindow *)window
++ (void)handleScreenTransition:(NSWindow *)window withWindowDelegate:(WindowDelegate *)windowDelegate
 {
     static int currentScreen = 0;
-    NSLog(@"Current Screen is set to 0");
-    NSArray<void (^)(void)> *screenHandlers = @[
-        ^{ [self showIntroTitle]; },
-        ^{ [self showMainScreen1]; }
-    ];
-
     NSArray<NSColor *> *screenColors = [self getScreenColors];
 
     int nextScreen = (currentScreen + 1) % screenColors.count;
 
-    NSLog(@"Transitioning to Screen %d with color %@", nextScreen, 
-    screenColors[nextScreen]);
+    NSLog(@"Transitioning to Screen %d with color %@", nextScreen, screenColors[nextScreen]);
 
-    screenHandlers[nextScreen]();
-
-    [window setBackgroundColor:screenColors[nextScreen]];
+    [windowDelegate switchWindowColor];
 
     currentScreen = nextScreen;
 }
