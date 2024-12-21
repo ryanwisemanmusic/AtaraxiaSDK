@@ -6,6 +6,7 @@ function.
 
 #import <Cocoa/Cocoa.h>
 #import "WindowDelegate.h"
+#import "MouseDelegate.h"
 #import "colorFill.h"
 
 int main(int argc, const char * argv[]) {
@@ -31,6 +32,17 @@ int main(int argc, const char * argv[]) {
         // My custom red has some issues with being recognized,
         [window setBackgroundColor:[NSColor redColor]]; 
         
+        // We are verifying the window and mouse events here
+        NSView *contentView = [window contentView];
+        contentView.allowedTouchTypes = NSTouchTypeMaskDirect; // Enable direct touch
+        [contentView setWantsLayer:YES]; // Ensure the content view is layer-backed
+        NSLog(@"Content view setup complete with mouse events enabled.");
+
+        [NSEvent addLocalMonitorForEventsMatchingMask:NSEventMaskLeftMouseDown handler:^NSEvent *(NSEvent *event) {
+            NSLog(@"Mouse event detected at: %@", NSStringFromPoint(event.locationInWindow));
+            return event; // Return the event to propagate it
+        }]; // Fixed missing closing bracket for the block
+
         // Show the window and start the application
         [window makeKeyAndOrderFront:nil];
 
