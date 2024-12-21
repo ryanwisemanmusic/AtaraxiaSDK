@@ -3,7 +3,7 @@
 
 @interface WindowDelegate ()
 
-//Color switching properties are added here
+// Color switching properties
 @property (nonatomic, strong) NSArray<NSColor *> *colorSequence;
 @property (nonatomic, assign) NSUInteger currentColorIndex;
 
@@ -17,6 +17,7 @@
         _window = window; 
         NSLog(@"WindowDelegate initialized with window: %@", window);
 
+        // Initialize the color sequence
         _colorSequence = @[
             [NSColor redColor],
             [NSColor greenColor],
@@ -38,25 +39,22 @@
     NSLog(@"Mouse clicked in window.");
     NSWindow *window = self.window;
     if (window) {
-        [self switchWindowColor];
+        [self switchWindowColor:_colorSequence[self.currentColorIndex] forWindow:window];  // Pass the color to the method
     } else {
         NSLog(@"Window referenced is nil.");
     }
 }
 
-
-- (void)switchWindowColor {
-    // This will cycle through each color and verify that we've done so
-    NSLog(@"switchWindowColor called.");
-    self.currentColorIndex = (self.currentColorIndex + 1) % self.colorSequence.count;
-    NSColor *nextColor = self.colorSequence[self.currentColorIndex];
+- (void)switchWindowColor:(NSColor *)nextColor forWindow:(NSWindow *)window {
+    // Cycle through each color and apply it to the window
+    NSLog(@"switchWindowColor called with color: %@", nextColor);
     
-    [self.window.contentView setWantsLayer:YES];
-    self.window.contentView.layer.backgroundColor = nextColor.CGColor;
+    [window.contentView setWantsLayer:YES];
+    window.contentView.layer.backgroundColor = nextColor.CGColor;
 
+    // Log the color change
     NSLog(@"Window color switched to: %@", nextColor);
 }
-
 
 - (void)windowWillClose:(NSNotification *)notification {
     NSLog(@"Window is about to close");
@@ -69,6 +67,8 @@
 }
 
 @end
+
+
 
 
 
