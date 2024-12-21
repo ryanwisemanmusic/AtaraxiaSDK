@@ -6,7 +6,7 @@
 - (instancetype)initWithWindow:(NSWindow *)window {
     self = [super init];
     if (self) {
-        self.window = window; 
+        _window = window; 
         NSLog(@"WindowDelegate initialized with window: %@", window);
     }
     return self;
@@ -15,7 +15,15 @@
 - (void)mouseDown:(NSEvent *)event {
     NSLog(@"Mouse clicked in window.");
     NSWindow *window = self.window;
-    [ScreenManager handleScreenTransition:window];
+    if (window) 
+    {
+        [ScreenManager handleScreenTransition:window];
+    }
+    else 
+    {
+        NSLog(@"Window referenced is nil.");
+    }
+    
 }
 
 - (void)windowWillClose:(NSNotification *)notification {
