@@ -2,6 +2,7 @@
 CC = clang
 CFLAGS = -framework Cocoa \
          -fobjc-arc \
+		 -I src/audio/filehandling \
          -I src/debugging \
 		 -I src/windowlibrary \
          -I src/windowlibrary/translationlayer \
