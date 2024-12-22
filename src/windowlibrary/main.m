@@ -5,6 +5,7 @@ function.
 */
 
 #import <Cocoa/Cocoa.h>
+#import "AppDelegate.h"
 #import "WindowDelegate.h"
 #import "MouseDelegate.h"
 #import "colorFill.h"
@@ -16,8 +17,13 @@ int main(int argc, const char * argv[]) {
         // Create the Cocoa application
         NSLog(@"Application starting...");
 
+        // Create the shared application instance
         NSApplication *app = [NSApplication sharedApplication];
         
+        // Set the AppDelegate to handle application-wide events (like quitting the app)
+        AppDelegate *appDelegate = [[AppDelegate alloc] init];
+        [app setDelegate:appDelegate];
+
         // Create the main window
         NSWindow *window = [[NSWindow alloc] initWithContentRect:NSMakeRect(0, 0, 800, 600)
                                                       styleMask:(NSWindowStyleMaskTitled | NSWindowStyleMaskClosable)
@@ -26,14 +32,14 @@ int main(int argc, const char * argv[]) {
         [window setTitle:@"Ataraxia App"];
         NSLog(@"Window created: %@", window);
 
-        // Create and set the window delegate
-        WindowDelegate *delegate = [[WindowDelegate alloc] initWithWindow:window];
-        [window setDelegate:delegate];
-        NSLog(@"Window delegate set: %@", delegate);
+        // Create and set the window delegate to handle window-specific events
+        WindowDelegate *windowDelegate = [[WindowDelegate alloc] initWithWindow:window];
+        [window setDelegate:windowDelegate];
+        NSLog(@"Window delegate set: %@", windowDelegate);
 
         // Set the initial background color of the window
-        [window setBackgroundColor:[NSColor redColor]]; 
-        
+        [window setBackgroundColor:[NSColor redColor]];
+
         // Ensure the content view exists
         NSView *contentView = [window contentView];
         if (!contentView) {
@@ -59,7 +65,7 @@ int main(int argc, const char * argv[]) {
 
         // Show the log window explicitly after initializing LogDelegate
         [[LogDelegate sharedInstance] showLogWindow];
-        
+
         // Monitor for mouse clicks and spacebar key press globally
         [NSEvent addGlobalMonitorForEventsMatchingMask:(NSEventMaskLeftMouseDown | NSEventMaskKeyDown) handler:^(NSEvent *event) {
             if (event.type == NSEventTypeLeftMouseDown) {
@@ -80,7 +86,7 @@ int main(int argc, const char * argv[]) {
 
         // Test ScreenManager independently to verify screen transition logic
         @try {
-            [ScreenManager handleScreenTransition:window withWindowDelegate:delegate];
+            [ScreenManager handleScreenTransition:window withWindowDelegate:windowDelegate];
             NSLog(@"Screen transition logic executed successfully.");
         } @catch (NSException *exception) {
             NSLog(@"Error during screen transition logic: %@", exception);
@@ -97,6 +103,7 @@ int main(int argc, const char * argv[]) {
     }
     return 0; // Return 0 when the app exits
 }
+
 
 
 
