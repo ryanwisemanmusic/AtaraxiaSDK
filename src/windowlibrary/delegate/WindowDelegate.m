@@ -55,9 +55,13 @@
 
 // Handle Spacebar press for screen transition
 - (void)keyDown:(NSEvent *)event {
-    if ([event keyCode] == 49) {  // 49 is the keycode for the spacebar
-        NSLog(@"Spacebar pressed. Switching to the next screen...");
+    if ([event keyCode] == 49) {  // Spacebar keycode (49 is for the spacebar)
+        NSLog(@"Spacebar pressed. Attempting to switch to the next screen...");
+        
+        // Ensure no other event interferes with spacebar keypress
         [self switchToNextScreen];
+    } else {
+        NSLog(@"Key with code %d pressed, which is not spacebar.", [event keyCode]);
     }
 }
 
@@ -71,6 +75,7 @@
         [NSColor yellowColor]
     ];
     
+    // Update the screen index and loop through colors
     currentScreen = (currentScreen + 1) % colors.count;
     NSColor *nextColor = colors[currentScreen];
     [self switchWindowColor:nextColor forWindow:self.window];
@@ -91,6 +96,7 @@
 - (void)switchToNextScreen {
     NSLog(@"Switching to the next screen...");
     // Add your screen transition logic here, if needed
+    // Example: You could add additional screen management logic here.
 }
 
 // Handle window close event
@@ -101,10 +107,4 @@
 }
 
 @end
-
-
-
-
-
-
 

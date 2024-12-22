@@ -1,23 +1,18 @@
-#import <Foundation/Foundation.h>
+#import "logLogic.h"
+#import "LogViewer.h" // Import LogViewer.h to use LogViewer
 
-void logMessage(NSString *message) {
-    NSString *logPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/MyApp.log"];
-    if (![[NSFileManager defaultManager] fileExistsAtPath:logPath]) {
-        [[NSFileManager defaultManager] createFileAtPath:logPath contents:nil attributes:nil];
-    }
-    
-    NSFileHandle *fileHandle = [NSFileHandle fileHandleForWritingAtPath:logPath];
-    if (!fileHandle) {
-        NSLog(@"Failed to open log file for writing: %@", logPath);
-        return;
-    }
-    [fileHandle seekToEndOfFile];
+@implementation LogLogic
 
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    NSString *timestamp = [formatter stringFromDate:[NSDate date]];
-
-    NSString *formattedMessage = [NSString stringWithFormat:@"%@: %@\n", timestamp, message];
-    [fileHandle writeData:[formattedMessage dataUsingEncoding:NSUTF8StringEncoding]];
-    [fileHandle closeFile];
+// LogLogic-specific methods should go here
+- (void)someLogLogicMethod {
+    LogViewer *viewer = [[LogViewer alloc] init];
+    [viewer showLogWindow]; // Example method call to LogViewer
 }
+
+@end
+
+
+
+
+
+

@@ -37,12 +37,17 @@
 
     NSLog(@"Transitioning to Screen %d with color %@", nextScreen, nextColor);
 
-    // Assuming `switchWindowColor` method is part of the WindowDelegate class.
-    // Make sure this method is properly switching the color after all initialization.
-    [windowDelegate switchWindowColor:nextColor forWindow:window];
+    // Ensure windowDelegate is not nil
+    if (windowDelegate) {
+        NSLog(@"WindowDelegate is valid, switching color.");
+        [windowDelegate switchWindowColor:nextColor forWindow:window];
+    } else {
+        NSLog(@"Error: WindowDelegate is nil.");
+    }
 
     currentScreen = nextScreen;
 }
+
 
 @end
 

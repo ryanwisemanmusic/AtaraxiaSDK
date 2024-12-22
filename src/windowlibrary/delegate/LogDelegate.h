@@ -1,9 +1,18 @@
-#import <Foundation/Foundation.h>
-#import "logWindow.h"
+#import <Cocoa/Cocoa.h>
+
+@class LogViewer; // Forward declaration of LogViewer
 
 @interface LogDelegate : NSObject
 
+@property (strong, nonatomic) LogViewer *logViewer; // Correct type for the LogViewer instance
+@property (strong, nonatomic) NSPipe *logPipe;
+
 + (instancetype)sharedInstance;
-- (void)logMessage:(NSString *)message;
+- (void)showLogWindow;
 
 @end
+
+
+
+
+

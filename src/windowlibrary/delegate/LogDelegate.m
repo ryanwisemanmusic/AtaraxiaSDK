@@ -1,10 +1,5 @@
-#import "logWindow.h"
-
-@interface LogDelegate : NSObject
-@property (strong, nonatomic) LogViewer *logViewer;
-@property (strong, nonatomic) NSPipe *logPipe;
-+ (instancetype)sharedInstance;
-@end
+#import "LogDelegate.h"
+#import "LogViewer.h"
 
 @implementation LogDelegate
 
@@ -13,26 +8,22 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedInstance = [[LogDelegate alloc] init];
-        sharedInstance.logViewer = [[LogViewer alloc] init];
-        [sharedInstance.logViewer showLogWindow];
-        [sharedInstance setupLogRedirection];
+        sharedInstance.logViewer = [[LogViewer alloc] init]; // Initialize LogViewer
+        [sharedInstance.logViewer showLogWindow]; // Show LogViewer window
+        [sharedInstance setupLogRedirection]; // Set up redirection for log messages
     });
     return sharedInstance;
-}
-
-- (void)logMessage:(NSString *)message {
-    [self.logViewer addLogMessage:message];
 }
 
 - (void)setupLogRedirection {
     self.logPipe = [NSPipe pipe];
     NSFileHandle *fileHandle = self.logPipe.fileHandleForReading;
-
+    
     // Redirect stderr to the pipe
     dup2(self.logPipe.fileHandleForWriting.fileDescriptor, STDERR_FILENO);
-
-    // Use a weak reference to avoid a retain cycle
-    __weak NSFileHandle *weakFileHandle = fileHandle;
+    
+    // Use a weak reference to avoid retain cycle
+    __weak typeof(fileHandle) weakFileHandle = fileHandle;
     dispatch_queue_t logQueue = dispatch_queue_create("com.logdelegate.queue", DISPATCH_QUEUE_SERIAL);
     fileHandle.readabilityHandler = ^(NSFileHandle *handle) {
         NSData *data = handle.availableData;
@@ -41,15 +32,26 @@
             
             // Dispatch to the main queue to update the UI
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self logMessage:log];
+                [self.logViewer addLogMessage:log]; // Ensure LogViewer displays the message
             });
         } else {
-            // Use the weak reference to break the retain cycle
-            weakFileHandle.readabilityHandler = nil;
+            weakFileHandle.readabilityHandler = nil; // Stop reading when no data
         }
     };
 }
 
+- (void)logMessage:(NSString *)message {
+    [self.logViewer addLogMessage:message]; // Pass the log message to LogViewer
+}
+
+- (void)showLogWindow {
+    [self.logViewer showLogWindow]; // Call LogViewer's showLogWindow method
+}
 
 @end
+
+
+
+
+
 

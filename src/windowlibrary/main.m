@@ -4,6 +4,7 @@ to our application, since everything else can be defined in its own
 function. 
 */
 
+// main.m
 #import <Cocoa/Cocoa.h>
 #import "WindowDelegate.h"
 #import "MouseDelegate.h"
@@ -57,14 +58,28 @@ int main(int argc, const char * argv[]) {
             NSLog(@"Error initializing LogDelegate: %@", exception);
         }
 
-        // Add mouse event listener for debugging purposes
-        [NSEvent addLocalMonitorForEventsMatchingMask:NSEventMaskLeftMouseDown handler:^NSEvent *(NSEvent *event) {
-            NSLog(@"Mouse event detected at: %@", NSStringFromPoint(event.locationInWindow));
-            return event; // Propagate event
+        // Show the log window explicitly after initializing LogDelegate
+        [[LogDelegate sharedInstance] showLogWindow];
+        
+        // Monitor for mouse clicks and spacebar key press globally
+        [NSEvent addGlobalMonitorForEventsMatchingMask:(NSEventMaskLeftMouseDown | NSEventMaskKeyDown) handler:^(NSEvent *event) {
+            if (event.type == NSEventTypeLeftMouseDown) {
+                // Handle mouse click event
+                NSLog(@"Mouse click event detected at: %@", NSStringFromPoint(event.locationInWindow));
+            } else if (event.type == NSEventTypeKeyDown && [event keyCode] == 49) { // 49 is the keycode for the spacebar
+                // Handle spacebar press event
+                NSLog(@"Spacebar pressed.");
+                // You can add your action logic for spacebar here (e.g., trigger sound, toggle action, etc.)
+            }
         }];
-        NSLog(@"Mouse event monitor added.");
+        NSLog(@"Global mouse and spacebar event monitoring initialized.");
 
-        // Safely call screen transition logic
+        // Ensure the window is focused and ready to accept input
+        [window makeKeyAndOrderFront:nil]; // Bring the window to the front
+        [window setAcceptsMouseMovedEvents:YES]; // Accept mouse move events (optional for your needs)
+        NSLog(@"Window is focused and ready to accept key and mouse events.");
+
+        // Test ScreenManager independently to verify screen transition logic
         @try {
             [ScreenManager handleScreenTransition:window withWindowDelegate:delegate];
             NSLog(@"Screen transition logic executed successfully.");
@@ -72,12 +87,7 @@ int main(int argc, const char * argv[]) {
             NSLog(@"Error during screen transition logic: %@", exception);
         }
 
-        // Show the main application window
-        [window makeKeyAndOrderFront:nil];
-        NSLog(@"Main application window is visible.");
-
         // Start the application event loop
-        NSLog(@"Starting application event loop...");
         @try {
             [app run];
         } @catch (NSException *exception) {

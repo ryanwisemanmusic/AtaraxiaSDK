@@ -19,13 +19,14 @@ EXECUTABLE = MyApp
 
 # Source files
 SRC = src/debugging/logLogic.m \
-	  src/debugging/logWindow.m \
+	  src/debugging/LogViewer.m \
 	  src/windowlibrary/main.m \
       src/windowlibrary/colorFill.m \
       src/windowlibrary/translationlayer/windowCWrapper.m \
 	  src/windowlibrary/delegate/LogDelegate.m \
       src/windowlibrary/delegate/WindowDelegate.m \
       src/windowlibrary/delegate/MouseDelegate.m \
+	  src/windowlibrary/delegate/SpacebarDelegate.m\
       ataraxia_app_c/window/main.c \
       ataraxia_app_c/window/screenLogic/screen_management.m
 
