@@ -4,7 +4,6 @@ to our application, since everything else can be defined in its own
 function. 
 */
 
-// main.m
 #import <Cocoa/Cocoa.h>
 #import "WindowDelegate.h"
 #import "MouseDelegate.h"
@@ -98,6 +97,7 @@ int main(int argc, const char * argv[]) {
     }
     return 0; // Return 0 when the app exits
 }
+
 
 
 
