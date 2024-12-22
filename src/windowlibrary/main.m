@@ -24,62 +24,71 @@ int main(int argc, const char * argv[]) {
                                                         backing:NSBackingStoreBuffered
                                                           defer:NO];
         [window setTitle:@"Ataraxia App"];
-
         NSLog(@"Window created: %@", window);
 
         // Create and set the window delegate
         WindowDelegate *delegate = [[WindowDelegate alloc] initWithWindow:window];
         [window setDelegate:delegate];
-        
-        // Verify the window delegate is set
         NSLog(@"Window delegate set: %@", delegate);
 
         // Set the initial background color of the window
         [window setBackgroundColor:[NSColor redColor]]; 
         
-        // Get the content view and check if it's not nil
+        // Ensure the content view exists
         NSView *contentView = [window contentView];
         if (!contentView) {
             NSLog(@"Error: contentView is nil!");
         } else {
             NSLog(@"Content view successfully retrieved: %@", contentView);
-            // Ensure content view is layer-backed
-            [contentView setWantsLayer:YES];
-
-            // Check if the layer is properly created
+            [contentView setWantsLayer:YES]; // Ensure layer-backed view
             if (contentView.layer) {
-                NSLog(@"Layer exists for content view.");
-                contentView.layer.backgroundColor = [NSColor redColor].CGColor; // Set background color using CALayer
+                contentView.layer.backgroundColor = [NSColor redColor].CGColor; // Set initial background color
                 NSLog(@"Background color set on content view layer.");
             } else {
-                NSLog(@"Error: No layer for content view.");
+                NSLog(@"Error: No layer available for content view.");
             }
         }
 
         // Initialize LogDelegate to ensure the log viewer window is created
-        [LogDelegate sharedInstance]; // This will display the log window
+        @try {
+            [LogDelegate sharedInstance]; // Ensure this doesn't disrupt execution
+            NSLog(@"Log viewer initialized successfully.");
+        } @catch (NSException *exception) {
+            NSLog(@"Error initializing LogDelegate: %@", exception);
+        }
 
         // Add mouse event listener for debugging purposes
         [NSEvent addLocalMonitorForEventsMatchingMask:NSEventMaskLeftMouseDown handler:^NSEvent *(NSEvent *event) {
             NSLog(@"Mouse event detected at: %@", NSStringFromPoint(event.locationInWindow));
-            return event; // Return the event to propagate it
+            return event; // Propagate event
         }];
+        NSLog(@"Mouse event monitor added.");
 
-        // Call screen transition logic by passing window and window delegate
-        [ScreenManager handleScreenTransition:window withWindowDelegate:delegate];
+        // Safely call screen transition logic
+        @try {
+            [ScreenManager handleScreenTransition:window withWindowDelegate:delegate];
+            NSLog(@"Screen transition logic executed successfully.");
+        } @catch (NSException *exception) {
+            NSLog(@"Error during screen transition logic: %@", exception);
+        }
 
         // Show the main application window
         [window makeKeyAndOrderFront:nil];
-
-        NSLog(@"Running the application");
+        NSLog(@"Main application window is visible.");
 
         // Start the application event loop
-        [app run];
+        NSLog(@"Starting application event loop...");
+        @try {
+            [app run];
+        } @catch (NSException *exception) {
+            NSLog(@"Application encountered an error in the event loop: %@", exception);
+        }
 
         NSLog(@"Application has exited.");
     }
     return 0; // Return 0 when the app exits
 }
+
 
 
 
