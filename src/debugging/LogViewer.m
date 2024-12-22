@@ -3,6 +3,7 @@
 @interface LogViewer ()
 
 @property (strong, nonatomic) NSTextView *logTextView;
+@property (strong, nonatomic) NSScrollView *scrollView;
 
 @end
 
@@ -11,7 +12,7 @@
 - (instancetype)init {
     self = [super initWithWindow:nil];
     if (self) {
-        NSRect frame = NSMakeRect(0, 0, 400, 300);
+        NSRect frame = NSMakeRect(0, 0, 600, 500);
         NSWindow *window = [[NSWindow alloc] initWithContentRect:frame
                                                        styleMask:(NSWindowStyleMaskTitled |
                                                                   NSWindowStyleMaskClosable |
@@ -20,12 +21,21 @@
                                                            defer:NO];
         [window setTitle:@"Log Window"];
         [self setWindow:window];
-        
+
         // Create a text view to display log messages
         self.logTextView = [[NSTextView alloc] initWithFrame:NSMakeRect(0, 0, 400, 300)];
         [self.logTextView setEditable:NO]; // Make it read-only
         [self.logTextView setFont:[NSFont fontWithName:@"Monaco" size:12]]; // Use a monospaced font
-        [[window contentView] addSubview:self.logTextView];
+        
+        // Create a scroll view to contain the text view
+        self.scrollView = [[NSScrollView alloc] initWithFrame:frame];
+        [self.scrollView setDocumentView:self.logTextView];
+        [self.scrollView setHasVerticalScroller:YES]; // Enable vertical scrolling
+        [self.scrollView setAutohidesScrollers:YES];   // Hide the scroller when not needed
+        [[window contentView] addSubview:self.scrollView];
+
+        // Allow window resizing, making sure both the scroll view and text view resize
+        [self.scrollView setAutoresizingMask:(NSViewWidthSizable | NSViewHeightSizable)];
     }
     return self;
 }
