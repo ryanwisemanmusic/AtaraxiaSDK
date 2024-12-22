@@ -7,6 +7,7 @@ CFLAGS = -framework Cocoa \
          -I src/windowlibrary/translationlayer \
          -I src/windowlibrary/delegate \
 		 -I src/windowlibrary/events \
+		 -I src/windowlibrary/mainmenu \
          -I ataraxia_app_c/window/c_translation \
          -I ataraxia_app_c/window/screenLogic
 
@@ -29,6 +30,7 @@ SRC = src/debugging/logLogic.m \
       src/windowlibrary/delegate/MouseDelegate.m \
 	  src/windowlibrary/delegate/SpacebarDelegate.m \
 	  src/windowlibrary/events/EventHandling.m \
+	  src/windowlibrary/mainmenu/AppDelegate.m \
       ataraxia_app_c/window/main.c \
       ataraxia_app_c/window/screenLogic/screen_management.m
 
