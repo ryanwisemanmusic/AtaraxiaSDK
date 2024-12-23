@@ -1,71 +1,68 @@
-# Compiler and flags
-CC = clang
-CFLAGS = -framework Cocoa \
-         -fobjc-arc \
-		 -I src/audio/filehandling \
-         -I src/debugging \
-		 -I src/windowlibrary \
-         -I src/windowlibrary/translationlayer \
-         -I src/windowlibrary/delegate \
-		 -I src/windowlibrary/events \
-		 -I src/windowlibrary/mainmenu \
-         -I ataraxia_app_c/window/c_translation \
-         -I ataraxia_app_c/window/screenLogic
+# Define the SDK directory and target
+ATARAXIA_SDK_DIR = AtaraxiaSDK
+SDK_MAKEFILE = $(ATARAXIA_SDK_DIR)/Makefile
+TARGET = FullProject
 
-# Linker flags (add any other frameworks or libraries here if needed)
-LDFLAGS = -framework Cocoa
+# Define the default target (build everything)
+.PHONY: all
+all: $(TARGET)
 
-# Target name (your executable)
-TARGET = SimpleWindow
-BUNDLE = $(TARGET).app
-EXECUTABLE = MyApp
+# Build the overall project by invoking the SDK's Makefile using make -f
+$(TARGET):
+	@echo "Building $(TARGET)..."
+	@if [ ! -f $(SDK_MAKEFILE) ]; then \
+		echo "Error: $(SDK_MAKEFILE) not found!"; \
+		exit 1; \
+	fi
+	make -f $(SDK_MAKEFILE)
 
-# Source files
-SRC = src/debugging/logLogic.m \
-	  src/debugging/LogViewer.m \
-	  src/windowlibrary/main.m \
-      src/windowlibrary/colorFill.m \
-      src/windowlibrary/translationlayer/windowCWrapper.m \
-	  src/windowlibrary/delegate/LogDelegate.m \
-      src/windowlibrary/delegate/WindowDelegate.m \
-      src/windowlibrary/delegate/MouseDelegate.m \
-	  src/windowlibrary/delegate/SpacebarDelegate.m \
-	  src/windowlibrary/events/EventHandling.m \
-	  src/windowlibrary/mainmenu/AppDelegate.m \
-      ataraxia_app_c/window/main.c \
-      ataraxia_app_c/window/screenLogic/screen_management.m
-
-# Default target to build
-all: $(BUNDLE)
-
-# Rule for creating the target
-$(BUNDLE): $(SRC)
-	@echo "Creating $(BUNDLE)..."
-
-	mkdir -p $(BUNDLE)/Contents/MacOS
-	mkdir -p $(BUNDLE)/Contents/Resources
-
-	$(CC) $(CFLAGS) $^ $(LDFLAGS) -o $(BUNDLE)/Contents/MacOS/$(EXECUTABLE)
-
-	@echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" > $(BUNDLE)/Contents/Info.plist
-	@echo "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">" >> $(BUNDLE)/Contents/Info.plist
-	@echo "<plist version=\"1.0\">" >> $(BUNDLE)/Contents/Info.plist
-	@echo "<dict>" >> $(BUNDLE)/Contents/Info.plist
-	@echo "    <key>CFBundleName</key>" >> $(BUNDLE)/Contents/Info.plist
-	@echo "    <string>SimpleWindow</string>" >> $(BUNDLE)/Contents/Info.plist
-	@echo "    <key>CFBundleIdentifier</key>" >> $(BUNDLE)/Contents/Info.plist
-	@echo "    <string>com.yourcompany.SimpleWindow</string>" >> $(BUNDLE)/Contents/Info.plist
-	@echo "    <key>CFBundleVersion</key>" >> $(BUNDLE)/Contents/Info.plist
-	@echo "    <string>1.0</string>" >> $(BUNDLE)/Contents/Info.plist
-	@echo "    <key>CFBundleExecutable</key>" >> $(BUNDLE)/Contents/Info.plist
-	@echo "    <string>MyApp</string>" >> $(BUNDLE)/Contents/Info.plist
-	@echo "</dict>" >> $(BUNDLE)/Contents/Info.plist
-	@echo "</plist>" >> $(BUNDLE)/Contents/Info.plist
-
-# Clean target to remove generated files
+# Clean the entire project by invoking the SDK clean target using make -f
+.PHONY: clean
 clean:
-	rm -rf $(BUNDLE)
+	@echo "Cleaning $(TARGET)..."
+	@if [ ! -f $(SDK_MAKEFILE) ]; then \
+		echo "Error: $(SDK_MAKEFILE) not found!"; \
+		exit 1; \
+	fi
+	make -f $(SDK_MAKEFILE) clean
 
-# Run target to execute the built app
-run: $(BUNDLE)
-	open $(BUNDLE)
+# Run the application after building using make -f
+.PHONY: run
+run: $(TARGET)
+	@echo "Running $(TARGET)..."
+	@if [ ! -f $(SDK_MAKEFILE) ]; then \
+		echo "Error: $(SDK_MAKEFILE) not found!"; \
+		exit 1; \
+	fi
+	make -f $(SDK_MAKEFILE) run
+
+# Install the application (if necessary)
+.PHONY: install
+install:
+	@echo "Installing $(TARGET)..."
+	# Add installation commands here if required
+	# Example: cp $(TARGET) /usr/local/bin/
+
+# Add a target for displaying help
+.PHONY: help
+help:
+	@echo "Makefile for $(TARGET)"
+	@echo "Usage:"
+	@echo "  make        - Build the $(TARGET)"
+	@echo "  make clean  - Clean the $(TARGET)"
+	@echo "  make run    - Run the $(TARGET) after building"
+	@echo "  make install - Install the $(TARGET) (customizable)"
+	@echo "  make help   - Display this help message"
+
+# Automatically create a target for the SDK Makefile if it doesn't exist
+$(SDK_MAKEFILE):
+	@echo "Error: $(SDK_MAKEFILE) not found!"
+	@exit 1
+
+
+
+
+
+
+
+
