@@ -32,6 +32,7 @@ SRC = AtaraxiaSDK/src/debugging/logLogic.m \
       AtaraxiaSDK/src/windowlibrary/delegate/SpacebarDelegate.m \
       AtaraxiaSDK/src/windowlibrary/events/EventHandling.m \
       AtaraxiaSDK/src/windowlibrary/mainmenu/AppDelegate.m \
+	  AtaraxiaSDK/src/windowlibrary/mainmenu/FileConverterWindow.m \
       AtaraxiaSDK/ataraxia_app_c/window/main.c \
       AtaraxiaSDK/ataraxia_app_c/window/screenLogic/screen_management.m
 
