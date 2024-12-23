@@ -4,9 +4,9 @@
 #include <string>
 
 class AudioProcessing {
-    public:
+public:
     void loadAudioFile(const std::string& path);
     void playAudio();
 };
 
-#endif
+#endif // AUDIO_PROCESSING_HPP
