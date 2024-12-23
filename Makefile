@@ -1,6 +1,6 @@
-# Define the SDK directory and target
 ATARAXIA_SDK_DIR = AtaraxiaSDK
 SDK_MAKEFILE = $(ATARAXIA_SDK_DIR)/Makefile
+CROSSLANGUAGE_MAKEFILE = $(ATARAXIA_SDK_DIR)/src/crosslanguage_embedded/Makefile
 TARGET = FullProject
 
 # Define the default target (build everything)
@@ -36,6 +36,18 @@ run: $(TARGET)
 	fi
 	make -f $(SDK_MAKEFILE) run
 
+# New target to build, clean, and run the Obj-C++ makefile
+.PHONY: objcplusplus
+objcplusplus: $(CROSSLANGUAGE_MAKEFILE)
+	@echo "Building and running Obj-C++ project..."
+	@if [ ! -f $(CROSSLANGUAGE_MAKEFILE) ]; then \
+		echo "Error: $(CROSSLANGUAGE_MAKEFILE) not found!"; \
+		exit 1; \
+	fi
+	make -f $(CROSSLANGUAGE_MAKEFILE) clean
+	make -f $(CROSSLANGUAGE_MAKEFILE)
+	make -f $(CROSSLANGUAGE_MAKEFILE) run
+
 # Install the application (if necessary)
 .PHONY: install
 install:
@@ -58,6 +70,8 @@ help:
 $(SDK_MAKEFILE):
 	@echo "Error: $(SDK_MAKEFILE) not found!"
 	@exit 1
+
+
 
 
 
