@@ -2,10 +2,12 @@
     "files.associations": {
         "*.h": "objective-c",
         "*.mm": "objective-cpp",
+        "*.objc.hpp": "objective-cpp",  // Add the custom extension here
         "*.hpp": "cpp"
     },
     "settings.associationsOverrides": {
-        "**/cpp_includes/**/*.h": "cpp"
+        "**/cpp_includes/**/*.h": "cpp",
     }
 }
+
 
