@@ -13,12 +13,12 @@
     self = [super initWithWindow:nil];
     if (self) {
         NSRect frame = NSMakeRect(0, 0, 600, 500);
-        NSWindow *window = [[NSWindow alloc] initWithContentRect:frame
-                                                       styleMask:(NSWindowStyleMaskTitled |
-                                                                  NSWindowStyleMaskClosable |
-                                                                  NSWindowStyleMaskResizable)
-                                                         backing:NSBackingStoreBuffered
-                                                           defer:NO];
+        NSWindow *window = [
+            [NSWindow alloc] initWithContentRect:frame
+            styleMask:(NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskResizable)
+            backing:NSBackingStoreBuffered
+            defer:NO
+        ];
         [window setTitle:@"Log Window"];
         [self setWindow:window];
 
