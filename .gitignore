@@ -8,3 +8,4 @@ SimpleWindow.app/Contents/MacOS/MyApp
 *.o
 AtaraxiaSDK/build/AudioProcessing.o
 AtaraxiaSDK/build/main.o
+/AtaraxiaSDK/build
