@@ -4,7 +4,7 @@ CXXFLAGS = -std=c++17 -fobjc-arc \
            -I AtaraxiaSDK/src/audio/handling \
            -I AtaraxiaSDK/src/audio/filehandling \
            -I AtaraxiaSDK/src/crosslanguage_embedded \
-           -I AtaraxiaSDK/src/audio/filehandling  # Add this line to include your custom Obj-C++ headers directory
+           -I AtaraxiaSDK/src/audio/filehandling
 LDFLAGS = -framework Cocoa
 
 # Directories
@@ -13,11 +13,11 @@ FILEHANDLING_DIR = AtaraxiaSDK/src/audio/filehandling
 BUILD_DIR = AtaraxiaSDK/build
 
 # Source files
-OBJCXX_SRC = $(CROSSLANGUAGE_DIR)/main.mm $(FILEHANDLING_DIR)/AudioProcessing.mm
+OBJCXX_SRC = $(CROSSLANGUAGE_DIR)/main.mm $(CROSSLANGUAGE_DIR)/objcLanguageEmbedded.mm $(FILEHANDLING_DIR)/AudioProcessing.mm
 CPP_SRC = $(FILEHANDLING_DIR)/m4aPassThrough.cpp
 
 # Object files
-OBJCXX_OBJ = $(BUILD_DIR)/main.o $(BUILD_DIR)/AudioProcessing.o
+OBJCXX_OBJ = $(BUILD_DIR)/main.o $(BUILD_DIR)/objcLanguageEmbedded.o $(BUILD_DIR)/AudioProcessing.o
 CPP_OBJ = $(BUILD_DIR)/m4aPassThrough.o
 
 # Target
@@ -56,9 +56,8 @@ create: clean $(BUILD_DIR) all
 clean:
 	rm -rf $(BUILD_DIR)/*.o $(BUILD_DIR)/$(TARGET)
 
-
-
-
-
-
-
+# Run the target (make run)
+.PHONY: run
+run: $(BUILD_DIR)/$(TARGET)
+	@echo "Running $(TARGET)..."
+	$(BUILD_DIR)/$(TARGET)
