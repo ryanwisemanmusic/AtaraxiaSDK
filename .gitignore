@@ -2,3 +2,9 @@
 SimpleWindow
 .DS_Store
 SimpleWindow.app/Contents/MacOS/MyApp
+*.o
+*.o
+*.o
+*.o
+AtaraxiaSDK/build/AudioProcessing.o
+AtaraxiaSDK/build/main.o
