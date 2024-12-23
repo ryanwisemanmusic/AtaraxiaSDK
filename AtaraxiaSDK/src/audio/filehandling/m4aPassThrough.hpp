@@ -23,3 +23,5 @@ class M4ADecoder
     bool isAtmonValid(const std::vector<uint8_t>& atom);
     void processAtom(const std::vector<uint8_t>& atom);
 };
+
+#endif

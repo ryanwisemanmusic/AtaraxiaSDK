@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
-#include "AudioProcessor.hpp"
-#include "m4aPassThrough.h"
+#include "AudioProcessing.objc.hpp"
+#include "m4aPassThrough.hpp"
 extern "C" {
     void testFunction();
 }
