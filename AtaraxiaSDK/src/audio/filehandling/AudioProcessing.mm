@@ -1,12 +1,11 @@
 #include "AudioProcessing.objc.hpp"
-#import <Foundation/Foundation.h>
+#include <iostream>
 
-void processAudioInObjCPlusPlus()
-{
-    NSLog(@"Processing audio with Objective-C++ logic...");
-
-    std::string audioFilePath = "resources/audio/mp3audio/Model (14edo)";
-    AudioProcessing audioProcessor; // Updated variable name to match usage
-    audioProcessor.loadAudioFile(audioFilePath);
-    audioProcessor.playAudio();
+void AudioProcessing::loadAudioFile(const std::string& path) {
+    std::cout << "Loading audio file: " << path << std::endl;
 }
+
+void AudioProcessing::playAudio() {
+    std::cout << "Playing audio..." << std::endl;
+}
+

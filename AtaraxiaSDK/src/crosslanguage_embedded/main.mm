@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
-#include "AudioProcessing.objc.hpp"
-#include "m4aPassThrough.hpp"
-extern "C" {
-    void testFunction();
+
+int main(int argc, const char * argv[]) {
+    // Checking to make sure that the coding languages link
+    return 0;
 }
