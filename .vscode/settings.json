@@ -1,9 +1,11 @@
 {
     "files.associations": {
-        "*.h": "objective-c" // Keep .h files as Objective-C by default
+        "*.h": "objective-c",
+        "*.mm": "objective-cpp",
+        "*.hpp": "cpp"
     },
     "settings.associationsOverrides": {
-        "**/cpp_includes/**/*.h": "cpp" // Treat .h files in certain directories as C++
+        "**/cpp_includes/**/*.h": "cpp"
     }
 }
 
