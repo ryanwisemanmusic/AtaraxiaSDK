@@ -26,6 +26,7 @@ SRC = AtaraxiaSDK/src/debugging/logLogic.m \
       AtaraxiaSDK/src/windowlibrary/main.m \
       AtaraxiaSDK/src/windowlibrary/colorFill.m \
       AtaraxiaSDK/src/windowlibrary/translationlayer/windowCWrapper.m \
+	  AtaraxiaSDK/src/windowlibrary/delegate/FileConverterDelegate.m \
       AtaraxiaSDK/src/windowlibrary/delegate/LogDelegate.m \
       AtaraxiaSDK/src/windowlibrary/delegate/WindowDelegate.m \
       AtaraxiaSDK/src/windowlibrary/delegate/MouseDelegate.m \

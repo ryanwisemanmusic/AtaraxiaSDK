@@ -9,8 +9,9 @@ function.
 #import "WindowDelegate.h"
 #import "MouseDelegate.h"
 #import "colorFill.h"
-#import "screen_management.h" // Import screen management to access ScreenManager
-#import "LogDelegate.h"       // Import LogDelegate to initialize the log viewer
+#import "screen_management.h"
+#import "LogDelegate.h"
+#import "FileConverterDelegate.h"
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
@@ -66,6 +67,14 @@ int main(int argc, const char * argv[]) {
         // Show the log window explicitly after initializing LogDelegate
         [[LogDelegate sharedInstance] showLogWindow];
 
+        // Initialize FileConverterDelegate to handle File Conversion logic
+        @try {
+            [FileConverterDelegate sharedInstance]; // Ensure FileConverterDelegate is initialized
+            NSLog(@"File Converter Delegate initialized successfully.");
+        } @catch (NSException *exception) {
+            NSLog(@"Error initializing FileConverterDelegate: %@", exception);
+        }
+
         // Monitor for mouse clicks and spacebar key press globally
         [NSEvent addGlobalMonitorForEventsMatchingMask:(NSEventMaskLeftMouseDown | NSEventMaskKeyDown) handler:^(NSEvent *event) {
             if (event.type == NSEventTypeLeftMouseDown) {
@@ -103,10 +112,3 @@ int main(int argc, const char * argv[]) {
     }
     return 0; // Return 0 when the app exits
 }
-
-
-
-
-
-
-
