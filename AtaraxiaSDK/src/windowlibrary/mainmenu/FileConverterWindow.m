@@ -5,13 +5,14 @@
 - (instancetype)init {
     self = [super initWithWindowNibName:@"FileConverterWindow"];
     if (self) {
-    //Initialization zone
+        // Initialization zone
     }
     return self;
 }
 
-- (void)showWindow:(id)sender {
-    [super showWindow:sender];
+- (void)showFileConverterWindow {
+    [self showWindow:nil]; // Calls the inherited method to show the window
 }
 
 @end
+

@@ -2,6 +2,7 @@
 
 @interface FileConverterWindow : NSWindowController
 
-- (void)showWindow:(id)sender;
+- (void)showFileConverterWindow; // Add this method to match the delegate call
 
 @end
+

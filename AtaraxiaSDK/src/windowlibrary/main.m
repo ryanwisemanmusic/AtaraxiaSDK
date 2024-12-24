@@ -15,100 +15,115 @@ function.
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
-        // Create the Cocoa application
-        NSLog(@"Application starting...");
+        NSLog(@"--- Application Startup ---");
 
-        // Create the shared application instance
+        // Step 1: Create the shared application instance
+        NSLog(@"Initializing NSApplication...");
         NSApplication *app = [NSApplication sharedApplication];
-        
-        // Set the AppDelegate to handle application-wide events (like quitting the app)
-        AppDelegate *appDelegate = [[AppDelegate alloc] init];
-        [app setDelegate:appDelegate];
 
-        // Create the main window
+        // Step 2: Set up AppDelegate
+        NSLog(@"Setting up AppDelegate...");
+        AppDelegate *appDelegate = [[AppDelegate alloc] init];
+        if (!appDelegate) {
+            NSLog(@"Error: Failed to initialize AppDelegate.");
+            return 1; // Exit with error code
+        }
+        [app setDelegate:appDelegate];
+        NSLog(@"AppDelegate set successfully.");
+
+        // Step 3: Create and configure the main window
+        NSLog(@"Creating main window...");
         NSWindow *window = [[NSWindow alloc] initWithContentRect:NSMakeRect(0, 0, 800, 600)
                                                       styleMask:(NSWindowStyleMaskTitled | NSWindowStyleMaskClosable)
                                                         backing:NSBackingStoreBuffered
                                                           defer:NO];
+        if (!window) {
+            NSLog(@"Error: Failed to create main window.");
+            return 1;
+        }
         [window setTitle:@"Ataraxia App"];
-        NSLog(@"Window created: %@", window);
+        NSLog(@"Main window created: %@", window);
 
-        // Create and set the window delegate to handle window-specific events
+        // Step 4: Set up WindowDelegate
+        NSLog(@"Setting up WindowDelegate...");
         WindowDelegate *windowDelegate = [[WindowDelegate alloc] initWithWindow:window];
+        if (!windowDelegate) {
+            NSLog(@"Error: Failed to initialize WindowDelegate.");
+            return 1;
+        }
         [window setDelegate:windowDelegate];
-        NSLog(@"Window delegate set: %@", windowDelegate);
+        NSLog(@"WindowDelegate set successfully: %@", windowDelegate);
 
-        // Set the initial background color of the window
+        // Step 5: Set the initial background color of the window
         [window setBackgroundColor:[NSColor redColor]];
-
-        // Ensure the content view exists
         NSView *contentView = [window contentView];
-        if (!contentView) {
-            NSLog(@"Error: contentView is nil!");
-        } else {
-            NSLog(@"Content view successfully retrieved: %@", contentView);
-            [contentView setWantsLayer:YES]; // Ensure layer-backed view
+        if (contentView) {
+            [contentView setWantsLayer:YES];
             if (contentView.layer) {
-                contentView.layer.backgroundColor = [NSColor redColor].CGColor; // Set initial background color
-                NSLog(@"Background color set on content view layer.");
+                contentView.layer.backgroundColor = [NSColor redColor].CGColor;
+                NSLog(@"Content view background color set successfully.");
             } else {
                 NSLog(@"Error: No layer available for content view.");
             }
+        } else {
+            NSLog(@"Error: Content view is nil.");
         }
 
-        // Initialize LogDelegate to ensure the log viewer window is created
+        // Step 6: Initialize LogDelegate and show the log window
+        NSLog(@"Initializing LogDelegate...");
         @try {
-            [LogDelegate sharedInstance]; // Ensure this doesn't disrupt execution
-            NSLog(@"Log viewer initialized successfully.");
+            [LogDelegate sharedInstance];
+            NSLog(@"LogDelegate initialized successfully.");
+            [[LogDelegate sharedInstance] showLogWindow];
+            NSLog(@"Log window shown successfully.");
         } @catch (NSException *exception) {
             NSLog(@"Error initializing LogDelegate: %@", exception);
         }
 
-        // Show the log window explicitly after initializing LogDelegate
-        [[LogDelegate sharedInstance] showLogWindow];
-
-        // Initialize FileConverterDelegate to handle File Conversion logic
+        // Step 7: Initialize FileConverterDelegate
+        NSLog(@"Initializing FileConverterDelegate...");
         @try {
-            [FileConverterDelegate sharedInstance]; // Ensure FileConverterDelegate is initialized
-            NSLog(@"File Converter Delegate initialized successfully.");
+            [FileConverterDelegate sharedInstance];
+            NSLog(@"FileConverterDelegate initialized successfully.");
         } @catch (NSException *exception) {
             NSLog(@"Error initializing FileConverterDelegate: %@", exception);
         }
 
-        // Monitor for mouse clicks and spacebar key press globally
+        // Step 8: Add global monitoring for mouse and keyboard events
+        NSLog(@"Setting up global mouse and keyboard event monitoring...");
         [NSEvent addGlobalMonitorForEventsMatchingMask:(NSEventMaskLeftMouseDown | NSEventMaskKeyDown) handler:^(NSEvent *event) {
             if (event.type == NSEventTypeLeftMouseDown) {
-                // Handle mouse click event
-                NSLog(@"Mouse click event detected at: %@", NSStringFromPoint(event.locationInWindow));
-            } else if (event.type == NSEventTypeKeyDown && [event keyCode] == 49) { // 49 is the keycode for the spacebar
-                // Handle spacebar press event
+                NSLog(@"Mouse click detected at: %@", NSStringFromPoint(event.locationInWindow));
+            } else if (event.type == NSEventTypeKeyDown && [event keyCode] == 49) { // 49 = Spacebar
                 NSLog(@"Spacebar pressed.");
-                // You can add your action logic for spacebar here (e.g., trigger sound, toggle action, etc.)
             }
         }];
-        NSLog(@"Global mouse and spacebar event monitoring initialized.");
 
-        // Ensure the window is focused and ready to accept input
-        [window makeKeyAndOrderFront:nil]; // Bring the window to the front
-        [window setAcceptsMouseMovedEvents:YES]; // Accept mouse move events (optional for your needs)
-        NSLog(@"Window is focused and ready to accept key and mouse events.");
+        // Step 9: Show and prepare the main window
+        [window makeKeyAndOrderFront:nil];
+        [window setAcceptsMouseMovedEvents:YES];
+        NSLog(@"Main window is ready and accepting events.");
 
-        // Test ScreenManager independently to verify screen transition logic
+        // Step 10: Execute screen transition logic
+        NSLog(@"Executing screen transition logic...");
         @try {
             [ScreenManager handleScreenTransition:window withWindowDelegate:windowDelegate];
             NSLog(@"Screen transition logic executed successfully.");
         } @catch (NSException *exception) {
-            NSLog(@"Error during screen transition logic: %@", exception);
+            NSLog(@"Error during screen transition: %@", exception);
         }
 
-        // Start the application event loop
+        // Step 11: Start the application event loop
+        NSLog(@"Starting application event loop...");
         @try {
             [app run];
         } @catch (NSException *exception) {
-            NSLog(@"Application encountered an error in the event loop: %@", exception);
+            NSLog(@"Error in application event loop: %@", exception);
         }
 
         NSLog(@"Application has exited.");
     }
-    return 0; // Return 0 when the app exits
+
+    return 0; // Exit code for success
 }
+

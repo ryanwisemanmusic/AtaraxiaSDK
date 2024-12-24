@@ -8,13 +8,15 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedInstance = [[FileConverterDelegate alloc] init];
-        sharedInstance.FileConverterWindow = [[FileConverterWindow alloc] init]; // Correct property name
+        sharedInstance.FileConverterWindow = [[FileConverterWindow alloc] init];
     });
     return sharedInstance;
 }
 
-- (void)showFileConverterWindow { // Correct method name to match declaration in .h
-    [self.FileConverterWindow showWindow:nil];
+- (void)showFileConverterWindow {
+    [self.FileConverterWindow showFileConverterWindow];
 }
 
 @end
+
+
