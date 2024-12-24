@@ -1,4 +1,5 @@
 #import "AppDelegate.h"
+#import "FileConverterDelegate.h"
 
 @implementation AppDelegate
 
@@ -48,13 +49,9 @@
     [NSApp terminate:nil];
 }
 
-- (IBAction)showFileConverter:(id)sender {
-    // If the file converter window controller isn't created yet, initialize it
-    if (!self.FileConverterWindowController) {
-        self.FileConverterWindowController = [[FileConverterWindowController alloc] init];
-    }
-    // Show the file converter window
-    [self.FileConverterWindowController showFileConverterWindow];
+- (void)showFileConverter:(id)sender {
+    // Show the File Converter window using the FileConverterDelegate
+    [[FileConverterDelegate sharedInstance] showFileConverterWindow];
 }
 
 @end
