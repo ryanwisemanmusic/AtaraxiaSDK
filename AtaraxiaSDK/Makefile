@@ -9,6 +9,7 @@ CFLAGS = -framework Cocoa \
          -I AtaraxiaSDK/src/windowlibrary/delegate \
          -I AtaraxiaSDK/src/windowlibrary/events \
          -I AtaraxiaSDK/src/windowlibrary/mainmenu \
+		 -I AtaraxiaSDK/src/mainmenu/windowing \
          -I AtaraxiaSDK/ataraxia_app_c/window/c_translation \
          -I AtaraxiaSDK/ataraxia_app_c/window/screenLogic
 
@@ -34,6 +35,7 @@ SRC = AtaraxiaSDK/src/debugging/logLogic.m \
       AtaraxiaSDK/src/windowlibrary/events/EventHandling.m \
       AtaraxiaSDK/src/windowlibrary/mainmenu/AppDelegate.m \
 	  AtaraxiaSDK/src/windowlibrary/mainmenu/FileConverterWindow.m \
+	  AtaraxiaSDK/src/windowlibrary/mainmenu/windowing/FileConverterViewer.m \
       AtaraxiaSDK/ataraxia_app_c/window/main.c \
       AtaraxiaSDK/ataraxia_app_c/window/screenLogic/screen_management.m
 
