@@ -1,8 +1,7 @@
 #import <Cocoa/Cocoa.h>
 
-@interface FileConverterWindowController: NSWindowController
+@interface FileConverterWindow : NSWindowController
 
-- (instancetype)init;
-- (void)showFileConverterWindow;
+- (void)showWindow:(id)sender;
 
 @end

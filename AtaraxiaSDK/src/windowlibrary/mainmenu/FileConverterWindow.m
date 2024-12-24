@@ -1,17 +1,17 @@
 #import "FileConverterWindow.h"
 
-@implementation FileConverterWindowController
+@implementation FileConverterWindow
 
 - (instancetype)init {
     self = [super initWithWindowNibName:@"FileConverterWindow"];
     if (self) {
-        //Initialize zone
+    //Initialization zone
     }
     return self;
 }
 
-- (void)showFileConverterWindow {
-    [self showWindow:self];
+- (void)showWindow:(id)sender {
+    [super showWindow:sender];
 }
 
 @end
