@@ -1,6 +1,7 @@
 # Compiler and flags
 CC = clang
 CFLAGS = -framework Cocoa \
+         -framework UniformTypeIdentifiers \
          -fobjc-arc \
          -I AtaraxiaSDK/src/audio/filehandling \
          -I AtaraxiaSDK/src/debugging \
@@ -9,12 +10,13 @@ CFLAGS = -framework Cocoa \
          -I AtaraxiaSDK/src/windowlibrary/delegate \
          -I AtaraxiaSDK/src/windowlibrary/events \
          -I AtaraxiaSDK/src/windowlibrary/mainmenu \
-		 -I AtaraxiaSDK/src/mainmenu/windowing \
+         -I AtaraxiaSDK/src/mainmenu/windowing \
          -I AtaraxiaSDK/ataraxia_app_c/window/c_translation \
          -I AtaraxiaSDK/ataraxia_app_c/window/screenLogic
 
 # Linker flags (add any other frameworks or libraries here if needed)
-LDFLAGS = -framework Cocoa
+LDFLAGS = -framework Cocoa \
+          -framework UniformTypeIdentifiers \
 
 # Target name (your executable)
 TARGET = SimpleWindow
@@ -69,13 +71,3 @@ force-run: clean $(BUNDLE) run
 
 # Clean, build, and run (alternative to force-run if you want a fresh start)
 clean-run: clean $(BUNDLE) run
-
-
-
-
-
-
-
-
-
-
