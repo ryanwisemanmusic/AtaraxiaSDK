@@ -4,7 +4,7 @@
 
 @interface FileConverterDelegate : NSObject
 
-@property (strong, nonatomic) FileConverterWindow *FileConverterWindow;
+@property (strong, nonatomic, readonly) FileConverterWindow *FileConverterWindow;
 
 + (instancetype)sharedInstance;
 - (void)showFileConverterWindow;
