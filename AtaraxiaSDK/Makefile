@@ -2,9 +2,15 @@
 CC = clang
 CFLAGS = -framework Cocoa \
          -framework UniformTypeIdentifiers \
+		 -framework Foundation \
+		 -framework Quartz \
+		 -framework CoreGraphics \
+		 -framework AppKit \
          -fobjc-arc \
          -I AtaraxiaSDK/src/audio/filehandling \
          -I AtaraxiaSDK/src/debugging \
+		 -I AtaraxiaSDK/src/fileconversion \
+		 -I AtaraxiaSDK/src/fileconversion/utility \
          -I AtaraxiaSDK/src/windowlibrary \
          -I AtaraxiaSDK/src/windowlibrary/translationlayer \
          -I AtaraxiaSDK/src/windowlibrary/delegate \
@@ -17,6 +23,10 @@ CFLAGS = -framework Cocoa \
 # Linker flags (add any other frameworks or libraries here if needed)
 LDFLAGS = -framework Cocoa \
           -framework UniformTypeIdentifiers \
+		  -framework Foundation \
+		  -framework Quartz \
+		  -framework CoreGraphics \
+		  -framework AppKit
 
 # Target name (your executable)
 TARGET = SimpleWindow
@@ -26,6 +36,8 @@ EXECUTABLE = MyApp
 # Source files (adjusted with correct paths)
 SRC = AtaraxiaSDK/src/debugging/logLogic.m \
       AtaraxiaSDK/src/debugging/LogViewer.m \
+	  AtaraxiaSDK/src/fileconversion/DocumentConverter.m \
+	  AtaraxiaSDK/src/fileconversion/ImageConverter.m \
       AtaraxiaSDK/src/windowlibrary/main.m \
       AtaraxiaSDK/src/windowlibrary/colorFill.m \
       AtaraxiaSDK/src/windowlibrary/translationlayer/windowCWrapper.m \
