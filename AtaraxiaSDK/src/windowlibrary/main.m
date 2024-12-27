@@ -56,35 +56,26 @@ int main(int argc, const char * argv[]) {
 
         // Step 5: Set the initial background color of the window
         [window setBackgroundColor:[NSColor redColor]];
-        NSView *contentView = [window contentView];
-        if (contentView) {
-            [contentView setWantsLayer:YES];
-            if (contentView.layer) {
-                contentView.layer.backgroundColor = [NSColor redColor].CGColor;
-                NSLog(@"Content view background color set successfully.");
-            } else {
-                NSLog(@"Error: No layer available for content view.");
-            }
-        } else {
-            NSLog(@"Error: Content view is nil.");
-        }
+        NSLog(@"Main window background color set to red.");
 
         // Step 6: Initialize LogDelegate and show the log window
         NSLog(@"Initializing LogDelegate...");
         @try {
-            [LogDelegate sharedInstance];
-            NSLog(@"LogDelegate initialized successfully.");
-            [[LogDelegate sharedInstance] showLogWindow];
+            LogDelegate *logDelegate = [LogDelegate sharedInstance];
+            [logDelegate showLogWindow];
             NSLog(@"Log window shown successfully.");
         } @catch (NSException *exception) {
             NSLog(@"Error initializing LogDelegate: %@", exception);
         }
 
-        // Step 7: Initialize FileConverterDelegate
+        // Step 7: Initialize FileConverterDelegate and trigger the window for testing
         NSLog(@"Initializing FileConverterDelegate...");
         @try {
-            [FileConverterDelegate sharedInstance];
+            FileConverterDelegate *fileConverterDelegate = [FileConverterDelegate sharedInstance];
             NSLog(@"FileConverterDelegate initialized successfully.");
+
+            // Optional: Show the File Converter window at startup for testing
+            [fileConverterDelegate showFileConverterWindow];
         } @catch (NSException *exception) {
             NSLog(@"Error initializing FileConverterDelegate: %@", exception);
         }
@@ -126,4 +117,5 @@ int main(int argc, const char * argv[]) {
 
     return 0; // Exit code for success
 }
+
 
