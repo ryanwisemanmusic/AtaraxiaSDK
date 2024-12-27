@@ -1,12 +1,18 @@
-#import "FileConverterWindow.h"
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
+
+#import "FileConverterWindow.h"
+#import "DocumentConverter.h"
+#import "ImageConverter.h"
+
 
 @interface FileConverterWindow ()
 
-@property (nonatomic, strong) NSTextField *fileNameLabel; // To display the selected file name
-@property (nonatomic, strong) NSPopUpButton *targetFileTypeDropdown; // Dropdown for selecting the file type
-@property (nonatomic, strong) NSButton *convertButton; // Button to trigger file conversion
-@property (nonatomic, strong) NSButton *openButton; // "Open File" button
+@property (nonatomic, strong) NSTextField *fileNameLabel; 
+@property (nonatomic, strong) NSPopUpButton *targetFileTypeDropdown; 
+@property (nonatomic, strong) NSButton *convertButton; 
+@property (nonatomic, strong) NSButton *openButton;
+@property (nonatomic, strong) NSTextField *exportPathLabel;
+@property (nonatomic, strong) NSString *selectedExportPath;
 
 @end
 
@@ -22,7 +28,7 @@
                                                         backing:NSBackingStoreBuffered
                                                           defer:NO];
         [window setTitle:@"File Converter"];
-        [window setBackgroundColor:[NSColor whiteColor]]; // Set background color to white
+        [window setBackgroundColor:[NSColor whiteColor]]; 
         [self setWindow:window];
         
         self.openButton = [[NSButton alloc] initWithFrame:NSMakeRect(20, 20, 100, 30)];
@@ -40,7 +46,7 @@
         [self.fileNameLabel setBordered:NO];
         [self.fileNameLabel setBackgroundColor:[NSColor clearColor]];
         [self.fileNameLabel setFont:[NSFont systemFontOfSize:14]];
-        [self.fileNameLabel setTextColor:[NSColor blackColor]]; // Set the text color to black
+        [self.fileNameLabel setTextColor:[NSColor blackColor]]; 
         [self.fileNameLabel setStringValue:@"No file selected"];
         [window.contentView addSubview:self.fileNameLabel];
 
@@ -75,6 +81,25 @@
 
         [self.convertButton setAttributedTitle:[[NSAttributedString alloc] initWithString:@"Convert File" attributes:@{NSForegroundColorAttributeName: [NSColor blackColor]}]];
         [window.contentView addSubview:self.convertButton];
+
+        self.exportPathLabel = [[NSTextField alloc] initWithFrame:NSMakeRect(20, 120, 400, 30)];
+        [self.exportPathLabel setEditable:NO];
+        [self.exportPathLabel setBordered:NO];
+        [self.exportPathLabel setBackgroundColor:[NSColor clearColor]];
+        [self.exportPathLabel setFont:[NSFont systemFontOfSize:14]];
+        [self.exportPathLabel setTextColor:[NSColor blackColor]];
+        [self.exportPathLabel setStringValue:@"No export path selected"];
+        [window.contentView addSubview:self.exportPathLabel];
+
+        // Moved "Select Export Path" button down by 40 pixels
+        NSButton *selectedExportPathButton = [[NSButton alloc] initWithFrame:NSMakeRect(240, 160, 120, 30)];
+        [selectedExportPathButton setTitle:@"Select Export Path"];
+        [selectedExportPathButton setTarget:self];
+        [selectedExportPathButton setAction:@selector(selectExportPath:)];
+        [selectedExportPathButton setBezelStyle:NSBezelStyleRounded];
+        [selectedExportPathButton setFont:[NSFont systemFontOfSize:14]];
+        [selectedExportPathButton setAttributedTitle:[[NSAttributedString alloc] initWithString:@"Select Export Path" attributes:@{NSForegroundColorAttributeName: [NSColor blackColor]}]];
+        [window.contentView addSubview:selectedExportPathButton];
 
         [[window contentView] setWantsLayer:YES];
     }
@@ -113,13 +138,37 @@
         NSLog(@"No file type selected for conversion");
         return;
     }
+
+    if (!self.selectedExportPath) {
+        NSLog(@"No export path selected");
+        return;
+    }
     
     NSLog(@"Starting conversion to %@", selectedFileType);
     
 }
 
+- (void)selectExportPath:(id)sender {
+    NSSavePanel *savePanel = [NSSavePanel savePanel];
+    
+    // Updated to use allowedContentTypes instead of the deprecated allowedFileTypes
+    savePanel.allowedContentTypes = @[
+        [UTType typeWithIdentifier:@"public.plain-text"], 
+        [UTType typeWithIdentifier:@"com.adobe.pdf"],    
+        [UTType typeWithIdentifier:@"public.jpeg"],      
+        [UTType typeWithIdentifier:@"public.png"]
+    ];
+    
+    [savePanel beginWithCompletionHandler:^(NSInteger result) {
+        if (result == NSModalResponseOK) {
+            NSURL *selectedPathURL = [savePanel URL];
+            self.selectedExportPath = selectedPathURL.path;
+            [self.exportPathLabel setStringValue:[NSString stringWithFormat:@"Export path: %@", self.selectedExportPath]];
+
+            NSLog(@"Export path selected: %@", self.selectedExportPath);
+        }
+    }];
+}
+
 @end
-
-
-
 

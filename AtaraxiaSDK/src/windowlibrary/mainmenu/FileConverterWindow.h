@@ -2,8 +2,9 @@
 
 @interface FileConverterWindow : NSWindowController
 
-- (void)showFileConverterWindow; // Add this method to match the delegate call
-- (void)openFile:(id)sender; // Declare the openFile method
+- (void)showFileConverterWindow;
+- (void)openFile:(id)sender;
+- (void)selectExportPath:(id)sender;
 
 @end
 
