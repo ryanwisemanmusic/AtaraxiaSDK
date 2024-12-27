@@ -4,6 +4,7 @@
 
 @property (strong, nonatomic) NSTextView *conversionTextView;
 @property (strong, nonatomic) NSScrollView *scrollView;
+@property (strong, nonatomic) NSTextField *fileNameLabel;
 
 @end
 
@@ -12,56 +13,64 @@
 - (instancetype)init {
     self = [super initWithWindow:nil];
     if (self) {
-        // Define the window frame
         NSRect frame = NSMakeRect(0, 0, 600, 500);
         
-        // Create the window programmatically
         NSWindow *window = [[NSWindow alloc] initWithContentRect:frame
                                                       styleMask:(NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskResizable)
                                                         backing:NSBackingStoreBuffered
                                                           defer:NO];
         [window setTitle:@"File Converter"];
+        [window setBackgroundColor:[NSColor whiteColor]];
         [self setWindow:window];
 
-        [window setBackgroundColor:[NSColor whiteColor]];
-
-        // Create the text view for log messages or file conversion details
-        self.conversionTextView = [[NSTextView alloc] initWithFrame:NSMakeRect(0, 0, 400, 300)];
-        [self.conversionTextView setEditable:NO]; // Make it read-only
-        [self.conversionTextView setFont:[NSFont fontWithName:@"Monaco" size:12]]; // Monospaced font
-
-        // Create a scroll view for the text view
-        self.scrollView = [[NSScrollView alloc] initWithFrame:frame];
-        [self.scrollView setDocumentView:self.conversionTextView];
-        [self.scrollView setHasVerticalScroller:YES];
-        [self.scrollView setAutohidesScrollers:YES];
+        self.scrollView = [[NSScrollView alloc] initWithFrame:NSMakeRect(20, 120, 560, 300)];
+        self.scrollView.hasVerticalScroller = YES;
+        
+        self.conversionTextView = [[NSTextView alloc] initWithFrame:self.scrollView.bounds];
+        self.conversionTextView.editable = NO;
+        self.conversionTextView.font = [NSFont fontWithName:@"Monaco" size:12];
+        self.conversionTextView.textColor = [NSColor blackColor];
+        self.scrollView.documentView = self.conversionTextView;
         [[window contentView] addSubview:self.scrollView];
 
-        // Resize the scroll view and text view with the window
-        [self.scrollView setAutoresizingMask:(NSViewWidthSizable | NSViewHeightSizable)];
-
-        NSButton *openFileButton = [[NSButton alloc] initWithFrame:NSMakeRect(250, 20, 100, 40)];
+        NSButton *openFileButton = [[NSButton alloc] initWithFrame:NSMakeRect(20, 20, 100, 40)];
         [openFileButton setTitle:@"Open File"];
         [openFileButton setTarget:self];
         [openFileButton setAction:@selector(openFile:)];
         [openFileButton setBezelStyle:NSBezelStyleRounded];
         [[window contentView] addSubview:openFileButton];
+
+        self.fileNameLabel = [[NSTextField alloc] initWithFrame:NSMakeRect(140, 20, 400, 40)];
+        self.fileNameLabel.editable = NO;
+        self.fileNameLabel.bezeled = NO;
+        self.fileNameLabel.backgroundColor = [NSColor clearColor];
+        self.fileNameLabel.textColor = [NSColor blackColor];
+        self.fileNameLabel.font = [NSFont systemFontOfSize:14];
+        self.fileNameLabel.alignment = NSTextAlignmentLeft;
+        [self.fileNameLabel setStringValue:@"No file selected"];
+        [[window contentView] addSubview:self.fileNameLabel];
+
+        // Debug: Ensure layers are enabled
+        [[window contentView] setWantsLayer:YES];
+        self.scrollView.wantsLayer = YES;
+        self.fileNameLabel.wantsLayer = YES;
+        self.conversionTextView.wantsLayer = YES;
+
+        // Debug: Log subviews
+        NSLog(@"Subviews in window content view: %@", [[self.window contentView] subviews]);
     }
     return self;
 }
 
 - (void)showFileConverterWindow {
-    [self showWindow:nil]; // Show the File Converter window
+    NSLog(@"FileConverterViewer window shown");
+    [self showWindow:nil];
 }
 
 - (void)addConversionLogMessage:(NSString *)message {
-    NSString *existingText = self.conversionTextView.string;
+    NSString *existingText = self.conversionTextView.string ?: @"";
     NSString *newText = [existingText stringByAppendingFormat:@"\n%@", message];
-    
-    // Append the log message
     [self.conversionTextView setString:newText];
-    
-    // Optionally scroll to the bottom
     [self.conversionTextView scrollRangeToVisible:NSMakeRange(newText.length - 1, 1)];
 }
 
@@ -72,10 +81,21 @@
     [openPanel setCanChooseDirectories:NO];
 
     [openPanel beginWithCompletionHandler:^(NSInteger result) {
-        NSURL *fileURL = [openPanel URL];
+        if (result == NSModalResponseOK) {
+            NSURL *fileURL = [openPanel URL];
+            NSString *fileName = [fileURL lastPathComponent];
+            
+            [self.fileNameLabel setStringValue:[NSString stringWithFormat:@"Selected file: %@", fileName]];
 
-        [self addConversionLogMessage:[NSString stringWithFormat:@"File selected: %@", [fileURL path]]];
+            [self addConversionLogMessage:[NSString stringWithFormat:@"File selected: %@", fileURL.path]];
+
+            NSLog(@"File selected: %@", fileURL.path);
+        }
     }];
 }
 
 @end
+
+
+
+
