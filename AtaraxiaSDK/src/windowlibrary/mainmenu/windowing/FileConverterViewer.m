@@ -14,7 +14,6 @@
     self = [super initWithWindow:nil];
     if (self) {
         NSRect frame = NSMakeRect(0, 0, 600, 500);
-        
         NSWindow *window = [[NSWindow alloc] initWithContentRect:frame
                                                       styleMask:(NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskResizable)
                                                         backing:NSBackingStoreBuffered
@@ -50,21 +49,17 @@
         [self.fileNameLabel setStringValue:@"No file selected"];
         [[window contentView] addSubview:self.fileNameLabel];
 
-        // Debug: Ensure layers are enabled
         [[window contentView] setWantsLayer:YES];
         self.scrollView.wantsLayer = YES;
         self.fileNameLabel.wantsLayer = YES;
         self.conversionTextView.wantsLayer = YES;
-
-        // Debug: Log subviews
-        NSLog(@"Subviews in window content view: %@", [[self.window contentView] subviews]);
     }
     return self;
 }
 
 - (void)showFileConverterWindow {
     NSLog(@"FileConverterViewer window shown");
-    [self showWindow:nil];
+    [self showWindow:nil]; 
 }
 
 - (void)addConversionLogMessage:(NSString *)message {
@@ -95,6 +90,7 @@
 }
 
 @end
+
 
 
 

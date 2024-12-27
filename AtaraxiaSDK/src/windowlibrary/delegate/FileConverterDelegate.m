@@ -19,16 +19,18 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _fileConverterWindow = [[FileConverterWindow alloc] init];
+        _fileConverterWindow = [[FileConverterWindow alloc] init]; // Initialize the window
     }
     return self;
 }
 
+// Call this method to show the FileConverterWindow
 - (void)showFileConverterWindow {
-    [self.fileConverterWindow showFileConverterWindow];
+    [self.fileConverterWindow showFileConverterWindow];  // Manually show the window
 }
 
 @end
+
 
 
 

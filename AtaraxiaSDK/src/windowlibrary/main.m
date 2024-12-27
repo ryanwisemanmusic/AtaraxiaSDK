@@ -17,21 +17,18 @@ int main(int argc, const char * argv[]) {
     @autoreleasepool {
         NSLog(@"--- Application Startup ---");
 
-        // Step 1: Create the shared application instance
         NSLog(@"Initializing NSApplication...");
         NSApplication *app = [NSApplication sharedApplication];
 
-        // Step 2: Set up AppDelegate
         NSLog(@"Setting up AppDelegate...");
         AppDelegate *appDelegate = [[AppDelegate alloc] init];
         if (!appDelegate) {
             NSLog(@"Error: Failed to initialize AppDelegate.");
-            return 1; // Exit with error code
+            return 1; 
         }
         [app setDelegate:appDelegate];
         NSLog(@"AppDelegate set successfully.");
 
-        // Step 3: Create and configure the main window
         NSLog(@"Creating main window...");
         NSWindow *window = [[NSWindow alloc] initWithContentRect:NSMakeRect(0, 0, 800, 600)
                                                       styleMask:(NSWindowStyleMaskTitled | NSWindowStyleMaskClosable)
@@ -44,7 +41,6 @@ int main(int argc, const char * argv[]) {
         [window setTitle:@"Ataraxia App"];
         NSLog(@"Main window created: %@", window);
 
-        // Step 4: Set up WindowDelegate
         NSLog(@"Setting up WindowDelegate...");
         WindowDelegate *windowDelegate = [[WindowDelegate alloc] initWithWindow:window];
         if (!windowDelegate) {
@@ -54,11 +50,9 @@ int main(int argc, const char * argv[]) {
         [window setDelegate:windowDelegate];
         NSLog(@"WindowDelegate set successfully: %@", windowDelegate);
 
-        // Step 5: Set the initial background color of the window
         [window setBackgroundColor:[NSColor redColor]];
         NSLog(@"Main window background color set to red.");
 
-        // Step 6: Initialize LogDelegate and show the log window
         NSLog(@"Initializing LogDelegate...");
         @try {
             LogDelegate *logDelegate = [LogDelegate sharedInstance];
@@ -68,19 +62,15 @@ int main(int argc, const char * argv[]) {
             NSLog(@"Error initializing LogDelegate: %@", exception);
         }
 
-        // Step 7: Initialize FileConverterDelegate and trigger the window for testing
         NSLog(@"Initializing FileConverterDelegate...");
         @try {
             FileConverterDelegate *fileConverterDelegate = [FileConverterDelegate sharedInstance];
             NSLog(@"FileConverterDelegate initialized successfully.");
-
-            // Optional: Show the File Converter window at startup for testing
-            [fileConverterDelegate showFileConverterWindow];
+            // The FileConverterWindow is now manually shown, so no auto-launch here
         } @catch (NSException *exception) {
             NSLog(@"Error initializing FileConverterDelegate: %@", exception);
         }
 
-        // Step 8: Add global monitoring for mouse and keyboard events
         NSLog(@"Setting up global mouse and keyboard event monitoring...");
         [NSEvent addGlobalMonitorForEventsMatchingMask:(NSEventMaskLeftMouseDown | NSEventMaskKeyDown) handler:^(NSEvent *event) {
             if (event.type == NSEventTypeLeftMouseDown) {
@@ -90,12 +80,10 @@ int main(int argc, const char * argv[]) {
             }
         }];
 
-        // Step 9: Show and prepare the main window
         [window makeKeyAndOrderFront:nil];
         [window setAcceptsMouseMovedEvents:YES];
         NSLog(@"Main window is ready and accepting events.");
 
-        // Step 10: Execute screen transition logic
         NSLog(@"Executing screen transition logic...");
         @try {
             [ScreenManager handleScreenTransition:window withWindowDelegate:windowDelegate];
@@ -104,7 +92,6 @@ int main(int argc, const char * argv[]) {
             NSLog(@"Error during screen transition: %@", exception);
         }
 
-        // Step 11: Start the application event loop
         NSLog(@"Starting application event loop...");
         @try {
             [app run];
@@ -117,5 +104,6 @@ int main(int argc, const char * argv[]) {
 
     return 0; // Exit code for success
 }
+
 
 

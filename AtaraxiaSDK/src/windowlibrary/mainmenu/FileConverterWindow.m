@@ -1,9 +1,12 @@
 #import "FileConverterWindow.h"
-#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h> // Import the UniformTypeIdentifiers framework
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 @interface FileConverterWindow ()
 
 @property (nonatomic, strong) NSTextField *fileNameLabel; // To display the selected file name
+@property (nonatomic, strong) NSPopUpButton *targetFileTypeDropdown; // Dropdown for selecting the file type
+@property (nonatomic, strong) NSButton *convertButton; // Button to trigger file conversion
+@property (nonatomic, strong) NSButton *openButton; // "Open File" button
 
 @end
 
@@ -22,34 +25,58 @@
         [window setBackgroundColor:[NSColor whiteColor]]; // Set background color to white
         [self setWindow:window];
         
-        // Add "Open File" button
-        NSButton *openButton = [[NSButton alloc] initWithFrame:NSMakeRect(20, 100, 100, 30)];
-        [openButton setTitle:@"Open File"];
-        [openButton setTarget:self];
-        [openButton setAction:@selector(openFile:)];
-        [openButton setBezelStyle:NSBezelStyleRounded];  // Ensure rounded button style
-        [openButton setFont:[NSFont systemFontOfSize:14]]; // Optional: Set font size for better visibility
-        
-        // Set button text color using an attributed string
-        NSAttributedString *buttonTitle = [[NSAttributedString alloc] initWithString:@"Open File"
-                                                                         attributes:@{NSForegroundColorAttributeName: [NSColor blackColor]}];
-        [openButton setAttributedTitle:buttonTitle];
+        self.openButton = [[NSButton alloc] initWithFrame:NSMakeRect(20, 20, 100, 30)];
+        [self.openButton setTitle:@"Open File"];
+        [self.openButton setTarget:self];
+        [self.openButton setAction:@selector(openFile:)];
+        [self.openButton setBezelStyle:NSBezelStyleRounded];
+        [self.openButton setFont:[NSFont systemFontOfSize:14]];
 
-        [[window contentView] addSubview:openButton];
+        [self.openButton setAttributedTitle:[[NSAttributedString alloc] initWithString:@"Open File" attributes:@{NSForegroundColorAttributeName: [NSColor blackColor]}]];
+        [window.contentView addSubview:self.openButton];
         
-        // Add label to display the selected file name
-        self.fileNameLabel = [[NSTextField alloc] initWithFrame:NSMakeRect(140, 100, 400, 30)];
+        self.fileNameLabel = [[NSTextField alloc] initWithFrame:NSMakeRect(140, 20, 400, 30)];
         [self.fileNameLabel setEditable:NO];
         [self.fileNameLabel setBordered:NO];
         [self.fileNameLabel setBackgroundColor:[NSColor clearColor]];
         [self.fileNameLabel setFont:[NSFont systemFontOfSize:14]];
         [self.fileNameLabel setTextColor:[NSColor blackColor]]; // Set the text color to black
         [self.fileNameLabel setStringValue:@"No file selected"];
-        [[window contentView] addSubview:self.fileNameLabel];
+        [window.contentView addSubview:self.fileNameLabel];
+
+        NSTextField *targetFileTypeLabel = [[NSTextField alloc] initWithFrame:NSMakeRect(20, 80, 200, 20)];
+        [targetFileTypeLabel setEditable:NO];
+        [targetFileTypeLabel setBordered:NO];
+        [targetFileTypeLabel setBackgroundColor:[NSColor clearColor]];
+        [targetFileTypeLabel setFont:[NSFont systemFontOfSize:12]];
+        [targetFileTypeLabel setStringValue:@"Set Targeted File Type"];
+        [window.contentView addSubview:targetFileTypeLabel];
+
+        self.targetFileTypeDropdown = [[NSPopUpButton alloc] initWithFrame:NSMakeRect(20, 50, 200, 30)];
+        [self.targetFileTypeDropdown addItemWithTitle:@"Select File Type"];
+        [self.targetFileTypeDropdown addItemWithTitle:@"PDF"];
+        [self.targetFileTypeDropdown addItemWithTitle:@"JPEG"];
+        [self.targetFileTypeDropdown addItemWithTitle:@"PNG"];
+        [self.targetFileTypeDropdown setFont:[NSFont systemFontOfSize:14]];
+
+        [self.targetFileTypeDropdown.itemArray enumerateObjectsUsingBlock:^(NSMenuItem *item, NSUInteger idx, BOOL *stop) {
+            [item setAttributedTitle:[[NSAttributedString alloc] initWithString:item.title attributes:@{NSForegroundColorAttributeName: [NSColor blackColor]}]];
+        }];
         
-        // Debug: Enable layer support for content view and subviews
+        [self.targetFileTypeDropdown setAttributedTitle:[[NSAttributedString alloc] initWithString:@"Select File Type" attributes:@{NSForegroundColorAttributeName: [NSColor blackColor]}]];
+        [window.contentView addSubview:self.targetFileTypeDropdown];
+        
+        self.convertButton = [[NSButton alloc] initWithFrame:NSMakeRect(240, 50, 120, 30)]; // Increased width to 120
+        [self.convertButton setTitle:@"Convert File"];
+        [self.convertButton setTarget:self];
+        [self.convertButton setAction:@selector(convertFile:)];
+        [self.convertButton setBezelStyle:NSBezelStyleRounded];
+        [self.convertButton setFont:[NSFont systemFontOfSize:14]];
+
+        [self.convertButton setAttributedTitle:[[NSAttributedString alloc] initWithString:@"Convert File" attributes:@{NSForegroundColorAttributeName: [NSColor blackColor]}]];
+        [window.contentView addSubview:self.convertButton];
+
         [[window contentView] setWantsLayer:YES];
-        [self.fileNameLabel setWantsLayer:YES];
     }
     return self;
 }
@@ -79,9 +106,19 @@
     }
 }
 
+- (void)convertFile:(id)sender {
+    NSString *selectedFileType = [self.targetFileTypeDropdown titleOfSelectedItem];
+    
+    if ([selectedFileType isEqualToString:@"Select File Type"]) {
+        NSLog(@"No file type selected for conversion");
+        return;
+    }
+    
+    NSLog(@"Starting conversion to %@", selectedFileType);
+    
+}
+
 @end
-
-
 
 
 
