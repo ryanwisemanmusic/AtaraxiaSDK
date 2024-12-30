@@ -38,6 +38,8 @@ SRC = AtaraxiaSDK/src/debugging/logLogic.m \
       AtaraxiaSDK/src/debugging/LogViewer.m \
 	  AtaraxiaSDK/src/fileconversion/DocumentConverter.m \
 	  AtaraxiaSDK/src/fileconversion/ImageConverter.m \
+	  AtaraxiaSDK/src/fileconversion/utility/FileConversionUtility.m \
+	  AtaraxiaSDK/src/fileconversion/utility/ImageConversionUtility.m \
       AtaraxiaSDK/src/windowlibrary/main.m \
       AtaraxiaSDK/src/windowlibrary/colorFill.m \
       AtaraxiaSDK/src/windowlibrary/translationlayer/windowCWrapper.m \
