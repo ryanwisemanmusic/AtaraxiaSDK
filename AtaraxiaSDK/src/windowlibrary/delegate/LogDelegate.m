@@ -48,10 +48,9 @@
     [self.logViewer showLogWindow]; // Call LogViewer's showLogWindow method
 }
 
+- (NSString *)getLogText {
+    // Provide the current log text from the LogViewer instance
+    return [self.logViewer getLogText];
+}
+
 @end
-
-
-
-
-
-

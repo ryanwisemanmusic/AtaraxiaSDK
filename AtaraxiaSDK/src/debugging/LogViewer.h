@@ -4,6 +4,11 @@
 
 - (void)showLogWindow;
 - (void)addLogMessage:(NSString *)message;
+- (NSString *)getLogText;
 
 @end
+
+
+
+
 

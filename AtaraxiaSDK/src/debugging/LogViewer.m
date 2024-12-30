@@ -27,6 +27,9 @@
         [self.logTextView setEditable:NO]; // Make it read-only
         [self.logTextView setFont:[NSFont fontWithName:@"Monaco" size:12]]; // Use a monospaced font
         
+        // Add some test text
+        [self addLogMessage:@"Initial test log message."];
+        
         // Create a scroll view to contain the text view
         self.scrollView = [[NSScrollView alloc] initWithFrame:frame];
         [self.scrollView setDocumentView:self.logTextView];
@@ -55,7 +58,18 @@
     [self.logTextView scrollRangeToVisible:NSMakeRange(newText.length - 1, 1)];
 }
 
+- (NSString *)getLogText {
+    if (self.logTextView.string.length > 0) {
+        return self.logTextView.string;  // Return the text in the NSTextView
+    } else {
+        NSLog(@"LogViewer: No text in log.");
+        return @"";  // Return an empty string if there's no text
+    }
+}
+
+
 @end
+
 
 
 
