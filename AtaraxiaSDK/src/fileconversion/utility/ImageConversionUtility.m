@@ -1,6 +1,7 @@
 #import "ImageConversionUtility.h"
 #import <CoreGraphics/CoreGraphics.h>
 #import <AppKit/AppKit.h>
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h> 
 
 @implementation ImageConversionUtility
 
@@ -11,16 +12,14 @@
         return nil;
     }
 
-    // Extract CGImageRef from NSImage
     CGImageRef cgImage = [self CGImageFromNSImage:image];
     if (!cgImage) {
         NSLog(@"Error converting NSImage to CGImage");
         return nil;
     }
 
-    // Create a JPEG representation
     NSMutableData *jpegData = [NSMutableData data];
-    CGImageDestinationRef destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)jpegData, kUTTypeJPEG, 1, NULL);
+    CGImageDestinationRef destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)jpegData, (__bridge CFStringRef)UTTypeJPEG.identifier, 1, NULL);
     if (!destination) {
         NSLog(@"Error creating JPEG destination");
         return nil;
@@ -44,16 +43,14 @@
         return nil;
     }
 
-    // Extract CGImageRef from NSImage
     CGImageRef cgImage = [self CGImageFromNSImage:image];
     if (!cgImage) {
         NSLog(@"Error converting NSImage to CGImage");
         return nil;
     }
 
-    // Create a PNG representation
     NSMutableData *pngData = [NSMutableData data];
-    CGImageDestinationRef destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)pngData, kUTTypePNG, 1, NULL);
+    CGImageDestinationRef destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)pngData, (__bridge CFStringRef)UTTypePNG.identifier, 1, NULL);
     if (!destination) {
         NSLog(@"Error creating PNG destination");
         return nil;
@@ -71,7 +68,6 @@
 }
 
 - (CGImageRef)CGImageFromNSImage:(NSImage *)image {
-    // Get the best representation of the image as a CGImage
     NSRect imageRect = NSMakeRect(0, 0, image.size.width, image.size.height);
     CGImageRef cgImage = [image CGImageForProposedRect:&imageRect context:nil hints:nil];
     return cgImage;
