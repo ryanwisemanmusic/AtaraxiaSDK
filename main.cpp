@@ -1,8 +1,18 @@
+/*
+Author: Ryan Wiseman
+
+This is a barebones approach to windowing via SDL. Any
+intenseive windowing required will require some major refactoring
+*/
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
+
+/*We have to call upon an external C function for anything that
+exists outside of C++ libraries.*/
+extern "C" void cocoaBaseMenuBar();
 
 int main(void)
 {
@@ -16,6 +26,11 @@ int main(void)
     SDL_Init(SDL_INIT_EVERYTHING);
     SDL_CreateWindowAndRenderer(
         1280, 720, 0, &window, &renderer);
+    
+    /*We will be using Obj-C only for menuing related to the SDL
+    application. I'm keeping it simple for the sake of not
+    giving you a difficult ass Obj-C project that more useful than not*/
+    cocoaBaseMenuBar();
 
     /*This sets */
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);

@@ -14,16 +14,17 @@ SDL2_IMAGE_LIB = /opt/homebrew/Cellar/sdl2_image/2.8.2_2/lib
 
 # Include and library flags
 INCLUDE_FLAGS = -isystem $(SDL2_INCLUDE)/SDL2 -isystem $(SDL2_INCLUDE) -isystem $(SDL2_IMAGE_INCLUDE)
-LIB_FLAGS = -L$(SDL2_LIB) -L$(SDL2_IMAGE_LIB) -lSDL2 -lSDL2_image
+LIB_FLAGS = -L$(SDL2_LIB) -L$(SDL2_IMAGE_LIB) -lSDL2 -lSDL2_image -framework Cocoa
 
 # Target executable
 TARGET = sdl_window
 
 # Source files
-SRCS = main.cpp
+SRCS = main.cpp Obj-C_src/toolbar/cocoaToolbarUI.mm
 
 # Object files
 OBJS = $(SRCS:.cpp=.o)
+OBJS :=$(OBJS:.mm=.o)
 
 # Default target
 all: $(TARGET)
@@ -34,6 +35,9 @@ $(TARGET): $(OBJS)
 
 # Compile the source files into object files
 %.o: %.cpp
+	$(CXX) $(CXXFLAGS) $(INCLUDE_FLAGS) -c $< -o $@
+
+%.o: %.mm
 	$(CXX) $(CXXFLAGS) $(INCLUDE_FLAGS) -c $< -o $@
 
 # Run the application
