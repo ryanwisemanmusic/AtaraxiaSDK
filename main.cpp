@@ -10,9 +10,72 @@ intenseive windowing required will require some major refactoring
 #include <stdio.h>
 #include <stdlib.h>
 
-/*We have to call upon an external C function for anything that
-exists outside of C++ libraries.*/
+//Load Obj-C functions here
 extern "C" void cocoaBaseMenuBar();
+extern "C" void openSDLAboutWindow();
+
+/* This approach will be how you create additional windows inside of SDL.
+   Usually, we will stick to the main window itself, it just is useful
+   if you get to something like Finder menus, in case you need to do something
+   useful like importing a file. */
+extern "C" void openSDLWindowAboutMenu()
+{
+    SDL_Window *aboutWindow = SDL_CreateWindow(
+        "About AtaraxiaSDK", SDL_WINDOWPOS_CENTERED,
+        SDL_WINDOWPOS_CENTERED, 500, 400, SDL_WINDOW_SHOWN);
+    
+    // Error check for failed window creation
+    if (!aboutWindow)
+    {
+        std::cerr << "Cannot create the About Window requested: " 
+                  << SDL_GetError() << std::endl;
+        return;
+    }
+
+    SDL_Renderer *aboutRenderer = SDL_CreateRenderer(
+        aboutWindow, -1, SDL_RENDERER_ACCELERATED);
+    
+    // Error check for failed renderer creation
+    if (!aboutRenderer)
+    {
+        std::cerr << "Failed to create the renderer (About Window). \n"
+                  << "Error: " << SDL_GetError() << std::endl;
+        SDL_DestroyWindow(aboutWindow);
+        return;
+    }
+
+    SDL_SetRenderDrawColor(aboutRenderer, 200, 200, 200, 255);
+    SDL_RenderClear(aboutRenderer);
+    SDL_RenderPresent(aboutRenderer);
+    
+    SDL_Event event;
+    bool aboutRunning = true;
+    while (aboutRunning)
+    {
+        // Fetch new events from SDL
+        while (SDL_PollEvent(&event))
+        {
+            if (event.type == SDL_QUIT)
+            {
+                aboutRunning = false;
+            }
+            else if (event.type == SDL_WINDOWEVENT)
+            {
+                if (event.window.event == SDL_WINDOWEVENT_CLOSE && 
+                    event.window.windowID == SDL_GetWindowID(aboutWindow))
+                {
+                    aboutRunning = false;
+                }
+            }
+        }
+
+        SDL_Delay(10);
+    }
+
+    SDL_DestroyRenderer(aboutRenderer);
+    SDL_DestroyWindow(aboutWindow);
+}
+
 
 int main(void)
 {
