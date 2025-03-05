@@ -17,4 +17,3 @@ void cocoaBaseMenuBar();
 
 #endif /* COCOA_TOOLBAR_HANDLER_H */
 
-

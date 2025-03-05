@@ -6,6 +6,7 @@ SDL. Because of it, we are required to use Obj-C, paricularly,
 the Cocoa library.
 
 */
+
 #import <Cocoa/Cocoa.h>
 #import "cocoaToolbarHandler.h"
 

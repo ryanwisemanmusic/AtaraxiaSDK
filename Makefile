@@ -5,59 +5,46 @@ CXX = clang++
 CXXFLAGS = -std=c++17 -Wall -Wextra -O2
 OBJCPPFLAGS = $(CXXFLAGS) -ObjC++
 
-# SDL2 paths
-SDL2_INCLUDE = /opt/homebrew/Cellar/sdl2/2.30.9/include
-SDL2_LIB = /opt/homebrew/Cellar/sdl2/2.30.9/lib
+# SDL3 paths
+SDL3_INCLUDE = /opt/homebrew/Cellar/sdl3/3.2.8/include
+SDL3_LIB = /opt/homebrew/Cellar/sdl3/3.2.8/lib
 
-# SDL2_image paths
-SDL2_IMAGE_INCLUDE = /opt/homebrew/Cellar/sdl2_image/2.8.2_2/include
-SDL2_IMAGE_LIB = /opt/homebrew/Cellar/sdl2_image/2.8.2_2/lib
-
-# Combined header directories (system and project-specific)
-HEADER = -isystem $(SDL2_INCLUDE)/SDL2 \
-         -isystem $(SDL2_INCLUDE) \
-         -isystem $(SDL2_IMAGE_INCLUDE) \
+# Header directories
+HEADER = -isystem $(SDL3_INCLUDE) \
          -Iinclude/cpp_headers \
          -Iinclude/objc_headers \
          -Isrc/objc
 
 # Library flags
-LIB_FLAGS = -L$(SDL2_LIB) -L$(SDL2_IMAGE_LIB) -lSDL2 -lSDL2_image -framework Cocoa
+LIB_FLAGS = -L$(SDL3_LIB) -lSDL3 -framework Cocoa -lobjc
 
-# Target executable
+# Target and sources
 TARGET = AtaraxiaSDK
-
-# Source files
 SRC_CPP = src/cpp/main.cpp
 SRC_OBJC = src/objc/cocoaToolbarUI.mm
 
 # Object files
 OBJ_CPP = $(SRC_CPP:.cpp=.o)
-OBJ_OBJC = src/objc/cocoaToolbarUI.o
+OBJ_OBJC = $(SRC_OBJC:.mm=.o)
 OBJS = $(OBJ_CPP) $(OBJ_OBJC)
 
-# Default target
+# Build rules
 all: $(TARGET)
 
-# Link the object files to create the executable
 $(TARGET): $(OBJS)
-	$(CXX) $(CXXFLAGS) $(OBJS) $(LIB_FLAGS) -o $(TARGET)
+	$(CXX) $(CXXFLAGS) $^ $(LIB_FLAGS) -o $@
 
-# Compile C++ source files
 src/cpp/%.o: src/cpp/%.cpp
 	$(CXX) $(CXXFLAGS) $(HEADER) -c $< -o $@
 
-# Compile Objective-C++ source files
 src/objc/%.o: src/objc/%.mm
 	$(CXX) $(OBJCPPFLAGS) $(HEADER) -c $< -o $@
 
-# Run the application
+# Utilities
 run: $(TARGET)
 	./$(TARGET)
 
-# Clean up build files
 clean:
 	rm -f $(OBJS) $(TARGET)
 
-# Phony targets
 .PHONY: all clean run
