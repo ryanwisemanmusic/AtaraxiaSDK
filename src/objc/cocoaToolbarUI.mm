@@ -57,44 +57,219 @@ the Cocoa library.
 }
 
 - (IBAction)helpOption1Action:(id)sender {
-    [self openHelpWindowWithTitle:@"Help Window 1"];
+    [self openHelpWindowWithTitle01:@"Help Window 1"];
 }
 
 - (IBAction)helpOption2Action:(id)sender {
-    [self openHelpWindowWithTitle:@"Help Window 2"];
+    [self openHelpWindowWithTitle02:@"Help Window 2"];
 }
 
 - (IBAction)helpOption3Action:(id)sender {
-    [self openHelpWindowWithTitle:@"Help Window 3"];
+    [self openHelpWindowWithTitle03:@"Help Window 3"];
 }
 
 - (IBAction)helpOption4Action:(id)sender {
-    [self openHelpWindowWithTitle:@"Help Window 4"];
+    [self openHelpWindowWithTitle04:@"Help Window 4"];
 }
 
 - (IBAction)helpOption5Action:(id)sender {
-    [self openHelpWindowWithTitle:@"Help Window 5"];
+    [self openHelpWindowWithTitle05:@"Help Window 5"];
 }
 
 - (void)openHelpWindowWithTitle:(NSString *)title {
     NSWindow *helpWindow = [[NSWindow alloc] initWithContentRect:NSMakeRect(0, 0, 400, 300)
-                                                    styleMask:(NSWindowStyleMaskTitled | NSWindowStyleMaskClosable)
-                                                      backing:NSBackingStoreBuffered
-                                                        defer:NO];
+                                                       styleMask:(NSWindowStyleMaskTitled | NSWindowStyleMaskClosable)
+                                                         backing:NSBackingStoreBuffered
+                                                           defer:NO];
     [helpWindow setTitle:title];
     [helpWindow center];
+
+    NSTextView *textView = [[NSTextView alloc] initWithFrame:NSMakeRect(10, 10, 380, 280)];
     
-    NSTextView *textView = [[NSTextView alloc] initWithFrame:NSMakeRect(0, 0, 400, 300)];
-    [textView setString:[NSString stringWithFormat:@"This is the help content for %@.\n", title]];
+    NSString *helpContent = [NSString stringWithFormat:@"Help content for %@.\n", title];
+    helpContent = [helpContent stringByAppendingString:@"Unique information for this topic.\n"];
+    helpContent = [helpContent stringByAppendingString:@"This is line 1.\n"];
+    helpContent = [helpContent stringByAppendingString:@"This is line 2.\n"];
+    helpContent = [helpContent stringByAppendingString:@"This is line 3.\n"];
+
+    [textView setString:helpContent];
     [textView setEditable:NO];
     [textView setSelectable:YES];
-    
+
     NSScrollView *scrollView = [[NSScrollView alloc] initWithFrame:NSMakeRect(0, 0, 400, 300)];
     [scrollView setDocumentView:textView];
     [scrollView setHasVerticalScroller:YES];
-    
+
     [helpWindow setContentView:scrollView];
+    [helpWindow setBackgroundColor:[NSColor whiteColor]];
+    [helpWindow makeKeyAndOrderFront:nil];
+}
+
+- (void)openHelpWindowWithTitle01:(NSString *)title {
+    NSWindow *helpWindow = [[NSWindow alloc] initWithContentRect:NSMakeRect(50, 50, 500, 400)
+                                                       styleMask:(NSWindowStyleMaskTitled | NSWindowStyleMaskClosable)
+                                                         backing:NSBackingStoreBuffered
+                                                           defer:NO];
+    [helpWindow setTitle:title];
+    [helpWindow center];
+
+    NSTextView *textView = [[NSTextView alloc] initWithFrame:NSMakeRect(10, 10, 480, 380)];
     
+    NSString *helpContent = [NSString stringWithFormat:@"Unique content for %@.\n", title];
+    helpContent = [helpContent stringByAppendingString:@"Extra details and logic.\n"];
+    helpContent = [helpContent stringByAppendingString:@"In order to work with changing this documentation.\n"];
+    helpContent = [helpContent stringByAppendingString:@"Please consider breaking up each string\n"];
+    helpContent = [helpContent stringByAppendingString:@"Each one of documentations allows you to add assistance for the end user\n"];
+    helpContent = [helpContent stringByAppendingString:@"This approach allows you to store any strings more modular\n"];
+    helpContent = [helpContent stringByAppendingString:@"Feel free to add to the pointer of helpContent as needed\n"];
+
+    [textView setString:helpContent];
+    [textView setEditable:NO];
+    [textView setSelectable:YES];
+    [textView setTextColor:[NSColor blueColor]];
+
+    NSScrollView *scrollView = [[NSScrollView alloc] initWithFrame:NSMakeRect(0, 0, 500, 400)];
+    [scrollView setDocumentView:textView];
+    [scrollView setHasVerticalScroller:YES];
+
+    [helpWindow setContentView:scrollView];
+    [helpWindow setBackgroundColor:[NSColor lightGrayColor]];
+    [helpWindow makeKeyAndOrderFront:nil];
+}
+
+- (void)openHelpWindowWithTitle02:(NSString *)title {
+    NSWindow *helpWindow = [[NSWindow alloc] initWithContentRect:NSMakeRect(100, 100, 450, 350)
+                                                       styleMask:(NSWindowStyleMaskTitled | NSWindowStyleMaskClosable)
+                                                         backing:NSBackingStoreBuffered
+                                                           defer:NO];
+    [helpWindow setTitle:title];
+    [helpWindow center];
+
+    NSTextView *textView = [[NSTextView alloc] initWithFrame:NSMakeRect(10, 10, 430, 330)];
+    
+    NSString *helpContent = [NSString stringWithFormat:@"Unique content for %@.\n", title];
+    helpContent = [helpContent stringByAppendingString:@"Extra details and logic.\n"];
+    helpContent = [helpContent stringByAppendingString:@"In order to work with changing this documentation.\n"];
+    helpContent = [helpContent stringByAppendingString:@"Please consider breaking up each string\n"];
+    helpContent = [helpContent stringByAppendingString:@"Each one of documentations allows you to add assistance for the end user\n"];
+    helpContent = [helpContent stringByAppendingString:@"This approach allows you to store any strings more modular\n"];
+    helpContent = [helpContent stringByAppendingString:@"Feel free to add to the pointer of helpContent as needed\n"];
+
+    [textView setString:helpContent];
+    [textView setEditable:NO];
+    [textView setSelectable:YES];
+    [textView setTextColor:[NSColor redColor]];
+    [textView setFont:[NSFont fontWithName:@"Courier" size:14]];
+
+    NSScrollView *scrollView = [[NSScrollView alloc] initWithFrame:NSMakeRect(0, 0, 450, 350)];
+    [scrollView setDocumentView:textView];
+    [scrollView setHasVerticalScroller:YES];
+
+    [helpWindow setContentView:scrollView];
+    [helpWindow setBackgroundColor:[NSColor yellowColor]];
+    [helpWindow setLevel:NSStatusWindowLevel];
+    [helpWindow makeKeyAndOrderFront:nil];
+}
+
+- (void)openHelpWindowWithTitle03:(NSString *)title {
+    NSWindow *helpWindow = [[NSWindow alloc] initWithContentRect:NSMakeRect(100, 100, 450, 350)
+                                                       styleMask:(NSWindowStyleMaskTitled | NSWindowStyleMaskClosable)
+                                                         backing:NSBackingStoreBuffered
+                                                           defer:NO];
+    [helpWindow setTitle:title];
+    [helpWindow center];
+
+    NSTextView *textView = [[NSTextView alloc] initWithFrame:NSMakeRect(10, 10, 430, 330)];
+    
+    NSString *helpContent = [NSString stringWithFormat:@"Unique content for %@.\n", title];
+    helpContent = [helpContent stringByAppendingString:@"Extra details and logic.\n"];
+    helpContent = [helpContent stringByAppendingString:@"In order to work with changing this documentation.\n"];
+    helpContent = [helpContent stringByAppendingString:@"Please consider breaking up each string\n"];
+    helpContent = [helpContent stringByAppendingString:@"Each one of documentations allows you to add assistance for the end user\n"];
+    helpContent = [helpContent stringByAppendingString:@"This approach allows you to store any strings more modular\n"];
+    helpContent = [helpContent stringByAppendingString:@"Feel free to add to the pointer of helpContent as needed\n"];
+
+    [textView setString:helpContent];
+    [textView setEditable:NO];
+    [textView setSelectable:YES];
+    [textView setTextColor:[NSColor redColor]];
+    [textView setFont:[NSFont fontWithName:@"Courier" size:14]];
+
+    NSScrollView *scrollView = [[NSScrollView alloc] initWithFrame:NSMakeRect(0, 0, 450, 350)];
+    [scrollView setDocumentView:textView];
+    [scrollView setHasVerticalScroller:YES];
+
+    [helpWindow setContentView:scrollView];
+    [helpWindow setBackgroundColor:[NSColor yellowColor]];
+    [helpWindow setLevel:NSStatusWindowLevel];
+    [helpWindow makeKeyAndOrderFront:nil];
+}
+
+- (void)openHelpWindowWithTitle04:(NSString *)title {
+    NSWindow *helpWindow = [[NSWindow alloc] initWithContentRect:NSMakeRect(100, 100, 450, 350)
+                                                       styleMask:(NSWindowStyleMaskTitled | NSWindowStyleMaskClosable)
+                                                         backing:NSBackingStoreBuffered
+                                                           defer:NO];
+    [helpWindow setTitle:title];
+    [helpWindow center];
+
+    NSTextView *textView = [[NSTextView alloc] initWithFrame:NSMakeRect(10, 10, 430, 330)];
+    
+    NSString *helpContent = [NSString stringWithFormat:@"Unique content for %@.\n", title];
+    helpContent = [helpContent stringByAppendingString:@"Extra details and logic.\n"];
+    helpContent = [helpContent stringByAppendingString:@"In order to work with changing this documentation.\n"];
+    helpContent = [helpContent stringByAppendingString:@"Please consider breaking up each string\n"];
+    helpContent = [helpContent stringByAppendingString:@"Each one of documentations allows you to add assistance for the end user\n"];
+    helpContent = [helpContent stringByAppendingString:@"This approach allows you to store any strings more modular\n"];
+    helpContent = [helpContent stringByAppendingString:@"Feel free to add to the pointer of helpContent as needed\n"];
+
+    [textView setString:helpContent];
+    [textView setEditable:NO];
+    [textView setSelectable:YES];
+    [textView setTextColor:[NSColor magentaColor]];
+    [textView setFont:[NSFont fontWithName:@"Courier" size:14]];
+
+    NSScrollView *scrollView = [[NSScrollView alloc] initWithFrame:NSMakeRect(0, 0, 450, 350)];
+    [scrollView setDocumentView:textView];
+    [scrollView setHasVerticalScroller:YES];
+
+    [helpWindow setContentView:scrollView];
+    [helpWindow setBackgroundColor:[NSColor yellowColor]];
+    [helpWindow setLevel:NSStatusWindowLevel];
+    [helpWindow makeKeyAndOrderFront:nil];
+}
+
+- (void)openHelpWindowWithTitle05:(NSString *)title {
+    NSWindow *helpWindow = [[NSWindow alloc] initWithContentRect:NSMakeRect(100, 100, 450, 350)
+                                                       styleMask:(NSWindowStyleMaskTitled | NSWindowStyleMaskClosable)
+                                                         backing:NSBackingStoreBuffered
+                                                           defer:NO];
+    [helpWindow setTitle:title];
+    [helpWindow center];
+
+    NSTextView *textView = [[NSTextView alloc] initWithFrame:NSMakeRect(10, 10, 430, 330)];
+    
+    NSString *helpContent = [NSString stringWithFormat:@"Unique content for %@.\n", title];
+    helpContent = [helpContent stringByAppendingString:@"Extra details and logic.\n"];
+    helpContent = [helpContent stringByAppendingString:@"In order to work with changing this documentation.\n"];
+    helpContent = [helpContent stringByAppendingString:@"Please consider breaking up each string\n"];
+    helpContent = [helpContent stringByAppendingString:@"Each one of documentations allows you to add assistance for the end user\n"];
+    helpContent = [helpContent stringByAppendingString:@"This approach allows you to store any strings more modular\n"];
+    helpContent = [helpContent stringByAppendingString:@"Feel free to add to the pointer of helpContent as needed\n"];
+
+    [textView setString:helpContent];
+    [textView setEditable:NO];
+    [textView setSelectable:YES];
+    [textView setTextColor:[NSColor orangeColor]];
+    [textView setFont:[NSFont fontWithName:@"Courier" size:14]];
+
+    NSScrollView *scrollView = [[NSScrollView alloc] initWithFrame:NSMakeRect(0, 0, 450, 350)];
+    [scrollView setDocumentView:textView];
+    [scrollView setHasVerticalScroller:YES];
+
+    [helpWindow setContentView:scrollView];
+    [helpWindow setBackgroundColor:[NSColor yellowColor]];
+    [helpWindow setLevel:NSStatusWindowLevel];
     [helpWindow makeKeyAndOrderFront:nil];
 }
 
