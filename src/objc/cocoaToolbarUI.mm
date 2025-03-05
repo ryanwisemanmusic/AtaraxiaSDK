@@ -10,7 +10,6 @@ the Cocoa library.
 #import <Cocoa/Cocoa.h>
 #import "cocoaToolbarHandler.h"
 
-// AppDelegate declaration conforms to NSApplicationDelegate.
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 - (IBAction)customAboutAction:(id)sender;
 - (IBAction)blankOptionAction:(id)sender; 

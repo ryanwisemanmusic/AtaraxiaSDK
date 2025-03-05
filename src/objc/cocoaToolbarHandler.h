@@ -5,15 +5,13 @@
 extern "C" {
 #endif
 
-// Opens a native Cocoa About window.
 void openSDLWindowAboutMenu();
 
-// Initializes the Cocoa menu bar.
 void cocoaBaseMenuBar();
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* COCOA_TOOLBAR_HANDLER_H */
+#endif 
 
