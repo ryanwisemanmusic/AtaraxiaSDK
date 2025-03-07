@@ -9,32 +9,37 @@ intenseive windowing required will require some major refactoring
 #include <SDL3/SDL_main.h>
 #include <SDL3_image/SDL_image.h>
 
+SDL_Window *window;
+SDL_Renderer *renderer;
+constexpr int ScreenWidth = 600;
+constexpr int ScreenHeight = 600;
+
 extern "C" void cocoaBaseMenuBar();
 extern "C" void openSDLWindowAboutMenu();
+
+bool init();
+
 
 int main(int argc, char* argv[]) {
     (void)argc; 
     (void)argv; 
 
-    SDL_Window *window;  
+    (void)argc; 
+    (void)argv; 
+
+    //SDL_Window *window;  
     bool done = false;
 
-    SDL_Init(SDL_INIT_VIDEO);  
-
-    
-    
-    window = SDL_CreateWindow(
-        "An SDL3 window",
-        640,
-        480,
-        SDL_WINDOW_OPENGL 
-    );
-
-    if (window == NULL) {
-        SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not create window: %s\n", SDL_GetError());
+    /* 
+    It took me about 12 hours to fix the problem with my call to 
+    bool init. So this is some good progress!!!!
+    */
+    if (!init()) {
+        SDL_Log("Unable to initialize program!\n");
         return 1;
     }
 
+    // Add Cocoa base menu bar
     cocoaBaseMenuBar();
 
     while (!done) {
@@ -50,4 +55,38 @@ int main(int argc, char* argv[]) {
 
     SDL_Quit();
     return 0;
+}
+
+bool init()
+{
+    SDL_Init(SDL_INIT_VIDEO);
+    
+    window = SDL_CreateWindow(
+        "AtaraxiaSDK", ScreenWidth,
+        ScreenHeight, SDL_WINDOW_OPENGL);
+    
+    if (window == NULL)
+    {
+        SDL_Log("Window can't be creted! SDL error: %s\n",
+        SDL_GetError());
+        SDL_Quit();
+        return false;
+    }
+
+    renderer = SDL_CreateRenderer(window, 0);
+    if (!renderer)
+    {
+        SDL_Log("Renderer could not be created! SDL error: %s\n",
+        SDL_GetError());
+        SDL_Quit();
+        return false;
+    }
+    /*
+    if (SDL_SetRenderVSync(renderer, true) != 0)
+    {
+        SDL_Log("Failed to enable VSync! SDL: Error %s\n",
+        SDL_GetError());
+    }
+    */
+    return true;
 }
