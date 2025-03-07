@@ -7,6 +7,8 @@ intenseive windowing required will require some major refactoring
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
+/*Third party image library for SDL3*/
+#include <SDL3_ttf/SDL_ttf.h>
 #include <SDL3_image/SDL_image.h>
 
 SDL_Window *window;

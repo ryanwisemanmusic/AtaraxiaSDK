@@ -13,21 +13,26 @@ SDL3_LIB := /opt/homebrew/Cellar/sdl3/3.2.8/lib
 SDL3_IMAGE_INCLUDE := /opt/homebrew/Cellar/sdl3_image/3.2.4/include
 SDL3_IMAGE_LIB := /opt/homebrew/Cellar/sdl3_image/3.2.4/lib
 
+# SDL3_ttf paths
+SDL3_TTF_INCLUDE := /usr/local/include/SDL3_ttf
+SDL3_TTF_LIB := /usr/local/lib
+
 # Header directories
 HEADER = -isystem $(SDL3_INCLUDE) \
          -I$(SDL3_IMAGE_INCLUDE) \
+         -I$(SDL3_TTF_INCLUDE) \
          -Iinclude/cpp_headers \
          -Iinclude/objc_headers \
          -Isrc/objc
 
 # Library flags
-LIB_FLAGS = -L$(SDL3_LIB) -L$(SDL3_IMAGE_LIB) \
-            -lSDL3 -lSDL3_image \
-            -framework Cocoa -lobjc
+LIB_FLAGS = -L$(SDL3_LIB) -L$(SDL3_IMAGE_LIB) -L$(SDL3_TTF_LIB) \
+            -lSDL3 -lSDL3_image -lSDL3_ttf \
+            -framework Cocoa -lobjc -framework OpenGL  # Added OpenGL framework for macOS
 
 # Target and sources
 TARGET = AtaraxiaSDK
-SRC_CPP = src/cpp/main.cpp
+SRC_CPP = src/cpp/main.cpp 
 SRC_OBJC = src/objc/cocoaToolbarUI.mm
 
 # Object files
