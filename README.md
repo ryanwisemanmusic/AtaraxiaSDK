@@ -1,4 +1,4 @@
-#AtaraxiaSDK
+#  AtaraxiaSDK
 This is a build that allows SDL3 to be used on ARM Macs if it was installed via homebrew.
 
 Due to the change of usr/local on x86 Mac chips to opt/homebrew, header files cannot be natively included 
