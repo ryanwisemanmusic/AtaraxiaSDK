@@ -10,6 +10,20 @@ intenseive windowing required will require some major refactoring
 /*Third party image library for SDL3*/
 #include <SDL3_ttf/SDL_ttf.h>
 #include <SDL3_image/SDL_image.h>
+/*Header for SQLite, if you aren't using local
+databases, this can be deleated.*/
+#include <sqlite3.h>
+
+//Universal libraries
+#include <iostream>
+#include <array>
+
+//App headers
+#include "gameScores.h"
+
+
+//App headers
+#include "gameScores.h"
 
 SDL_Window *window;
 SDL_Renderer *renderer;
