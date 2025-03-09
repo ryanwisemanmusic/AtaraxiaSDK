@@ -3,23 +3,44 @@ CXX = clang++
 
 # Compiler flags
 CXXFLAGS = -std=c++17 -Wall -Wextra -O2
-OBJCPPFLAGS = $(CXXFLAGS) -ObjC++
+OBJCPPFLAGS = $(CXXFLAGS)
 
-# SDL3 paths
-SDL3_INCLUDE := /opt/homebrew/Cellar/sdl3/3.2.8/include
-SDL3_LIB := /opt/homebrew/Cellar/sdl3/3.2.8/lib
+# Detect OS
+UNAME_S := $(shell uname -s)
 
-# SDL3_image paths
-SDL3_IMAGE_INCLUDE := /opt/homebrew/Cellar/sdl3_image/3.2.4/include
-SDL3_IMAGE_LIB := /opt/homebrew/Cellar/sdl3_image/3.2.4/lib
+ifeq ($(UNAME_S), Darwin)
+    # macOS paths
+    SDL3_INCLUDE := /opt/homebrew/Cellar/sdl3/3.2.8/include
+    SDL3_LIB := /opt/homebrew/Cellar/sdl3/3.2.8/lib
+    SDL3_IMAGE_INCLUDE := /opt/homebrew/Cellar/sdl3_image/3.2.4/include
+    SDL3_IMAGE_LIB := /opt/homebrew/Cellar/sdl3_image/3.2.4/lib
+    SDL3_TTF_INCLUDE := /usr/local/include/SDL3_ttf
+    SDL3_TTF_LIB := /usr/local/lib
+    SQLITE_INCLUDE := /opt/homebrew/Cellar/sqlite/3.49.1/include
+    SQLITE_LIB := /opt/homebrew/Cellar/sqlite/3.49.1/lib
 
-# SDL3_ttf paths
-SDL3_TTF_INCLUDE := /usr/local/include/SDL3_ttf
-SDL3_TTF_LIB := /usr/local/lib
+    # macOS-specific libraries
+    PLATFORM_LIBS = -framework Cocoa -framework OpenGL -lobjc
 
-# SQLite paths
-SQLITE_INCLUDE := /opt/homebrew/Cellar/sqlite/3.49.1/include
-SQLITE_LIB := /opt/homebrew/Cellar/sqlite/3.49.1/lib
+    # macOS-specific export path
+    EXPORT_LIB_PATH = export DYLD_LIBRARY_PATH="/usr/local/lib:$$DYLD_LIBRARY_PATH"
+else
+    # Linux paths
+    SDL3_INCLUDE := /usr/include/SDL3
+    SDL3_LIB := /usr/lib
+    SDL3_IMAGE_INCLUDE := /usr/include/SDL3_image
+    SDL3_IMAGE_LIB := /usr/lib
+    SDL3_TTF_INCLUDE := /usr/include/SDL3_ttf
+    SDL3_TTF_LIB := /usr/lib
+    SQLITE_INCLUDE := /usr/include
+    SQLITE_LIB := /usr/lib
+
+    # Linux-specific libraries
+    PLATFORM_LIBS = -lGL -ldl -lpthread -lm
+
+    # Linux-specific export path
+    EXPORT_LIB_PATH = export LD_LIBRARY_PATH="/usr/lib:$$LD_LIBRARY_PATH"
+endif
 
 # Header directories
 HEADER = -isystem $(SDL3_INCLUDE) \
@@ -35,12 +56,12 @@ HEADER = -isystem $(SDL3_INCLUDE) \
 LIB_FLAGS = -L$(SDL3_LIB) -L$(SDL3_IMAGE_LIB) -L$(SDL3_TTF_LIB) \
             -L$(SQLITE_LIB) \
             -lSDL3 -lSDL3_image -lSDL3_ttf -lsqlite3 \
-            -framework Cocoa -lobjc -framework OpenGL  \
-            -rpath /usr/local/lib 
+            $(PLATFORM_LIBS) \
+            -rpath /usr/local/lib
 
 # Target and sources
 TARGET = AtaraxiaSDK
-SRC_CPP = src/cpp/main.cpp database/gameScores.cpp
+SRC_CPP = src/cpp/main.cpp database/gameScores.cpp database/SDLColors.cpp
 SRC_OBJC = src/objc/cocoaToolbarUI.mm
 
 # Object files
@@ -65,7 +86,7 @@ src/objc/%.o: src/objc/%.mm
 
 # Utilities
 run: $(TARGET)
-	export DYLD_LIBRARY_PATH="/usr/local/lib:$$DYLD_LIBRARY_PATH" && ./$(TARGET)
+	$(EXPORT_LIB_PATH) && ./$(TARGET)
 
 clean:
 	rm -f $(OBJS) $(TARGET)
