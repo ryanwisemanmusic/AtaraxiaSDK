@@ -24,7 +24,7 @@ ifeq ($(UNAME_S), Darwin)
 
     # macOS-specific export path
     EXPORT_LIB_PATH = export DYLD_LIBRARY_PATH="/usr/local/lib:$$DYLD_LIBRARY_PATH"
-else
+else ifeq ($(UNAME_S), Linux)
     # Linux paths
     SDL3_INCLUDE := /usr/include/SDL3
     SDL3_LIB := /usr/lib
@@ -40,6 +40,24 @@ else
 
     # Linux-specific export path
     EXPORT_LIB_PATH = export LD_LIBRARY_PATH="/usr/lib:$$LD_LIBRARY_PATH"
+else ifeq ($(findstring MINGW,$(UNAME_S)),MINGW)
+    # Windows paths (for MinGW or similar toolchain)
+    SDL3_INCLUDE := C:/SDL3/include
+    SDL3_LIB := C:/SDL3/lib
+    SDL3_IMAGE_INCLUDE := C:/SDL3_image/include
+    SDL3_IMAGE_LIB := C:/SDL3_image/lib
+    SDL3_TTF_INCLUDE := C:/SDL3_ttf/include
+    SDL3_TTF_LIB := C:/SDL3_ttf/lib
+    SQLITE_INCLUDE := C:/sqlite/include
+    SQLITE_LIB := C:/sqlite/lib
+
+    # Windows-specific libraries
+    PLATFORM_LIBS = -lSDL3 -lSDL3_image -lSDL3_ttf -lsqlite3 -lGL -lmingw32 -lSDL3main
+
+    # Windows-specific export path (MinGW uses the same approach)
+    EXPORT_LIB_PATH = set LIBRARY_PATH=%LIBRARY_PATH%;C:/SDL3/lib;C:/SDL3_image/lib;C:/SDL3_ttf/lib;C:/sqlite/lib
+else
+    $(error Unsupported platform)
 endif
 
 # Header directories
@@ -91,4 +109,19 @@ run: $(TARGET)
 clean:
 	rm -f $(OBJS) $(TARGET)
 
-.PHONY: all clean run
+# Autodetect platform and run the corresponding build script
+platform-build:
+ifeq ($(UNAME_S), Darwin)
+	$(info Running macOS build script)
+	$(shell ./build.sh)
+else ifeq ($(UNAME_S), Linux)
+	$(info Running Linux build script)
+	$(shell ./build.sh)
+else ifeq ($(findstring MINGW,$(UNAME_S)),MINGW)
+	$(info Running Windows build script)
+	$(shell build.bat)
+else
+	$(error Unsupported platform)
+endif
+
+.PHONY: all clean run platform-build
