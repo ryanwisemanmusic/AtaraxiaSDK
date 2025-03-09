@@ -20,6 +20,7 @@ databases, this can be deleated.*/
 
 //App headers
 #include "gameScores.h"
+#include "SDLColors.h"
 
 
 //App headers
