@@ -124,4 +124,4 @@ else
 	$(error Unsupported platform)
 endif
 
-.PHONY: all clean run platform-build
+.PHONY: all clean run platform-build post-build
