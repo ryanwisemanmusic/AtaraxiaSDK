@@ -9,7 +9,8 @@
                 "/usr/local/include",
                 "/opt/homebrew/Cellar/sqlite/3.49.1/include",
                 "${workspaceFolder}/src/objc",
-                "${workspaceFolder}/database"
+                "${workspaceFolder}/database",
+                "${workspaceFolder}/assets" 
             ],
             "defines": [],
             "macFrameworkPath": [
