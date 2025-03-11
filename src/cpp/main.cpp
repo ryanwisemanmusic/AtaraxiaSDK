@@ -27,6 +27,7 @@ databases, this can be deleted.*/
 //App headers
 #include "gameScores.h"
 #include "SDLColors.h"
+#include "screenScenes.h"
 
 SDL_Window *window;
 SDL_Renderer *renderer;
