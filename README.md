@@ -1,10 +1,13 @@
 #  AtaraxiaSDK
-This is a build that allows SDL3 to be used on ARM Macs if it was installed via homebrew.
+Welcome to AtaraxiaSDK, an SDK with a lot of essential features that are designed to make implementation much easier.
 
-Due to the change of usr/local on x86 Mac chips to opt/homebrew, header files cannot be natively included 
-into VSCode, they must be located via .json and Makefile. Since you cannot sideload external libraries 
-natively on ARM Macs, this project has the fundamentals for any Mac to run SDL2 in VSCode.
+The goal of a project like this is to have everything very modular, so you can build what you need. This is not perfect
+as a project, mostly because I've set things up in relative to the projects I write with this.
 
-If you wish to fork this project for whatever reason, make sure if you are using SDL3, you update your 
-Makefile to the correct version you need to reference
- 
+This means that there are a lot of approaches that may need additional fixes depending on how you utilize the pre-built
+functions. You must understand that this schema works, meaning that the more you strafe away from it with your code
+logic, the more likely that you've broken something that needs specific code to work.
+
+Basic functionality like text, screens, custom color data, and databases, were all included for the sake of you having a good start.
+This is not meant as a total solution in which you can plug and play, however, I hope that it can serve these interests one of these days.
+Coding is fucking hard, and SDL3 is no joke. 
