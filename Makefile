@@ -18,6 +18,9 @@ ifeq ($(UNAME_S), Darwin)
     SDL3_TTF_LIB := /usr/local/lib
     SQLITE_INCLUDE := /opt/homebrew/Cellar/sqlite/3.49.1/include
     SQLITE_LIB := /opt/homebrew/Cellar/sqlite/3.49.1/lib
+    # FFmpeg Paths
+    FFMPEG_INCLUDE := /opt/homebrew/Cellar/ffmpeg/7.1.1_1/include
+    FFMPEG_LIB := /opt/homebrew/Cellar/ffmpeg/7.1.1_1/lib
 
     # macOS-specific libraries
     PLATFORM_LIBS = -framework Cocoa -framework OpenGL -lobjc
@@ -34,6 +37,8 @@ else ifeq ($(UNAME_S), Linux)
     SDL3_TTF_LIB := /usr/lib
     SQLITE_INCLUDE := /usr/include
     SQLITE_LIB := /usr/lib
+    FFMPEG_INCLUDE := /usr/include/FFmpeg
+    FFMPEG_LIB := /usr/lib
 
     # Linux-specific libraries
     PLATFORM_LIBS = -lGL -ldl -lpthread -lm
@@ -64,22 +69,27 @@ endif
 HEADER = -isystem $(SDL3_INCLUDE) \
          -I$(SDL3_IMAGE_INCLUDE) \
          -I$(SDL3_TTF_INCLUDE) \
+         -I$(SQLITE_INCLUDE) \
+         -I$(FFMPEG_INCLUDE) \
          -Iinclude/cpp_headers \
          -Iinclude/objc_headers \
          -Isrc/objc \
-         -Idatabase \
-         -I$(SQLITE_INCLUDE)
+         -Idatabase
 
 # Library flags
 LIB_FLAGS = -L$(SDL3_LIB) -L$(SDL3_IMAGE_LIB) -L$(SDL3_TTF_LIB) \
-            -L$(SQLITE_LIB) \
+            -L$(SQLITE_LIB) -L$(FFMPEG_LIB) \
             -lSDL3 -lSDL3_image -lSDL3_ttf -lsqlite3 \
+            -lavcodec -lavformat -lavutil -lswscale -lswresample \
             $(PLATFORM_LIBS) \
             -rpath /usr/local/lib
 
 # Target and sources
 TARGET = AtaraxiaSDK
-SRC_CPP = src/cpp/main.cpp database/gameScores.cpp database/SDLColors.cpp
+SRC_CPP = src/cpp/main.cpp \
+          database/gameScores.cpp \
+          database/SDLColors.cpp \
+          src/cpp/videoRendering.cpp
 SRC_OBJC = src/objc/cocoaToolbarUI.mm
 
 # Object files
