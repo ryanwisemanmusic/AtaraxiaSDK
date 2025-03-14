@@ -12,6 +12,11 @@ extern "C"
     #include <libavutil/imgutils.h>
 }
 
+extern SDL_AudioDeviceID audioDevice;
+extern SDL_AudioStream* audioStream;
+extern Uint8* audioBuffer;
+extern Uint32 audioLength;
+
 struct VideoState
 {
     //Video Component
@@ -21,13 +26,18 @@ struct VideoState
     AVFrame *pFrame = nullptr;
     AVFrame *pFrameRGB = nullptr;
     SwsContext *swsCtx = nullptr;
-    uint8_t *buffer = nullptr;  // Store RGB buffer
+    uint8_t *buffer = nullptr;
     int videoStream = -1;
+    
     //Audio Component
-    int audioStream = -1;
+    int audioStreamIndex = -1;
+    SDL_AudioStream* audioStream = nullptr;
     AVCodecContext *pAudioCodecCtx = nullptr;
-    AVCodec *pAudioCodec = nullptr;
+    const AVCodec *pAudioCodec = nullptr;
     SDL_AudioDeviceID audioDevice = 0;
+    Uint8* audioBuffer = nullptr;
+    Uint32 audioLength = 0;
+    SDL_AudioSpec audioSpec;
 
     VideoState() : pFormatCtx(nullptr), pCodecCtx(nullptr), pCodec(nullptr),
                    pFrame(nullptr), pFrameRGB(nullptr), swsCtx(nullptr),
@@ -41,11 +51,15 @@ struct VideoState
         if (pCodecCtx) avcodec_free_context(&pCodecCtx);
         if (pFormatCtx) avformat_close_input(&pFormatCtx);
         if (swsCtx) sws_freeContext(swsCtx);
+        if (audioStream) SDL_DestroyAudioStream(audioStream);
+        if (pAudioCodecCtx) avcodec_free_context(&pAudioCodecCtx);
     }
 };
 
 
 bool loadMP4(const std::string &filename, VideoState &video);
-bool loadAudio(const std::string &filename, VideoState &video);
+bool loadAudioFile(const std::string &filename);
+void playAudio();
+void cleanupAudio();
 
 #endif

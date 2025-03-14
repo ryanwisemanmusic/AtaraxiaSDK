@@ -8,6 +8,7 @@ intenseive windowing required will require some major refactoring
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 #include <SDL3/SDL_render.h>
+
 /*Third party image library for SDL3*/
 #include <SDL3_ttf/SDL_ttf.h>
 #include <SDL3_image/SDL_image.h>
@@ -48,6 +49,13 @@ void renderText(const char* message, int x, int y, SDL_Color color);
 SDL_Texture* getNextFrame(VideoState &video, SDL_Renderer* renderer);
 void handleEvents(bool& done);
 void close();
+
+//External Calls
+bool loadMP4(const std::string &filename, VideoState &video);
+bool loadAudioFile(const std::string &filename);
+void playAudio();
+bool testAudioPlayback();
+
 
 
 int main(int argc, char* argv[]) {
