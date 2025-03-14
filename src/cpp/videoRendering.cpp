@@ -103,16 +103,13 @@ bool loadMP4(const std::string &filename, VideoState &video)
     return true;
 }
 
-// Update your loadAudioFile function to ensure format compatibility
 bool loadAudioFile(const std::string &filename) {
     SDL_AudioSpec wavSpec;
 
-    // Clean up existing resources
     cleanupAudio();
     
     SDL_Log("Attempting to load: %s", filename.c_str());
 
-    // Load the WAV file
     if (!SDL_LoadWAV(filename.c_str(), &wavSpec, &audioBuffer, &audioLength)) {
         SDL_Log("Failed to load WAV file: %s", SDL_GetError());
         return false;
@@ -121,14 +118,12 @@ bool loadAudioFile(const std::string &filename) {
     SDL_Log("WAV loaded - Format: %u, Channels: %u, Freq: %d, Size: %u bytes", 
            wavSpec.format, wavSpec.channels, wavSpec.freq, audioLength);
     
-    // Get the device spec before opening
     SDL_AudioSpec deviceSpec;
     SDL_zero(deviceSpec);
     deviceSpec.freq = wavSpec.freq;
     deviceSpec.format = wavSpec.format;
     deviceSpec.channels = wavSpec.channels;
     
-    // Open the audio device
     audioDevice = SDL_OpenAudioDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &deviceSpec);
     if (!audioDevice) {
         SDL_Log("Failed to open audio device: %s", SDL_GetError());
@@ -137,7 +132,6 @@ bool loadAudioFile(const std::string &filename) {
         return false;
     }
     
-    // Create audio stream with matching input/output specs
     audioStream = SDL_CreateAudioStream(&wavSpec, &deviceSpec);
     if (!audioStream) {
         SDL_Log("Failed to create audio stream: %s", SDL_GetError());
@@ -147,7 +141,6 @@ bool loadAudioFile(const std::string &filename) {
         return false;
     }
     
-    // Process audio in smaller chunks
     Uint32 MAX_CHUNK_SIZE = 4096;
     Uint32 processedBytes = 0;
     
@@ -200,11 +193,50 @@ void playAudio() {
         SDL_Log("ERROR: Failed to bind audio stream: %s (Error code: %d)", SDL_GetError(), result);
         return;
     }
-
-    SDL_Log("Audio stream bound successfully, resuming playback.");
-    SDL_ResumeAudioDevice(audioDevice);
-    SDL_Log("Audio playback started.");
+    
 }
+
+//This can be used to explicitly call each SFX. Less modular than what I want
+//But it works
+void playSFX()
+{
+    SDL_Log("Inside playAudio() function");
+
+    std::string audioPath = "assets/audio/blip.wav";
+    SDL_Log("Reloading audio file: %s", audioPath.c_str());
+
+    if (!loadAudioFile(audioPath)) {
+        SDL_Log("ERROR: Failed to reload audio file.");
+        return;
+    }
+
+    SDL_Log("Audio file reloaded successfully, playing now...");
+
+    if (!audioDevice) {
+        SDL_Log("ERROR: No audio device available");
+        return;
+    }
+    
+    if (!audioStream) {
+        SDL_Log("ERROR: No audio stream available");
+        return;
+    }
+
+    SDL_Log("Flushing audio stream before binding...");
+    SDL_FlushAudioStream(audioStream);
+
+    SDL_Log("Binding audio stream to device %u", audioDevice);
+    
+    int result = SDL_BindAudioStream(audioDevice, audioStream);
+    if (result != 0) {
+        SDL_Log("ERROR: Failed to bind audio stream: %s (Error code: %d)", SDL_GetError(), result);
+        return;
+    }
+
+    SDL_Log("Audio should now be playing.");
+    cleanupAudio();
+}
+
 void cleanupAudio() {
     SDL_Log("Cleaning up audio resources");
     
@@ -252,7 +284,6 @@ bool testAudioPlayback() {
     playAudio();
     SDL_Log("TEST: Audio playback initiated");
     
-    // Keep the audio playing for a few seconds
     SDL_Log("TEST: Waiting for 5 seconds to let audio play...");
     SDL_Delay(5000);
     
