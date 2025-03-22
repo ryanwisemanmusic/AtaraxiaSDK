@@ -42,7 +42,7 @@ extern "C" void cocoaBaseMenuBar();
 extern "C" void openSDLWindowAboutMenu();
 
 bool init();
-bool initSDL_ttf();
+bool initAudio(VideoState &video);
 void initMP4(const std::string &filename);
 void render();
 void renderText(const char* message, int x, int y, SDL_Color color);
@@ -78,7 +78,6 @@ int main(int argc, char* argv[]) {
     {
         handleEvents(done);
         render();
-        initSDL_ttf();
     }
 
     close();
@@ -86,50 +85,50 @@ int main(int argc, char* argv[]) {
     return 0;
 }
 
-bool init()
+bool init() 
 {
-    SDL_Init(SDL_INIT_VIDEO);
-    
-    window = SDL_CreateWindow(
-        "AtaraxiaSDK", ScreenWidth,
-        ScreenHeight, SDL_WINDOW_OPENGL);
-    
-    if (window == NULL)
-    {
-        SDL_Log("Window can't be created! SDL error: %s\n",
-        SDL_GetError());
+    TTF_Init();
+    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
+
+    window = SDL_CreateWindow("SDL3 Cat-Tac-Toe", ScreenWidth, ScreenHeight, SDL_WINDOW_OPENGL);
+    if (!window) {
+        SDL_Log("Window can't be created! SDL error: %s\n", SDL_GetError());
         SDL_Quit();
         return false;
     }
 
     renderer = SDL_CreateRenderer(window, 0);
-    if (!renderer)
-    {
-        SDL_Log("Renderer could not be created! SDL error: %s\n",
-        SDL_GetError());
+    if (!renderer) {
+        SDL_Log("Renderer could not be created! SDL error: %s\n", SDL_GetError());
         SDL_Quit();
-        return false;
-    }
-    
-    return true;
-}
-
-bool initSDL_ttf()
-{
-    if (!TTF_Init()) {
-        SDL_Log("TTF_Init failed");
         return false;
     }
 
     std::string fontPath = "assets/fonts/ArianaVioleta.ttf";
-
-    font = TTF_OpenFont(fontPath.c_str(), 20);
-    if (!font) 
-    {
-        SDL_Log("Cannot load font");
-        return false;
+    font = TTF_OpenFont(fontPath.c_str(), 50);
+    if (!font) {
+        SDL_Log("Cannot load font!");
     }
 
+    return true;
+}
+
+bool initAudio(VideoState &video) 
+{
+    SDL_AudioSpec wantedSpec, obtainedSpec;
+    SDL_zero(wantedSpec); 
+    wantedSpec.freq = 44100;
+    wantedSpec.format = SDL_AUDIO_S16;
+    wantedSpec.channels = 2;
+    
+    video.audioDevice = SDL_OpenAudioDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &wantedSpec);
+    if (video.audioDevice == 0) {
+        SDL_Log("Error: Could not open audio device: %s", SDL_GetError());
+        return false;
+    }
+    
+    video.audioSpec = obtainedSpec;
+    SDL_ResumeAudioDevice(video.audioDevice);
     return true;
 }
 
@@ -167,14 +166,9 @@ void render()
 
 void renderText(const char* message, int x, int y, SDL_Color color)
 {
-    
-    TTF_Init();
-    std::string fontPath = "assets/fonts/ArianaVioleta.ttf";
-
-    font = TTF_OpenFont(fontPath.c_str(), 50);
-    if (!font) 
-    {
+    if (!font) {
         SDL_Log("Cannot load font!");
+        return;
     }
     size_t messageLength = strlen(message);
 
@@ -329,15 +323,13 @@ void handleEvents(bool& done)
     }
 }
 
-
-void close()
-{
-    if (font)
+void close() {
+    cleanupAudio();
+    if (font) 
     {
         TTF_CloseFont(font);
         font = nullptr;
     }
-    
     TTF_Quit();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
