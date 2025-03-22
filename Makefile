@@ -5,91 +5,44 @@ CXX = clang++
 CXXFLAGS = -std=c++17 -Wall -Wextra -O2
 OBJCPPFLAGS = $(CXXFLAGS)
 
-# Detect OS
-UNAME_S := $(shell uname -s)
+# Include Paths and Library Paths
+SDL3_INCLUDE := /opt/homebrew/Cellar/sdl3/3.2.8/include
+SDL3_LIB := /opt/homebrew/Cellar/sdl3/3.2.8/lib
+SDL3_IMAGE_INCLUDE := /opt/homebrew/Cellar/sdl3_image/3.2.4/include
+SDL3_IMAGE_LIB := /opt/homebrew/Cellar/sdl3_image/3.2.4/lib
+SDL3_TTF_INCLUDE := /opt/homebrew/Cellar/sdl3_ttf/3.2.0/include
+SDL3_TTF_LIB := /opt/homebrew/Cellar/sdl3_ttf/3.2.0/lib
+SDL3_MIXER_INCLUDE := /usr/local/include/SDL3_mixer
+SDL3_MIXER_LIB := /usr/local/lib
+FFMPEG_INCLUDE := /opt/homebrew/Cellar/ffmpeg/7.1.1_1/include
+FFMPEG_LIB := /opt/homebrew/Cellar/ffmpeg/7.1.1_1/lib
+SQLITE_INCLUDE := /opt/homebrew/Cellar/sqlite/3.49.1/include
+SQLITE_LIB := /opt/homebrew/Cellar/sqlite/3.49.1/lib
 
-ifeq ($(UNAME_S), Darwin)
-    # macOS paths
-    SDL3_INCLUDE := /opt/homebrew/Cellar/sdl3/3.2.8/include
-    SDL3_LIB := /opt/homebrew/Cellar/sdl3/3.2.8/lib
-    SDL3_IMAGE_INCLUDE := /opt/homebrew/Cellar/sdl3_image/3.2.4/include
-    SDL3_IMAGE_LIB := /opt/homebrew/Cellar/sdl3_image/3.2.4/lib
-    SDL3_TTF_INCLUDE := /usr/local/include/SDL3_ttf
-    SDL3_TTF_LIB := /usr/local/lib
-    SQLITE_INCLUDE := /opt/homebrew/Cellar/sqlite/3.49.1/include
-    SQLITE_LIB := /opt/homebrew/Cellar/sqlite/3.49.1/lib
-    # FFmpeg Paths
-    FFMPEG_INCLUDE := /opt/homebrew/Cellar/ffmpeg/7.1.1_1/include
-    FFMPEG_LIB := /opt/homebrew/Cellar/ffmpeg/7.1.1_1/lib
-
-    # macOS-specific libraries
-    PLATFORM_LIBS = -framework Cocoa -framework OpenGL -lobjc
-
-    # macOS-specific export path
-    EXPORT_LIB_PATH = export DYLD_LIBRARY_PATH="/usr/local/lib:$$DYLD_LIBRARY_PATH"
-else ifeq ($(UNAME_S), Linux)
-    # Linux paths
-    SDL3_INCLUDE := /usr/include/SDL3
-    SDL3_LIB := /usr/lib
-    SDL3_IMAGE_INCLUDE := /usr/include/SDL3_image
-    SDL3_IMAGE_LIB := /usr/lib
-    SDL3_TTF_INCLUDE := /usr/include/SDL3_ttf
-    SDL3_TTF_LIB := /usr/lib
-    SQLITE_INCLUDE := /usr/include
-    SQLITE_LIB := /usr/lib
-    FFMPEG_INCLUDE := /usr/include/FFmpeg
-    FFMPEG_LIB := /usr/lib
-
-    # Linux-specific libraries
-    PLATFORM_LIBS = -lGL -ldl -lpthread -lm
-
-    # Linux-specific export path
-    EXPORT_LIB_PATH = export LD_LIBRARY_PATH="/usr/lib:$$LD_LIBRARY_PATH"
-else ifeq ($(findstring MINGW,$(UNAME_S)),MINGW)
-    # Windows paths (for MinGW or similar toolchain)
-    SDL3_INCLUDE := C:/SDL3/include
-    SDL3_LIB := C:/SDL3/lib
-    SDL3_IMAGE_INCLUDE := C:/SDL3_image/include
-    SDL3_IMAGE_LIB := C:/SDL3_image/lib
-    SDL3_TTF_INCLUDE := C:/SDL3_ttf/include
-    SDL3_TTF_LIB := C:/SDL3_ttf/lib
-    SQLITE_INCLUDE := C:/sqlite/include
-    SQLITE_LIB := C:/sqlite/lib
-
-    # Windows-specific libraries
-    PLATFORM_LIBS = -lSDL3 -lSDL3_image -lSDL3_ttf -lsqlite3 -lGL -lmingw32 -lSDL3main
-
-    # Windows-specific export path (MinGW uses the same approach)
-    EXPORT_LIB_PATH = set LIBRARY_PATH=%LIBRARY_PATH%;C:/SDL3/lib;C:/SDL3_image/lib;C:/SDL3_ttf/lib;C:/sqlite/lib
-else
-    $(error Unsupported platform)
-endif
+# Platform libraries
+PLATFORM_LIBS = -framework Cocoa -framework OpenGL -lobjc
 
 # Header directories
 HEADER = -isystem $(SDL3_INCLUDE) \
          -I$(SDL3_IMAGE_INCLUDE) \
          -I$(SDL3_TTF_INCLUDE) \
-         -I$(SQLITE_INCLUDE) \
          -I$(FFMPEG_INCLUDE) \
+         -I$(SQLITE_INCLUDE) \
          -Iinclude/cpp_headers \
          -Iinclude/objc_headers \
          -Isrc/objc \
          -Idatabase
 
 # Library flags
-LIB_FLAGS = -L$(SDL3_LIB) -L$(SDL3_IMAGE_LIB) -L$(SDL3_TTF_LIB) \
-            -L$(SQLITE_LIB) -L$(FFMPEG_LIB) \
-            -lSDL3 -lSDL3_image -lSDL3_ttf -lsqlite3 \
+LIB_FLAGS = -L$(SDL3_LIB) -L$(SDL3_IMAGE_LIB) -L$(SDL3_TTF_LIB) -L$(SDL3_MIXER_LIB) -L$(FFMPEG_LIB) -L$(SQLITE_LIB) \
+            -lSDL3 -lSDL3_image -lSDL3_ttf -lSDL3_mixer \
             -lavcodec -lavformat -lavutil -lswscale -lswresample \
-            $(PLATFORM_LIBS) \
-            -rpath /usr/local/lib
+            -lsqlite3 \
+            $(PLATFORM_LIBS)
 
 # Target and sources
 TARGET = AtaraxiaSDK
-SRC_CPP = src/cpp/main.cpp \
-          database/gameScores.cpp \
-          database/SDLColors.cpp \
-          src/cpp/videoRendering.cpp
+SRC_CPP = src/cpp/main.cpp src/cpp/videoRendering.cpp src/cpp/screenScenes.cpp database/SDLColors.cpp database/gameScores.cpp
 SRC_OBJC = src/objc/cocoaToolbarUI.mm
 
 # Object files
@@ -97,41 +50,144 @@ OBJ_CPP = $(SRC_CPP:.cpp=.o)
 OBJ_OBJC = $(SRC_OBJC:.mm=.o)
 OBJS = $(OBJ_CPP) $(OBJ_OBJC)
 
-# Build rules
+# Entitlements file
+ENTITLEMENTS = entitlements.plist
+
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
-	$(CXX) $(CXXFLAGS) $^ $(LIB_FLAGS) -o $@
+	@echo "DEBUG: Building executable $(TARGET) with objects:" $(OBJS)
+	$(CXX) $(CXXFLAGS) $(OBJS) $(LIB_FLAGS) -o $(TARGET)
+	@echo "DEBUG: Executable $(TARGET) built successfully."
 
-src/cpp/%.o: src/cpp/%.cpp
+$(ENTITLEMENTS):
+	@echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" > $(ENTITLEMENTS)
+	@echo "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">" >> $(ENTITLEMENTS)
+	@echo "<plist version=\"1.0\">" >> $(ENTITLEMENTS)
+	@echo "<dict>" >> $(ENTITLEMENTS)
+	@echo "    <key>com.apple.security.cs.allow-unsigned-executable-memory</key>" >> $(ENTITLEMENTS)
+	@echo "    <true/>" >> $(ENTITLEMENTS)
+	@echo "    <key>com.apple.security.cs.disable-library-validation</key>" >> $(ENTITLEMENTS)
+	@echo "    <true/>" >> $(ENTITLEMENTS)
+	@echo "</dict>" >> $(ENTITLEMENTS)
+	@echo "</plist>" >> $(ENTITLEMENTS)
+
+bundle: $(TARGET) $(ENTITLEMENTS)
+	@echo "DEBUG: Creating app bundle..."
+	@rm -rf $(TARGET).app
+	@mkdir -p $(TARGET).app/Contents/{MacOS,Resources,Frameworks}
+	
+	@echo "DEBUG: Copying executable..."
+	@install -m 0755 $(TARGET) $(TARGET).app/Contents/MacOS/
+	
+	@echo "DEBUG: Creating launcher script..."
+	@echo "#!/bin/bash" > $(TARGET).app/Contents/MacOS/$(TARGET)_launcher
+	@echo "# Get the directory where this script is located" >> $(TARGET).app/Contents/MacOS/$(TARGET)_launcher
+	@echo "SCRIPT_DIR=\"\$$(cd \"\$$(dirname \"\$$0\")\" && pwd)\"" >> $(TARGET).app/Contents/MacOS/$(TARGET)_launcher
+	@echo "RESOURCES_DIR=\"\$${SCRIPT_DIR}/../Resources\"" >> $(TARGET).app/Contents/MacOS/$(TARGET)_launcher
+	@echo "cd \"\$$RESOURCES_DIR\"" >> $(TARGET).app/Contents/MacOS/$(TARGET)_launcher
+	@echo "# Set environment variables to help find libraries" >> $(TARGET).app/Contents/MacOS/$(TARGET)_launcher
+	@echo "export DYLD_LIBRARY_PATH=\"\$${SCRIPT_DIR}/../Frameworks:\$$DYLD_LIBRARY_PATH\"" >> $(TARGET).app/Contents/MacOS/$(TARGET)_launcher
+	@echo "export SDL_AUDIODRIVER=coreaudio" >> $(TARGET).app/Contents/MacOS/$(TARGET)_launcher
+	@echo "# Run the app with error logging" >> $(TARGET).app/Contents/MacOS/$(TARGET)_launcher
+	@echo "\"\$$SCRIPT_DIR/$(TARGET)\" 2>&1 | tee -a \"\$$HOME/Desktop/$(TARGET)_error.log\"" >> $(TARGET).app/Contents/MacOS/$(TARGET)_launcher
+	@chmod +x $(TARGET).app/Contents/MacOS/$(TARGET)_launcher
+	
+	@echo "DEBUG: Copying assets..."
+	@if [ -d "assets" ]; then \
+		echo "DEBUG: Assets directory found, copying..."; \
+		mkdir -p $(TARGET).app/Contents/Resources/assets/fonts; \
+		mkdir -p $(TARGET).app/Contents/Resources/assets/video; \
+		mkdir -p $(TARGET).app/Contents/Resources/assets/audio; \
+		cp -Rv assets/* $(TARGET).app/Contents/Resources/assets/; \
+		ls -la $(TARGET).app/Contents/Resources/assets/fonts/; \
+		ls -la $(TARGET).app/Contents/Resources/assets/video/ || echo "WARNING: Video directory may be empty"; \
+		ls -la $(TARGET).app/Contents/Resources/assets/audio/ || echo "WARNING: Audio directory may be empty"; \
+	else \
+		echo "WARNING: Assets directory not found!"; \
+	fi
+	
+	@if [ -d "assets" ]; then \
+		echo "DEBUG: Also copying assets to MacOS directory..."; \
+		mkdir -p $(TARGET).app/Contents/MacOS/assets/fonts; \
+		mkdir -p $(TARGET).app/Contents/MacOS/assets/video; \
+		mkdir -p $(TARGET).app/Contents/MacOS/assets/audio; \
+		cp -Rv assets/* $(TARGET).app/Contents/MacOS/assets/; \
+	fi
+	
+	@echo "DEBUG: Creating Info.plist..."
+	@echo '<?xml version="1.0" encoding="UTF-8"?>' > $(TARGET).app/Contents/Info.plist
+	@echo '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' >> $(TARGET).app/Contents/Info.plist
+	@echo '<plist version="1.0">' >> $(TARGET).app/Contents/Info.plist
+	@echo '<dict>' >> $(TARGET).app/Contents/Info.plist
+	@echo '    <key>CFBundleExecutable</key>' >> $(TARGET).app/Contents/Info.plist
+	@echo '    <string>$(TARGET)_launcher</string>' >> $(TARGET).app/Contents/Info.plist
+	@echo '    <key>CFBundleIdentifier</key>' >> $(TARGET).app/Contents/Info.plist
+	@echo '    <string>com.example.$(TARGET)</string>' >> $(TARGET).app/Contents/Info.plist
+	@echo '    <key>CFBundleName</key>' >> $(TARGET).app/Contents/Info.plist
+	@echo '    <string>$(TARGET)</string>' >> $(TARGET).app/Contents/Info.plist
+	@echo '    <key>CFBundlePackageType</key>' >> $(TARGET).app/Contents/Info.plist
+	@echo '    <string>APPL</string>' >> $(TARGET).app/Contents/Info.plist
+	@echo '    <key>CFBundleVersion</key>' >> $(TARGET).app/Contents/Info.plist
+	@echo '    <string>1.0</string>' >> $(TARGET).app/Contents/Info.plist
+	@echo '    <key>NSHighResolutionCapable</key>' >> $(TARGET).app/Contents/Info.plist
+	@echo '    <true/>' >> $(TARGET).app/Contents/Info.plist
+	@echo '</dict>' >> $(TARGET).app/Contents/Info.plist
+	@echo '</plist>' >> $(TARGET).app/Contents/Info.plist
+	
+	@echo "DEBUG: Copying libraries..."
+	@cp -f $(SDL3_LIB)/libSDL3.0.dylib $(TARGET).app/Contents/Frameworks/ || echo "WARNING: Could not copy libSDL3.0.dylib"
+	@cp -f $(SDL3_IMAGE_LIB)/libSDL3_image.0.dylib $(TARGET).app/Contents/Frameworks/ || echo "WARNING: Could not copy libSDL3_image.0.dylib"
+	@cp -f $(SDL3_TTF_LIB)/libSDL3_ttf.0.dylib $(TARGET).app/Contents/Frameworks/ || echo "WARNING: Could not copy libSDL3_ttf.0.dylib"
+	@chmod 755 $(TARGET).app/Contents/Frameworks/*.dylib
+	
+	@echo "DEBUG: Updating library references..."
+	@install_name_tool -id @executable_path/../Frameworks/libSDL3.0.dylib $(TARGET).app/Contents/Frameworks/libSDL3.0.dylib
+	@install_name_tool -id @executable_path/../Frameworks/libSDL3_image.0.dylib $(TARGET).app/Contents/Frameworks/libSDL3_image.0.dylib
+	@install_name_tool -id @executable_path/../Frameworks/libSDL3_ttf.0.dylib $(TARGET).app/Contents/Frameworks/libSDL3_ttf.0.dylib
+	
+	@install_name_tool -change /opt/homebrew/opt/sdl3/lib/libSDL3.0.dylib @executable_path/../Frameworks/libSDL3.0.dylib $(TARGET).app/Contents/MacOS/$(TARGET)
+	@install_name_tool -change /opt/homebrew/opt/sdl3_image/lib/libSDL3_image.0.dylib @executable_path/../Frameworks/libSDL3_image.0.dylib $(TARGET).app/Contents/MacOS/$(TARGET)
+	@install_name_tool -change /opt/homebrew/opt/sdl3_ttf/lib/libSDL3_ttf.0.dylib @executable_path/../Frameworks/libSDL3_ttf.0.dylib $(TARGET).app/Contents/MacOS/$(TARGET)
+	
+	@install_name_tool -change /opt/homebrew/opt/sdl3/lib/libSDL3.0.dylib @executable_path/../Frameworks/libSDL3.0.dylib $(TARGET).app/Contents/Frameworks/libSDL3_image.0.dylib
+	@install_name_tool -change /opt/homebrew/opt/sdl3/lib/libSDL3.0.dylib @executable_path/../Frameworks/libSDL3.0.dylib $(TARGET).app/Contents/Frameworks/libSDL3_ttf.0.dylib
+	
+	@echo "DEBUG: Library dependencies for executable:"
+	@otool -L $(TARGET).app/Contents/MacOS/$(TARGET)
+	@echo "DEBUG: Library dependencies for SDL3_image:"
+	@otool -L $(TARGET).app/Contents/Frameworks/libSDL3_image.0.dylib
+	@echo "DEBUG: Library dependencies for SDL3_ttf:"
+	@otool -L $(TARGET).app/Contents/Frameworks/libSDL3_ttf.0.dylib
+	
+	@echo "DEBUG: Signing with entitlements..."
+	@codesign --force --options runtime --entitlements $(ENTITLEMENTS) --sign - $(TARGET).app/Contents/Frameworks/*.dylib || echo "WARNING: Failed to sign frameworks"
+	@codesign --force --options runtime --entitlements $(ENTITLEMENTS) --sign - $(TARGET).app/Contents/MacOS/$(TARGET) || echo "WARNING: Failed to sign executable"
+	@codesign --force --options runtime --entitlements $(ENTITLEMENTS) --sign - $(TARGET).app/Contents/MacOS/$(TARGET)_launcher || echo "WARNING: Failed to sign launcher"
+	@echo "DEBUG: Signing complete app bundle (deep)..."
+	@codesign --force --options runtime --entitlements $(ENTITLEMENTS) --deep --sign - $(TARGET).app || echo "WARNING: Failed to sign app bundle, but continuing anyway"
+	@echo "DEBUG: Bundle created at $(TARGET).app"
+	@echo "DEBUG: Error logs will be written to ~/Desktop/$(TARGET)_error.log"
+
+%.o: %.cpp
+	@echo "DEBUG: Compiling $< ..."
 	$(CXX) $(CXXFLAGS) $(HEADER) -c $< -o $@
 
 database/%.o: database/%.cpp
+	@echo "DEBUG: Compiling $< ..."
 	$(CXX) $(CXXFLAGS) $(HEADER) -c $< -o $@
 
 src/objc/%.o: src/objc/%.mm
+	@echo "DEBUG: Compiling $< ..."
 	$(CXX) $(OBJCPPFLAGS) $(HEADER) -c $< -o $@
 
-# Utilities
 run: $(TARGET)
-	$(EXPORT_LIB_PATH) && ./$(TARGET)
+	@echo "DEBUG: Running executable..."
+	./$(TARGET)
 
 clean:
-	rm -f $(OBJS) $(TARGET)
+	@echo "DEBUG: Cleaning..."
+	rm -f $(OBJS) $(TARGET) $(ENTITLEMENTS)
+	rm -rf $(TARGET).app
 
-# Autodetect platform and run the corresponding build script
-platform-build:
-ifeq ($(UNAME_S), Darwin)
-	$(info Running macOS build script)
-	$(shell ./build.sh)
-else ifeq ($(UNAME_S), Linux)
-	$(info Running Linux build script)
-	$(shell ./build.sh)
-else ifeq ($(findstring MINGW,$(UNAME_S)),MINGW)
-	$(info Running Windows build script)
-	$(shell build.bat)
-else
-	$(error Unsupported platform)
-endif
-
-.PHONY: all clean run platform-build post-build
+.PHONY: all clean run bundle
