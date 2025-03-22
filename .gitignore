@@ -33,3 +33,5 @@
 sdl_window
 AtaraxiaSDK
 Ataraxia_SDK
+.DS_Store
+build
