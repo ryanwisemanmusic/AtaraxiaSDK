@@ -10,7 +10,6 @@
 #include "globalVariables.hpp"
 #include "entity.hpp"
 
-
 static void quit()
 {
 
@@ -23,13 +22,35 @@ static void handle_events(SDL_Event* event)
 
 static void update()
 {
+    const bool *keyboard_state = SDL_GetKeyboardState(NULL);
+    if (keyboard_state[SDL_SCANCODE_W])
+    {
+        position.y -= 1;
+    }
 
+    if (keyboard_state[SDL_SCANCODE_S])
+    {
+        position.y += 1;
+    }
+
+    if (keyboard_state[SDL_SCANCODE_A])
+    {
+        position.x -= 1;
+    }
+
+    if (keyboard_state[SDL_SCANCODE_D])
+    {
+        position.x += 1;
+    }
+    
 }
 
 static void render(SDL_Renderer* renderer)
 {
+    SDL_FRect player_position = {position.x, position.y, 15, 18};
     SDL_SetTextureScaleMode(spright_texture, SDL_SCALEMODE_NEAREST);
-    SDL_RenderTexture(renderer, spright_texture, &spright_portion, &player_position);
+    SDL_RenderTexture(
+        renderer, spright_texture, &spright_portion, &player_position);
 }
 
 Entity init_player(SDL_Renderer* renderer)
@@ -37,10 +58,12 @@ Entity init_player(SDL_Renderer* renderer)
     const char* path = "assets/images/char_spritesheet.png";
     spright_texture = IMG_LoadTexture(renderer, path);
 
-    Entity player = {
+    Entity player = 
+    {
         .quit = quit, 
         .handle_events = handle_events, 
         .update = update, 
-        .render = render};
+        .render = render
+    };
     return player;
 }

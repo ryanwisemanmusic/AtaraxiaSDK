@@ -58,11 +58,18 @@ inline Uint32 audioLength = 0;
 //Sprite globals
 inline static SDL_Texture* spright_texture = nullptr;
 inline static SDL_FRect spright_portion = {17, 14, 15, 18};
-inline static SDL_FRect player_position = {250, 250, 15, 18};
+
+//Spright position globals
+typedef struct 
+{
+    float x, y;
+} Position;
+
+inline Position position = {0, 0};
+inline SDL_FRect player_position = {position.x, position.y, 15, 18};
 
 //Entity globals
 inline Entity entities[MAX_ENTITIES];
 inline int entities_count = 0;
 
 #endif // GLOBALVARIABLES
-
