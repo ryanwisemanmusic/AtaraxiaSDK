@@ -6,6 +6,7 @@
 #include <SDL3_image/SDL_image.h>
 #include "AtaraxiaMain.hpp"
 
+
 inline SDL_FRect create_sprite_portion(float x, float y, float w, float h)
 {
     SDL_FRect portion = {

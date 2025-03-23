@@ -1,8 +1,7 @@
 /*
 Author: Ryan Wiseman
 
-This is a barebones approach to windowing via SDL3. Any
-intenseive windowing required will require some major refactoring
+This is where we render everything in the main screen.
 */
 
 #define SDL_MAIN_USE_CALLBACKS
@@ -14,6 +13,7 @@ intenseive windowing required will require some major refactoring
 #include "AtaraxiaVideo.hpp"
 #include "AtaraxiaDatabase.hpp"
 #include "AtaraxiaGame.hpp"
+
 
 #include "quit.hpp"
 #include "appevent.hpp"
@@ -27,7 +27,6 @@ void render()
     SDL_RenderTexture(
         renderer, player_texture, 
         &player_sprite_portion, &player_sprite_position);
-    
     renderText("AtaraxiaSDK", 180, 250, cMagenta);
     SDL_RenderPresent(renderer);
 }

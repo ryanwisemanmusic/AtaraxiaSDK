@@ -45,7 +45,12 @@ LIB_FLAGS = -L$(SDL3_LIB) -L$(SDL3_IMAGE_LIB) -L$(SDL3_TTF_LIB) -L$(SDL3_MIXER_L
 
 # Target and sources
 TARGET = AtaraxiaSDK
-SRC_CPP = src/cpp/main.cpp src/cpp/videoRendering.cpp src/cpp/screenScenes.cpp database/SDLColors.cpp database/gameScores.cpp
+SRC_CPP = src/cpp/main.cpp \
+          src/cpp/player.cpp \
+          src/cpp/videoRendering.cpp \
+          src/cpp/screenScenes.cpp \
+          database/SDLColors.cpp \
+          database/gameScores.cpp
 SRC_OBJC = src/objc/cocoaToolbarUI.mm
 
 # Object files

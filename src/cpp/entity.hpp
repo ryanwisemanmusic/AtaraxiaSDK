@@ -3,12 +3,13 @@
 
 #include <SDL3/SDL.h>
 
-typedef struct Entity
+typedef struct
 {
-    void (*quit)(void);
-    void (*handle_events)(SDL_Event*);
-    void (*update)(float delta_time);
-    void (*render)(SDL_Renderer*);
+    void(*quit)(void);
+    void(*handle_events)(SDL_Event*);
+    void(*update)(void);
+    void(*render)(SDL_Renderer*);
 } Entity;
 
-Entity init_player(SDL_Renderer* renderer);
+inline int entities_count = 0;
+Entity entities[MAX_ENTITIES];
