@@ -13,6 +13,7 @@ intenseive windowing required will require some major refactoring
 #include "AtaraxiaAudio.hpp"
 #include "AtaraxiaVideo.hpp"
 #include "AtaraxiaDatabase.hpp"
+#include "AtaraxiaGame.hpp"
 
 #include "quit.hpp"
 #include "appevent.hpp"
@@ -21,8 +22,9 @@ intenseive windowing required will require some major refactoring
 
 void render()
 {
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderClear(renderer); 
+    SDL_SetRenderDrawColor(renderer, 155, 255, 255, 255);
+    SDL_RenderTexture(renderer, player_texture, NULL, NULL);
     renderText("AtaraxiaSDK", 180, 250, cMagenta);
     SDL_RenderPresent(renderer);
 }

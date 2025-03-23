@@ -1,6 +1,8 @@
 #ifndef QUIT
 #define QUIT
 
+#define SDL_MAIN_USE_CALLBACKS
+
 #include "AtaraxiaMain.hpp"
 
 void SDL_AppQuit(void *appstate, SDL_AppResult result)

@@ -1,6 +1,8 @@
 #ifndef APPEVENT
 #define APPEVENT
 
+#define SDL_MAIN_USE_CALLBACKS
+
 #include "AtaraxiaMain.hpp"
 #include "AtaraxiaText.hpp"
 #include "AtaraxiaGraphics.hpp"

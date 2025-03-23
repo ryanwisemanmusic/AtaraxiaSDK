@@ -1,12 +1,14 @@
 #ifndef INIT
 #define INIT
 
+
 #include "AtaraxiaMain.hpp"
 #include "AtaraxiaText.hpp"
 #include "AtaraxiaGraphics.hpp"
 #include "AtaraxiaAudio.hpp"
 #include "AtaraxiaVideo.hpp"
 #include "AtaraxiaDatabase.hpp"
+#include "AtaraxiaGame.hpp"
 
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv)
 {
@@ -61,6 +63,8 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv)
         SDL_Log("Cannot load font!");
     }
     
+    loadPlayerTexture();
+
     return SDL_APP_CONTINUE;
 }
 

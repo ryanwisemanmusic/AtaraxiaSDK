@@ -13,7 +13,10 @@
 //Global variables
 inline SDL_Window* window = nullptr;
 inline SDL_Renderer* renderer = nullptr;
+inline SDL_Texture* player_texture;
 constexpr int ScreenWidth = 600;
 constexpr int ScreenHeight = 600;
+
+
 
 #endif
