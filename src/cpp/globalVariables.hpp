@@ -1,5 +1,28 @@
 #ifndef GLOBALVARIABLES
 #define GLOBALVARIABLES
+/*Macro definitions*/
+#define MAX_ENTITIES 100
+#define RENDER_ENTITIES(entities, entities_count, renderer) \
+for (int i = 0; i < entities_count; i++) \
+{ \
+    entities[i].render(renderer); \
+}
+#define UPDATE_ENTITIES(entities, entities_count) \
+for (int i = 0; i < entities_count; i++) \
+{ \
+    entities[i].update(); \
+}
+#define QUIT_ENTITIES(entities, entities_count) \
+for (int i = 0; i < entities_count; i++) \
+{ \
+    entities[i].quit(); \
+}
+#define HANDLE_EVENTS_ENTITIES(entities, entities_count) \
+for (int i = 0; i < entities_count; i++) \
+{ \
+    entities[i].handle_events(event); \
+}
+
 
 #include <SDL3/SDL_main.h>
 #include <SDL3/SDL.h>
@@ -14,6 +37,7 @@
 #include <array>
 
 #include "SDLColors.h"
+#include "entity.hpp"
 
 // Window Globals
 inline SDL_Window* window = nullptr;
@@ -32,6 +56,13 @@ inline Uint8* audioBuffer = nullptr;
 inline Uint32 audioLength = 0;
 
 //Sprite globals
-inline SDL_Texture* player_texture;
+inline static SDL_Texture* spright_texture = nullptr;
+inline static SDL_FRect spright_portion = {17, 14, 15, 18};
+inline static SDL_FRect player_position = {250, 250, 15, 18};
+
+//Entity globals
+inline Entity entities[MAX_ENTITIES];
+inline int entities_count = 0;
 
 #endif // GLOBALVARIABLES
+
