@@ -2,7 +2,6 @@
 #define MAX_ENTITIES 100
 
 #include <SDL3/SDL.h>
-#include "globalVariables.hpp"
 
 typedef struct Entity
 {
