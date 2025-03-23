@@ -5,7 +5,8 @@
         "*.sqlbook": "sql",
         "*.ndjson": "jsonl",
         "*.dbclient-js": "javascript",
-        "stdexcept": "cpp"
+        "stdexcept": "cpp",
+        "array": "cpp"
     },
     // other settings
 }
