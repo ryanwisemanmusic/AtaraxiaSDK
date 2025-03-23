@@ -163,6 +163,10 @@ void render()
     renderText("AtaraxiaSDK", 180, 250, cMagenta);
     SDL_RenderPresent(renderer);
 }
+void update()
+{
+    
+}
 
 void renderText(const char* message, int x, int y, SDL_Color color)
 {
