@@ -24,7 +24,10 @@ void render()
 {
     SDL_RenderClear(renderer); 
     SDL_SetRenderDrawColor(renderer, 155, 255, 255, 255);
-    SDL_RenderTexture(renderer, player_texture, NULL, NULL);
+    SDL_RenderTexture(
+        renderer, player_texture, 
+        &player_sprite_portion, &player_sprite_position);
+    
     renderText("AtaraxiaSDK", 180, 250, cMagenta);
     SDL_RenderPresent(renderer);
 }
