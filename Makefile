@@ -31,7 +31,10 @@ HEADER = -isystem $(SDL3_INCLUDE) \
          -Iinclude/cpp_headers \
          -Iinclude/objc_headers \
          -Isrc/objc \
-         -Idatabase
+         -Idatabase \
+         -Isrc/cpp/AtaraxiaHeaders \
+         -Isrc/cpp \
+         -Isrc/cpp/GUI_Init
 
 # Library flags
 LIB_FLAGS = -L$(SDL3_LIB) -L$(SDL3_IMAGE_LIB) -L$(SDL3_TTF_LIB) -L$(SDL3_MIXER_LIB) -L$(FFMPEG_LIB) -L$(SQLITE_LIB) \
