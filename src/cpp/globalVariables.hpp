@@ -7,10 +7,10 @@ for (int i = 0; i < entities_count; i++) \
 { \
     entities[i].render(renderer); \
 }
-#define UPDATE_ENTITIES(entities, entities_count) \
+#define UPDATE_ENTITIES(entities, entities_count, delta_time) \
 for (int i = 0; i < entities_count; i++) \
 { \
-    entities[i].update(); \
+    entities[i].update(delta_time); \
 }
 #define QUIT_ENTITIES(entities, entities_count) \
 for (int i = 0; i < entities_count; i++) \
@@ -71,5 +71,10 @@ inline SDL_FRect player_position = {position.x, position.y, 15, 18};
 //Entity globals
 inline Entity entities[MAX_ENTITIES];
 inline int entities_count = 0;
+
+//Delta time globals
+inline Uint64 last_tick = 0;
+inline Uint64 current_ticks = 0;
+inline float delta_time;
 
 #endif // GLOBALVARIABLES

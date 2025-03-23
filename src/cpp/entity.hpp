@@ -8,7 +8,7 @@ typedef struct Entity
 {
     void (*quit)(void);
     void (*handle_events)(SDL_Event*);
-    void (*update)(void);
+    void (*update)(float delta_time);
     void (*render)(SDL_Renderer*);
 } Entity;
 
