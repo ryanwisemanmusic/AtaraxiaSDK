@@ -20,13 +20,18 @@ This is where we render everything in the main screen.
 #include "iterate.hpp"
 #include "init.hpp"
 
+#include "player.hpp"
+#include "AtaraxiaMacros.hpp"
+#include "entity.hpp"
+
+
 void render()
 {
     SDL_RenderClear(renderer); 
     SDL_SetRenderDrawColor(renderer, 155, 255, 255, 255);
-    SDL_RenderTexture(
-        renderer, player_texture, 
-        &player_sprite_portion, &player_sprite_position);
     renderText("AtaraxiaSDK", 180, 250, cMagenta);
+    RENDER_ENTITIES(entities, entities_count, renderer);
+    player_render();
+    player_update();
     SDL_RenderPresent(renderer);
 }

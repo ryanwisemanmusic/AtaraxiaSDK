@@ -1,61 +1,41 @@
-#include "entity.hpp"
-#include "AtaraxiaMain.hpp"
-#include "AtaraxiaMacros.hpp"
 #include "player.hpp"
 
-inline SDL_FRect create_sprite_portion(float x, float y, float w, float h)
+void player_quit()
 {
-    SDL_FRect portion = {
-        x, y, w, h
-    };
-    return portion;
+
 }
-
-inline SDL_FRect create_sprite_position(float x, float y, float w, float h)
+void player_handle_events()
 {
-    SDL_FRect position = {
-        x, y, w, h
-    };
-    return position;
+
 }
-
-inline SDL_FRect player_sprite_portion = create_sprite_portion(17, 14, 15, 18);
-inline SDL_FRect player_sprite_position = create_sprite_position(250, 250, 15, 18);
-
-namespace Player
+void player_update()
 {
-    void quit();
-    void handle_events();
-    void update();
-    void render();
-    void init_player();
+    const bool *keyboard_state = SDL_GetKeyboardState(NULL);
+
+    if (keyboard_state[SDL_SCANCODE_W])
+    {
+        player_sprite_position.y -= 0.1;
+    }
+    if (keyboard_state[SDL_SCANCODE_S])
+    {
+        player_sprite_position.y += 0.1;
+    }
+    if (keyboard_state[SDL_SCANCODE_A])
+    {
+        player_sprite_position.x -= 0.1;
+    }
+    if (keyboard_state[SDL_SCANCODE_D])
+    {
+        player_sprite_position.x += 0.1;
+    }
 }
-
-void Player::quit()
+void player_render()
 {
-    QUIT_ENTITIES(entities, entities_count);
-}
-
-
-void Player::handle_events()
-{
-    HANDLE_EVENTS_ENTITIES(entities, entities_count);
-}
-
-void Player::update()
-{
-    UPDATE_ENTITIES(entities, entities_count);
-}
-
-void Player::render()
-{
-    RENDER_ENTITIES(entities, entities_count, renderer);
     SDL_RenderTexture(
         renderer, player_texture, 
         &player_sprite_portion, &player_sprite_position);
 }
-
-void Player::init_player()
+void init_player()
 {
 
 }
