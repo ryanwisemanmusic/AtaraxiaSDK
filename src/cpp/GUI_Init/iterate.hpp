@@ -9,12 +9,16 @@
 #include "AtaraxiaAudio.hpp"
 #include "AtaraxiaVideo.hpp"
 #include "AtaraxiaDatabase.hpp"
+#include "entity.hpp"
+#include "AtaraxiaMacros.hpp"
+#include "player_entity.hpp"
 
 void render();
 
 SDL_AppResult SDL_AppIterate(void *appstate)
 {
     (void)appstate; 
+    UPDATE_ENTITIES(entities, entities_count);
     render();
     return SDL_APP_CONTINUE; 
 }

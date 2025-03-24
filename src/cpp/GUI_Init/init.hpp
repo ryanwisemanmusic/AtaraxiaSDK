@@ -9,6 +9,7 @@
 #include "AtaraxiaVideo.hpp"
 #include "AtaraxiaDatabase.hpp"
 #include "AtaraxiaGame.hpp"
+#include "player_entity.hpp"
 
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv)
 {
@@ -63,7 +64,8 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv)
         SDL_Log("Cannot load font!");
     }
     
-    loadPlayerTexture();
+    // Initialize player entity
+    init_player_entity();
 
     return SDL_APP_CONTINUE;
 }

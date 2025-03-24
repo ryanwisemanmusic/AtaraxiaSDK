@@ -6,7 +6,8 @@
         "*.ndjson": "jsonl",
         "*.dbclient-js": "javascript",
         "stdexcept": "cpp",
-        "array": "cpp"
+        "array": "cpp",
+        "iostream": "cpp"
     },
     // other settings
 }
