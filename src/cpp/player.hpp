@@ -1,9 +1,7 @@
 #ifndef PLAYER
 #define PLAYER
 
-#include <SDL3/SDL.h>
 #include "AtaraxiaMain.hpp"
-
 
 inline SDL_FRect create_sprite_portion(float x, float y, float w, float h)
 {
