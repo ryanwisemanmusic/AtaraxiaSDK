@@ -1,5 +1,7 @@
 #include "entity.hpp"
 #include "AtaraxiaMain.hpp"
+#include "AtaraxiaMacros.hpp"
+#include "player.hpp"
 
 inline SDL_FRect create_sprite_portion(float x, float y, float w, float h)
 {
@@ -31,22 +33,23 @@ namespace Player
 
 void Player::quit()
 {
-
+    QUIT_ENTITIES(entities, entities_count);
 }
 
 
 void Player::handle_events()
 {
-
+    HANDLE_EVENTS_ENTITIES(entities, entities_count);
 }
 
 void Player::update()
 {
-
+    UPDATE_ENTITIES(entities, entities_count);
 }
 
 void Player::render()
 {
+    RENDER_ENTITIES(entities, entities_count, renderer);
     SDL_RenderTexture(
         renderer, player_texture, 
         &player_sprite_portion, &player_sprite_position);

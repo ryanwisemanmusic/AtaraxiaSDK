@@ -1,4 +1,5 @@
 #pragma once
+
 #define MAX_ENTITIES 100
 
 #include <SDL3/SDL.h>
