@@ -41,6 +41,7 @@ namespace two_d_tiles {
     {
         SDL_SetTextureScaleMode(tile_texture, SDL_SCALEMODE_NEAREST);
         
+        //Grassy plane render
         if (SDL_FRect* sprite = tile_map.getTileSprite(7, 3)) 
         {
             //Row 1
@@ -795,6 +796,41 @@ namespace two_d_tiles {
                 SDL_RenderTexture(renderer, tile_texture, sprite, pos);
             }
             if (SDL_FRect* pos = tile_map.getTilePosition(12, 13)) 
+            {
+                SDL_RenderTexture(renderer, tile_texture, sprite, pos);
+            }
+        }
+
+        //Pond render
+        //Top left
+        if (SDL_FRect* sprite = tile_map.getTileSprite(4, 1))
+        {
+            if (SDL_FRect* pos = tile_map.getTilePosition(4, 2)) 
+            {
+                SDL_RenderTexture(renderer, tile_texture, sprite, pos);
+            }
+        }
+        //Top right
+        if (SDL_FRect* sprite = tile_map.getTileSprite(5, 1))
+        {
+            if (SDL_FRect* pos = tile_map.getTilePosition(5, 2)) 
+            {
+                SDL_RenderTexture(renderer, tile_texture, sprite, pos);
+            }
+        }
+        //Bottom left
+        if (SDL_FRect* sprite = tile_map.getTileSprite(4, 2))
+        {
+            if (SDL_FRect* pos = tile_map.getTilePosition(4, 3)) 
+            {
+                SDL_RenderTexture(renderer, tile_texture, sprite, pos);
+            }
+        }
+
+        //Bottom right
+        if (SDL_FRect* sprite = tile_map.getTileSprite(5, 2))
+        {
+            if (SDL_FRect* pos = tile_map.getTilePosition(5, 3)) 
             {
                 SDL_RenderTexture(renderer, tile_texture, sprite, pos);
             }
