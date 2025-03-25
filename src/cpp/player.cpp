@@ -23,14 +23,17 @@ namespace player {
         }
     }
 
-    void player_quit()
+    void quit()
     {
-
+        if (player_texture) {
+            SDL_DestroyTexture(player_texture);
+            player_texture = nullptr;
+        }
     }
 
-    void player_handle_events(SDL_Event* event)
+    void handle_events(SDL_Event* event)
     {
-
+        // Handle any player-specific events here
     }
 
     void update()
@@ -65,6 +68,17 @@ namespace player {
 
     void init_player()
     {
-
+        loadPlayerTexture();
+        
+        // Create player entity
+        Entity player_entity = {
+            .quit = quit,
+            .handle_events = handle_events,
+            .update = update,
+            .render = render
+        };
+        
+        // Add to entities array
+        entities[entities_count++] = player_entity;
     }
 }

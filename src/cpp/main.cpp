@@ -12,19 +12,23 @@ This is where we render everything in the main screen.
 #include "AtaraxiaAudio.hpp"
 #include "AtaraxiaVideo.hpp"
 #include "AtaraxiaDatabase.hpp"
-#include "entity.hpp"
 #include "AtaraxiaMacros.hpp"
-#include "player_entity.hpp"
-//#include "AtaraxiaGame.hpp"
 
+//Related Windowing actions
 #include "quit.hpp"
 #include "appevent.hpp"
 #include "iterate.hpp"
 #include "init.hpp"
 
-// Remove these lines as they're already defined in entity.hpp
-// Entity entities[MAX_ENTITIES];
-// int entities_count = 0;
+//Entity Headers
+#include "entity.hpp"
+#include "player.hpp"
+
+/*
+This is where the main logic resides for all visible elements
+This is your main rendering window, where you'll put all elements related
+to what you want to see on screen.
+*/
 
 void render()
 {

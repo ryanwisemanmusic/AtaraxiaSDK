@@ -2,6 +2,7 @@
 #define PLAYER
 
 #include "AtaraxiaMain.hpp"
+#include "entity.hpp"
 
 namespace player {
     inline SDL_Texture* player_texture;
@@ -26,9 +27,9 @@ namespace player {
     inline SDL_FRect player_sprite_position = create_sprite_position(250, 250, 15, 18);
 
     void loadPlayerTexture();
-    void render(SDL_Renderer* renderer);
-    void update();
+    void player_render(SDL_Renderer* renderer);
+    void player_update();
+    void init_player();
 }
 
 #endif
-
