@@ -35,6 +35,10 @@ void render()
     SDL_RenderClear(renderer); 
     SDL_SetRenderDrawColor(renderer, 155, 255, 255, 255);
     
+    /*When you render your entities accordingly, it needs to be
+    in order of last layer to first. Whatever rendering of entities gets
+    called first will be the most underlying layer, aka, the bottom layer*/
+    RENDER_ENTITIES(entities_tile, entities_count_tile, renderer);
     RENDER_ENTITIES(entities, entities_count, renderer);
     
     renderText("AtaraxiaSDK", 180, 250, cMagenta);

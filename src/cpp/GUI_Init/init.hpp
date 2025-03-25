@@ -1,3 +1,12 @@
+/*
+Author: Ryan Wiseman
+
+This is where we initialize all and everything our project means. If you
+need to work with a new library, you either add it to my custom headers
+or you incorporate it here. The reason why you need all headers so that 
+even if you externally reference something, it needs a surrounding header.
+*/
+
 #ifndef INIT
 #define INIT
 
@@ -9,6 +18,7 @@
 #include "AtaraxiaDatabase.hpp"
 #include "AtaraxiaGame.hpp"
 #include "player.hpp"
+#include "mapTile.hpp"
 
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv)
 {
@@ -63,8 +73,14 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv)
         SDL_Log("Cannot load font!");
     }
     
-    // Initialize player
+    /*This is where you initilaize the existence of players, tiles,
+    anything graphical. YOU MUST DO THIS OR YOU WILL NOT RENDER
+    ANYTHING.
+    
+    It is easiest if you stick to my schema on how I call to this, mainly
+    since it works well.*/
     player::init_player();
+    two_d_tiles::init_tile();
 
     return SDL_APP_CONTINUE;
 }
