@@ -42,19 +42,19 @@ namespace player {
 
         if (keyboard_state[SDL_SCANCODE_W])
         {
-            player_sprite_position.y -= 0.1;
+            player_sprite_position.y -= 1;
         }
         if (keyboard_state[SDL_SCANCODE_S])
         {
-            player_sprite_position.y += 0.1;
+            player_sprite_position.y += 1;
         }
         if (keyboard_state[SDL_SCANCODE_A])
         {
-            player_sprite_position.x -= 0.1;
+            player_sprite_position.x -= 1;
         }
         if (keyboard_state[SDL_SCANCODE_D])
         {
-            player_sprite_position.x += 0.1;
+            player_sprite_position.x += 1;
         }
     }
 
