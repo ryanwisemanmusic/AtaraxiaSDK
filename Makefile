@@ -23,7 +23,7 @@ SQLITE_LIB := /opt/homebrew/Cellar/sqlite/3.49.1/lib
 PLATFORM_LIBS = -framework Cocoa -framework OpenGL -lobjc
 
 # Header directories
-HEADER = -isystem $(SDL3_INCLUDE) \
+HEADER = -isystem$(SDL3_INCLUDE) \
          -I$(SDL3_IMAGE_INCLUDE) \
          -I$(SDL3_TTF_INCLUDE) \
          -I$(FFMPEG_INCLUDE) \
@@ -46,7 +46,7 @@ LIB_FLAGS = -L$(SDL3_LIB) -L$(SDL3_IMAGE_LIB) -L$(SDL3_TTF_LIB) -L$(SDL3_MIXER_L
 # Target and sources
 TARGET = AtaraxiaSDK
 SRC_CPP = src/cpp/main.cpp \
-          src/cpp/player_entity.cpp \
+          src/cpp/player.cpp \
           src/cpp/AtaraxiaHeaders/entity.cpp \
           src/cpp/videoRendering.cpp \
           src/cpp/screenScenes.cpp \
