@@ -35,20 +35,30 @@ namespace two_d_tiles {
 
     void update()
     {
-
     }
 
     void render(SDL_Renderer* renderer)
     {
         SDL_SetTextureScaleMode(tile_texture, SDL_SCALEMODE_NEAREST);
-        SDL_RenderTexture(
-            renderer, tile_texture, 
-            &tile_sprite_portion, &tile_sprite_position);
+        
+        if (SDL_FRect* sprite = tile_map.getTileSprite(1, 5)) 
+        {
+            if (SDL_FRect* pos = tile_map.getTilePosition(3, 4)) 
+            {
+                SDL_RenderTexture(renderer, tile_texture, sprite, pos);
+            }
+        }
     }
 
     void init_tile()
     {
-        loadTileTexture(); 
+        loadTileTexture();
+        
+        for (int col = 0; col < 16; col++) { 
+            for (int row = 0; row < 12; row++) {
+                tile_map.setTilePosition(col, row, col * 48, row * 48);
+            }
+        }
         
         Entity tile_entity = {
             .quit = quit,
