@@ -9,6 +9,9 @@
 #include "AtaraxiaAudio.hpp"
 #include "AtaraxiaVideo.hpp"
 #include "AtaraxiaDatabase.hpp"
+#include "AtaraxiaGame.hpp"
+
+inline SceneState currentScene = SceneState::MAIN_MENU;
 
 SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event)
 {
