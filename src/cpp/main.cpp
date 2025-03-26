@@ -32,23 +32,22 @@ to what you want to see on screen.
 
 void render()
 {
+
     if (currentScene == SceneState::MAIN_MENU)  
     {
         SDL_SetRenderDrawColor(renderer, 155, 255, 255, 255);
         SDL_RenderClear(renderer); 
         renderText("AtaraxiaSDK", 180, 250, cMagenta);
-        SDL_RenderPresent(renderer);
+        
     }
-    else
+    else if (currentScene == SceneState::GAME)
     {
-        SDL_SetRenderDrawColor(renderer, 155, 255, 255, 255);
-        SDL_RenderClear(renderer); 
+        SDL_RenderClear(renderer);
         RENDER_ENTITIES(entities_tile, entities_count_tile, renderer);
         RENDER_ENTITIES(entities, entities_count, renderer);
-    
-        renderText("AtaraxiaSDK", 180, 250, cMagenta);
-        SDL_RenderPresent(renderer);
     }
+
+    SDL_RenderPresent(renderer);
     /*When you render your entities accordingly, it needs to be
     in order of last layer to first. Whatever rendering of entities gets
     called first will be the most underlying layer, aka, the bottom layer*/
