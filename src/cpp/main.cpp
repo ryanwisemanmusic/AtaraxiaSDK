@@ -32,8 +32,8 @@ to what you want to see on screen.
 
 void render()
 {
-    SDL_RenderClear(renderer); 
     SDL_SetRenderDrawColor(renderer, 155, 255, 255, 255);
+    SDL_RenderClear(renderer); 
     
     /*When you render your entities accordingly, it needs to be
     in order of last layer to first. Whatever rendering of entities gets
