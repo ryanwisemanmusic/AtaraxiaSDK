@@ -3,8 +3,15 @@
 
 #include "AtaraxiaMain.hpp"
 #include "entity.hpp"
+#include <unordered_map>
+#include <string>
 
 namespace player {
+    const std::unordered_map<std::string, std::string> PLAYER_TEXTURES = 
+    {
+        {"player", "assets/images/elaine_walking.png"}
+    };
+
     inline SDL_Texture* player_texture;
 
     inline SDL_FRect create_sprite_portion(float x, float y, float w, float h)
@@ -23,12 +30,25 @@ namespace player {
         return position;
     }
 
-    inline SDL_FRect player_sprite_portion = create_sprite_portion(17, 14, 15, 18);
-    inline SDL_FRect player_sprite_position = create_sprite_position(250, 250, 15, 18);
+    inline SDL_FRect player_sprite_position = create_sprite_position(250, 250, 48, 48);
+
+    inline SDL_FRect* getPlayerSprite(int col, int row) 
+    {
+        static SDL_FRect sprite;
+        sprite.x = col * 48.0f;
+        sprite.y = row * 48.0f;
+        sprite.w = 48.0f;
+        sprite.h = 48.0f;
+        SDL_Log("Created sprite rect: x=%f, y=%f, w=%f, h=%f", sprite.x, sprite.y, sprite.w, sprite.h);
+        return &sprite;
+    }
+
+    inline int current_sprite_col = 0;
+    inline int current_sprite_row = 0;
 
     void loadPlayerTexture();
-    void player_render(SDL_Renderer* renderer);
-    void player_update();
+    void render(SDL_Renderer* renderer);
+    void update();
     void init_player();
 }
 
