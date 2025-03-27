@@ -13,6 +13,7 @@ This is where we render everything in the main screen.
 #include "AtaraxiaVideo.hpp"
 #include "AtaraxiaDatabase.hpp"
 #include "AtaraxiaMacros.hpp"
+#include "AtaraxiaTime.hpp"
 
 //Related Windowing actions
 #include "quit.hpp"
@@ -23,6 +24,7 @@ This is where we render everything in the main screen.
 //Entity Headers
 #include "entity.hpp"
 #include "player.hpp"
+#include "mapTile.hpp"
 
 /*
 This is where the main logic resides for all visible elements
@@ -43,8 +45,11 @@ void render()
     else if (currentScene == SceneState::GAME)
     {
         SDL_RenderClear(renderer);
+        UPDATE_ENTITIES(entities_tile, entities_count_tile, game_time::delta_time);
+        UPDATE_ENTITIES(entities, entities_count, game_time::delta_time);
         RENDER_ENTITIES(entities_tile, entities_count_tile, renderer);
         RENDER_ENTITIES(entities, entities_count, renderer);
+        two_d_tiles::init_tile();
     }
 
     SDL_RenderPresent(renderer);
