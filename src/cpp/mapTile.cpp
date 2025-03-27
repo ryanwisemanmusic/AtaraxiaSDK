@@ -1,6 +1,9 @@
 #include "AtaraxiaMain.hpp"
 #define SDL_MAIN_USE_CALLBACKS
 #include "mapTile.hpp"
+#include "player.hpp"
+#include "AtaraxiaTime.hpp"
+#include "AtaraxiaInput.hpp"
 
 namespace two_d_tiles {
     void loadTileTexture()
@@ -25,8 +28,35 @@ namespace two_d_tiles {
     {
     }
 
+    /*
+    This is where we'll store player interactions with the tile, given
+    that we now are getting the coordinates of the tile. We need cross
+    talk between the player and the tile, but luckily, it shouldn't be
+    hard to pull the co-ordinates.
+    
+    If you check how the terminal logs what you do, you'll see how
+    there is cross talk exactly with everything as it should. This means
+    that soon, our collision system will be setup to handle how we process
+    sprites with player, a better colission system
+    */
     void update(float delta_time)
     {
+        player::player_tracker();
+    
+        if (player::player_current_grid_x == 5 && player::player_current_grid_y == 5) {
+            SDL_Log("Player is at the special tile (5,5)!");
+        }
+        
+        if (player::player_is_moving) {
+        }
+        
+        if (player::is_position_blocked(player::player_target_grid_x, player::player_target_grid_y)) {
+            SDL_Log("Player trying to move to a blocked position!");
+        }
+        
+        if (input::is_key_pressed(SDL_SCANCODE_SPACE)) {
+            SDL_Log("Spacebar pressed! Cross talk enabled");
+        }
     }
 
     void render(SDL_Renderer* renderer)
@@ -892,7 +922,7 @@ namespace two_d_tiles {
         {
             .quit = quit,
             .handle_events = handle_events,
-            .update = update,
+            .update = update, 
             .render = render
         };
         

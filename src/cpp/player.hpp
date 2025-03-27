@@ -2,9 +2,12 @@
 #define PLAYER
 
 #include "AtaraxiaMain.hpp"
+#include "AtaraxiaGame.hpp"
 #include "entity.hpp"
 #include <unordered_map>
 #include <string>
+
+
 
 namespace player {
     const std::unordered_map<std::string, std::string> PLAYER_TEXTURES = 
@@ -45,10 +48,34 @@ namespace player {
     inline int current_sprite_col = 0;
     inline int current_sprite_row = 0;
 
-    void loadPlayerTexture();
-    void render(SDL_Renderer* renderer);
-    void update(float delta_time);
+    // Player position variables
+    inline float player_x;
+    inline float player_y;
+    inline int player_grid_x;
+    inline int player_grid_y;
+    extern bool player_is_moving;
+    inline int player_direction;
+
+    inline int player_prev_grid_x = 0;
+    inline int player_prev_grid_y = 0;
+    inline bool player_grid_changed = false;
+
+    extern float player_adjusted_x;
+    extern float player_adjusted_y;
+    extern int player_current_grid_x;
+    extern int player_current_grid_y;
+    extern int player_target_grid_x;
+    extern int player_target_grid_y;
+    
+    // Movement and collision functions that can be called from mapTile
+    bool is_position_blocked(int grid_x, int grid_y);
+    void move_player(float delta_time);
+    
+    // Initialize player
     void init_player();
+    
+    // Player tracking function
+    void player_tracker();
 
 }
 

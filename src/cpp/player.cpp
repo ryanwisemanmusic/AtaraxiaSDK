@@ -1,10 +1,21 @@
 #include "AtaraxiaMain.hpp"
 #define SDL_MAIN_USE_CALLBACKS
 #include "player.hpp"
+#include "AtaraxiaInput.hpp"
 
 namespace player {
+    // Define the variables declared in the header
+    float player_adjusted_x = 0.0f;
+    float player_adjusted_y = 0.0f;
+    int player_current_grid_x = 0;
+    int player_current_grid_y = 0;
+    int player_target_grid_x = 0;
+    int player_target_grid_y = 0;
+    bool player_is_moving = false;
+    
+    // Your existing variables
     inline int last_direction = 0;
-
+    
     void loadPlayerTexture()
     {
         const char* path = PLAYER_TEXTURES.at("player").c_str();
@@ -39,85 +50,52 @@ namespace player {
 
     void update(float delta_time)
     {
-        last_tick = current_tick;
-        current_tick = SDL_GetTicks();
-        delta_time = (current_tick - last_tick) / 1000.0f;
-        const bool *keyboard_state = (const bool*)SDL_GetKeyboardState(NULL);
-        bool is_moving = false;
+        // Update input state
+        input::update();
+        
+        player_is_moving = false;
 
         float prev_x = player_sprite_position.x;
         float prev_y = player_sprite_position.y;
 
         //Map offset
-        float adjusted_x = player_sprite_position.x - 20.0f; 
-        float adjusted_y = player_sprite_position.y - 10.0f;
-        int current_grid_x = static_cast<int>(adjusted_x / 48.0f);
-        int current_grid_y = static_cast<int>(adjusted_y / 48.0f);
+        player_adjusted_x = player_sprite_position.x - 20.0f; 
+        player_adjusted_y = player_sprite_position.y - 10.0f;
+        player_current_grid_x = static_cast<int>(player_adjusted_x / 48.0f);
+        player_current_grid_y = static_cast<int>(player_adjusted_y / 48.0f);
 
         // Calculate target grid position based on movement
-        int target_grid_x = current_grid_x;
-        int target_grid_y = current_grid_y;
+        player_target_grid_x = player_current_grid_x;
+        player_target_grid_y = player_current_grid_y;
 
-        if (keyboard_state[SDL_SCANCODE_W]) 
+        if (input::up()) 
         {
-            target_grid_y = static_cast<int>(
-                (adjusted_y - 50 * delta_time) / 48.0f);
+            player_target_grid_y = static_cast<int>(
+                (player_adjusted_y - 50 * delta_time) / 48.0f);
             last_direction = 3;
-            is_moving = true;
+            player_is_moving = true;
         }
-        if (keyboard_state[SDL_SCANCODE_S]) {
-            target_grid_y = static_cast<int>(
-                (adjusted_y + 100 * delta_time) / 48.0f);
+        if (input::down()) {
+            player_target_grid_y = static_cast<int>(
+                (player_adjusted_y + 100 * delta_time) / 48.0f);
             last_direction = 0;
-            is_moving = true;
+            player_is_moving = true;
         }
-        if (keyboard_state[SDL_SCANCODE_A]) {
-            target_grid_x = static_cast<int>(
-                (adjusted_x - 100 * delta_time) / 48.0f);
+        if (input::left()) {
+            player_target_grid_x = static_cast<int>(
+                (player_adjusted_x - 100 * delta_time) / 48.0f);
             last_direction = 1;
-            is_moving = true;
+            player_is_moving = true;
         }
-        if (keyboard_state[SDL_SCANCODE_D]) {
-            target_grid_x = static_cast<int>(
-                (adjusted_x + 100 * delta_time) / 48.0f);
+        if (input::right()) {
+            player_target_grid_x = static_cast<int>(
+                (player_adjusted_x + 100 * delta_time) / 48.0f);
             last_direction = 2;
-            is_moving = true;
+            player_is_moving = true;
         }
 
-        // Check if target position is blocked with adjusted boundaries
-        bool is_blocked = false;
-        
-        // Pond collision check
-        if ((target_grid_x == 3 || target_grid_x == 4) && 
-            (target_grid_y == 1 || target_grid_y == 2)) 
-            {
-            is_blocked = true;
-        }
-        
-        if ((target_grid_x == 5|| 
-             target_grid_x == 6) && 
-            (target_grid_y == 5 || target_grid_y == 6)) 
-            {
-            is_blocked = true;
-        }
-
-        // Only update position if not blocked
-        if (!is_blocked) {
-            if (keyboard_state[SDL_SCANCODE_W]) {
-                player_sprite_position.y -= 50 * delta_time;
-            }
-            if (keyboard_state[SDL_SCANCODE_S]) {
-                player_sprite_position.y += 100 * delta_time;
-            }
-            if (keyboard_state[SDL_SCANCODE_A]) {
-                player_sprite_position.x -= 100 * delta_time;
-            }
-            if (keyboard_state[SDL_SCANCODE_D]) {
-                player_sprite_position.x += 100 * delta_time;
-            }
-        } else {
-            is_moving = false;
-        }
+        // Use the new move_player function
+        move_player(delta_time);
 
         int grid_x = static_cast<int>(player_sprite_position.x / 48.0f);
         int grid_y = static_cast<int>(player_sprite_position.y / 48.0f);
@@ -130,7 +108,7 @@ namespace player {
                 grid_x, grid_y, player_sprite_position.x, player_sprite_position.y);
         }
 
-        if (is_moving) 
+        if (player_is_moving) 
         {
             current_sprite_col = 1; 
         } else {
@@ -138,6 +116,13 @@ namespace player {
         }
         
         current_sprite_row = last_direction;
+
+        // Update the exposed variables
+        player_x = player_sprite_position.x;
+        player_y = player_sprite_position.y;
+        player_grid_x = static_cast<int>(player_sprite_position.x / 48.0f);
+        player_grid_y = static_cast<int>(player_sprite_position.y / 48.0f);
+        player_direction = last_direction;
     }
 
     void render(SDL_Renderer* renderer)
@@ -169,5 +154,67 @@ namespace player {
         
         // Add to entities array
         entities[entities_count++] = player_entity;
+    }
+
+    // Our calling for this function in other code files will be:
+    // player::player_tracker()
+    void player_tracker()
+    {
+        // Check if grid position has changed
+        if (player_grid_x != player_prev_grid_x || player_grid_y != player_prev_grid_y) {
+            player_grid_changed = true;
+            SDL_Log("Player tracker: Grid position changed to (%d, %d) - World position: (%.2f, %.2f)", 
+                    player_grid_x, player_grid_y, player_x, player_y);
+            
+            // Update previous grid position
+            player_prev_grid_x = player_grid_x;
+            player_prev_grid_y = player_grid_y;
+        } else {
+            player_grid_changed = false;
+        }
+        
+        // You can still log general tracking info if needed
+        // SDL_Log("Player tracker: Position (%.2f, %.2f), Moving: %s, Direction: %d", 
+        //        player_x, player_y, player_is_moving ? "true" : "false", player_direction);
+    }
+
+    bool is_position_blocked(int grid_x, int grid_y)
+    {
+        // Pond collision check
+        if ((grid_x == 3 || grid_x == 4) && 
+            (grid_y == 1 || grid_y == 2)) 
+        {
+            return true;
+        }
+        
+        if ((grid_x == 5 || grid_x == 6) && 
+            (grid_y == 5 || grid_y == 6)) 
+        {
+            return true;
+        }
+        
+        return false;
+    }
+
+    void move_player(float delta_time)
+    {
+        bool is_blocked = is_position_blocked(player_target_grid_x, player_target_grid_y);
+        
+        if (!is_blocked) {
+            if (input::up()) {
+                player_sprite_position.y -= 50 * delta_time;
+            }
+            if (input::down()) {
+                player_sprite_position.y += 100 * delta_time;
+            }
+            if (input::left()) {
+                player_sprite_position.x -= 100 * delta_time;
+            }
+            if (input::right()) {
+                player_sprite_position.x += 100 * delta_time;
+            }
+        } else {
+            player_is_moving = false;
+        }
     }
 }

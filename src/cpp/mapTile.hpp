@@ -3,6 +3,7 @@
 
 #include "AtaraxiaMain.hpp"
 #include "entity.hpp"
+#include "player.hpp"
 #include <SDL3/SDL_render.h>
 #include <unordered_map>
 #include <string>
@@ -86,7 +87,6 @@ namespace two_d_tiles
             SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_NEAREST);
             SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
             tile_textures[name] = texture;
-            SDL_Log("Tile texture '%s' loaded successfully", name.c_str());
             return true;
         }
 
