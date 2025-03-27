@@ -39,7 +39,6 @@ namespace player {
         sprite.y = row * 48.0f;
         sprite.w = 48.0f;
         sprite.h = 48.0f;
-        SDL_Log("Created sprite rect: x=%f, y=%f, w=%f, h=%f", sprite.x, sprite.y, sprite.w, sprite.h);
         return &sprite;
     }
 
@@ -48,8 +47,9 @@ namespace player {
 
     void loadPlayerTexture();
     void render(SDL_Renderer* renderer);
-    void update();
+    void update(float delta_time);
     void init_player();
+
 }
 
 #endif
