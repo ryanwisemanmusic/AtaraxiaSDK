@@ -11,17 +11,14 @@
 #include <iostream>
 #include <array>
 
+#include "AtaraxiaTime.hpp"
+
 //Global variables
 inline SDL_Window* window = nullptr;
 inline SDL_Renderer* renderer = nullptr;
 
 constexpr int ScreenWidth = 600;
 constexpr int ScreenHeight = 600;
-
-//DeltaTime
-inline Uint64 last_tick = 0;
-inline Uint64 current_tick = 0;
-inline float delta_time;
 
 inline bool stopPlayerAction;
 
