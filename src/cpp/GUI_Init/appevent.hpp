@@ -17,6 +17,7 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event)
 {
     (void)appstate;
     (void)event; 
+    const bool *keyboard_state = (const bool*)SDL_GetKeyboardState(NULL);
     if (event->type == SDL_EVENT_QUIT) 
     {
         return SDL_APP_SUCCESS;
@@ -32,6 +33,13 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event)
             
         }
         return SDL_APP_CONTINUE;
+    }
+
+    if (event->type == SDL_EVENT_KEY_DOWN)
+    {
+        if (keyboard_state[SDL_SCANCODE_Q])
+        {
+        }
     }
     return SDL_APP_CONTINUE;
 }

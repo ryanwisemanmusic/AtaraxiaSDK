@@ -10,7 +10,7 @@
 #include "AtaraxiaVideo.hpp"
 #include "AtaraxiaDatabase.hpp"
 #include "entity.hpp"
-#include "AtaraxiaHeaders/AtaraxiaMacros.hpp"
+#include "AtaraxiaMacros.hpp"
 #include "player.hpp"
 
 void render();
@@ -18,8 +18,7 @@ void render();
 SDL_AppResult SDL_AppIterate(void *appstate)
 {
     (void)appstate; 
-    
-    UPDATE_ENTITIES(entities, entities_count);
+    UPDATE_ENTITIES(entities, entities_count, delta_time);
     render();
     return SDL_APP_CONTINUE; 
 }
