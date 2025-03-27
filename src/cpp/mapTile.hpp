@@ -124,7 +124,7 @@ namespace two_d_tiles
     void loadTileTexture();
     void quit();
     void handle_events(SDL_Event* event);
-    void update();
+    void update(float delta_time);
     void render(SDL_Renderer* renderer);
     void init_tile();
 }

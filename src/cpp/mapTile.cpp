@@ -25,7 +25,7 @@ namespace two_d_tiles {
     {
     }
 
-    void update()
+    void update(float delta_time)
     {
     }
 
