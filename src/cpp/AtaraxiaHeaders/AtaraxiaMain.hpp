@@ -18,4 +18,11 @@ inline SDL_Renderer* renderer = nullptr;
 constexpr int ScreenWidth = 600;
 constexpr int ScreenHeight = 600;
 
+//DeltaTime
+inline Uint64 last_tick = 0;
+inline Uint64 current_tick = 0;
+inline float delta_time;
+
+inline bool stopPlayerAction;
+
 #endif
