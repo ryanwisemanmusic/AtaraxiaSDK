@@ -1,6 +1,7 @@
 #include "AtaraxiaMain.hpp"
 #define SDL_MAIN_USE_CALLBACKS
 #include "player.hpp"
+#include "mapTile.hpp"
 #include "AtaraxiaInput.hpp"
 
 namespace player {
@@ -181,12 +182,17 @@ namespace player {
     bool is_position_blocked(int grid_x, int grid_y)
     {
         // Pond collision check
+        if (two_d_tiles::tile_map.isTileBlocked(grid_x, grid_y)) 
+        {
+            return true;
+        }
+        
         if ((grid_x == 3 || grid_x == 4) && 
             (grid_y == 1 || grid_y == 2)) 
         {
             return true;
         }
-        
+        //Tree collision check
         if ((grid_x == 5 || grid_x == 6) && 
             (grid_y == 5 || grid_y == 6)) 
         {

@@ -45,6 +45,7 @@ namespace two_d_tiles
         std::unordered_map<std::string, SDL_Texture*> tile_textures;
         std::unordered_map<std::string, SDL_FRect> tile_sprites;
         std::unordered_map<std::string, SDL_FRect> tile_positions;
+        std::unordered_map<std::string, bool> blocked_tiles;
 
     public:
         TileMap() 
@@ -115,6 +116,19 @@ namespace two_d_tiles
             std::string key = std::to_string(col) + "," + std::to_string(row);
             auto it = tile_positions.find(key);
             return it != tile_positions.end() ? &it->second : nullptr;
+        }
+
+        void setTileBlocked (int col, int row, bool blocked)
+        {
+            std::string key = std::to_string(col) + "," + std::to_string(row);
+            blocked_tiles[key] = blocked;
+        }
+
+        bool isTileBlocked(int col, int row)
+        {
+            std::string key = std::to_string(col) + "," + std::to_string(row);
+            auto it = blocked_tiles.find(key);
+            return it != blocked_tiles.end() ? it->second : false;
         }
     };
 

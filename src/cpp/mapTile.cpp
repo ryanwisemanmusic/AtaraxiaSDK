@@ -917,6 +917,18 @@ namespace two_d_tiles {
                 tile_map.setTilePosition(col, row, col * 48, row * 48);
             }
         }
+        //Pond tiles blocked
+        tile_map.setTileBlocked(3, 1, true);
+        tile_map.setTileBlocked(4, 1, true);
+        tile_map.setTileBlocked(3, 2, true);
+        tile_map.setTileBlocked(4, 2, true);
+
+        //Tree tiles blocked
+        tile_map.setTileBlocked(5, 5, true);
+        tile_map.setTileBlocked(6, 5, true);
+        tile_map.setTileBlocked(5, 6, true);
+        tile_map.setTileBlocked(6, 6, true);
+
         
         Entity tile_entity = 
         {
