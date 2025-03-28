@@ -5,20 +5,24 @@
 #include "AtaraxiaTime.hpp"
 #include "AtaraxiaInput.hpp"
 
-namespace two_d_tiles {
+namespace two_d_tiles 
+{
     void loadTileTexture()
     {
-        if (!tile_map.loadTileTexture("0", "assets/images/outsideTileMap.png")) {
+        if (!tile_map.loadTileTexture("0", "assets/images/outsideTileMap.png")) 
+        {
             SDL_Log("Failed to load tilemap texture: %s", SDL_GetError());
         }
-        if (!tile_map.loadTileTexture("1", "assets/images/trees.png")) {
+        if (!tile_map.loadTileTexture("1", "assets/images/trees.png")) 
+        {
             SDL_Log("Failed to load trees texture: %s", SDL_GetError());
         }
     }
 
     void quit()
     {
-        if (tile_texture) {
+        if (tile_texture) 
+        {
             SDL_DestroyTexture(tile_texture);
             tile_texture = nullptr;
         }
@@ -41,24 +45,34 @@ namespace two_d_tiles {
     */
     void update(float delta_time)
     {
+        // Call player_tracker to update player position info
         player::player_tracker();
-    
-        if (player::player_current_grid_x == 5 && player::player_current_grid_y == 5) {
-            SDL_Log("Player is at the special tile (5,5)!");
-        }
         
-        if (player::player_is_moving) {
-        }
+        if (player::player_is_moving && 
+            tile_map.isTileBlocked(
+                player::player_target_grid_x, 
+                player::player_target_grid_y)) 
+                {
+                    SDL_Log("Player trying to move to a blocked position!");
+                }
         
-        if (player::is_position_blocked(player::player_target_grid_x, player::player_target_grid_y)) {
-            SDL_Log("Player trying to move to a blocked position!");
-        }
-        
-        if (input::is_key_pressed(SDL_SCANCODE_SPACE)) {
-            SDL_Log("Spacebar pressed! Cross talk enabled");
+        if (input::is_key_pressed(SDL_SCANCODE_SPACE)) 
+        {
+            int px = player::player_current_grid_x;
+            int py = player::player_current_grid_y;
+            
+            // Example: Check if player is next to a tree
+            if ((px == 5 && py == 6) || (px == 7 && py == 6) || 
+                (px == 6 && py == 5) || (px == 6 && py == 7)) 
+                {
+                SDL_Log("Interacting with tree!");
+            }
+            
+            SDL_Log("Spacebar pressed! Checking for interactions");
         }
     }
 
+    //This is where you draw each tile. 
     void render(SDL_Renderer* renderer)
     {
         if (SDL_Texture* texture = tile_map.getTileTexture("0"))
@@ -917,18 +931,14 @@ namespace two_d_tiles {
                 tile_map.setTilePosition(col, row, col * 48, row * 48);
             }
         }
-        //Pond tiles blocked
-        tile_map.setTileBlocked(3, 1, true);
-        tile_map.setTileBlocked(4, 1, true);
-        tile_map.setTileBlocked(3, 2, true);
-        tile_map.setTileBlocked(4, 2, true);
-
-        //Tree tiles blocked
-        tile_map.setTileBlocked(5, 5, true);
-        tile_map.setTileBlocked(6, 5, true);
-        tile_map.setTileBlocked(5, 6, true);
-        tile_map.setTileBlocked(6, 6, true);
-
+        
+        /*
+        Right here are function calls for your various objects 
+        with barriers. It is best to wrap these in the .hpp section since
+        it looks better in terms of logic
+        */
+        pondBarrier();
+        treeBarrier();
         
         Entity tile_entity = 
         {

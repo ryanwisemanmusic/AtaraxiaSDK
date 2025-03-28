@@ -23,7 +23,8 @@ namespace two_d_tiles
 
     inline SDL_FRect create_sprite_portion(float x, float y, float w, float h)
     {
-        SDL_FRect portion = {
+        SDL_FRect portion = 
+        {
             x, y, w, h
         };
         return portion;
@@ -31,7 +32,8 @@ namespace two_d_tiles
 
     inline SDL_FRect create_sprite_position(float x, float y, float w, float h)
     {
-        SDL_FRect position = {
+        SDL_FRect position = 
+        {
             x, y, w, h
         };
         return position;
@@ -141,6 +143,21 @@ namespace two_d_tiles
     void update(float delta_time);
     void render(SDL_Renderer* renderer);
     void init_tile();
+    
+    inline void pondBarrier()
+    {
+        tile_map.setTileBlocked(3, 1, true);
+        tile_map.setTileBlocked(4, 1, true);
+        tile_map.setTileBlocked(3, 2, true);
+        tile_map.setTileBlocked(4, 2, true);
+    }
+    inline void treeBarrier()
+    {
+        tile_map.setTileBlocked(5, 5, true);
+        tile_map.setTileBlocked(6, 5, true);
+        tile_map.setTileBlocked(5, 6, true);
+        tile_map.setTileBlocked(6, 6, true);
+    }
 }
 
 #endif
