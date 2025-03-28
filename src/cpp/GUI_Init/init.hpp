@@ -19,6 +19,7 @@ even if you externally reference something, it needs a surrounding header.
 #include "AtaraxiaGame.hpp"
 #include "player.hpp"
 #include "mapTile.hpp"
+#include "Ataraxia2DCamera.hpp"
 
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv)
 {
@@ -81,6 +82,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv)
     since it works well.*/
     player::init_player();
     two_d_tiles::init_tile();
+    camera::init_camera(renderer);
 
     return SDL_APP_CONTINUE;
 }

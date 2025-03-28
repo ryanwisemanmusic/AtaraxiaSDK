@@ -7,5 +7,6 @@
 
 #include "AtaraxiaMain.hpp"
 #include "screenScenes.h"
+#include "Ataraxia2DCamera.hpp"
 
 #endif

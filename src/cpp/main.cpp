@@ -14,6 +14,7 @@ This is where we render everything in the main screen.
 #include "AtaraxiaDatabase.hpp"
 #include "AtaraxiaMacros.hpp"
 #include "AtaraxiaTime.hpp"
+#include "Ataraxia2DCamera.hpp"
 
 //Related Windowing actions
 #include "quit.hpp"
@@ -37,19 +38,24 @@ void render()
 
     if (currentScene == SceneState::MAIN_MENU)  
     {
-        SDL_SetRenderDrawColor(renderer, 155, 255, 255, 255);
         SDL_RenderClear(renderer); 
-        renderText("AtaraxiaSDK", 180, 250, cMagenta);
-        
+        SDL_SetRenderDrawColor(renderer, 155, 255, 255, 255);
+        renderText("AtaraxiaSDK", 180, 250, cMagenta); 
     }
+    
     else if (currentScene == SceneState::GAME)
     {
         SDL_RenderClear(renderer);
+        
+        camera::render(renderer);
         UPDATE_ENTITIES(entities_tile, entities_count_tile, game_time::delta_time);
         UPDATE_ENTITIES(entities, entities_count, game_time::delta_time);
         RENDER_ENTITIES(entities_tile, entities_count_tile, renderer);
         RENDER_ENTITIES(entities, entities_count, renderer);
-        two_d_tiles::init_tile();
+        
+        SDL_SetRenderViewport(renderer, NULL);
+        SDL_SetRenderLogicalPresentation(renderer, 480, 480, SDL_LOGICAL_PRESENTATION_LETTERBOX);
+        two_d_tiles::init_tile(); 
     }
 
     SDL_RenderPresent(renderer);
