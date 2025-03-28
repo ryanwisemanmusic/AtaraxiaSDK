@@ -33,7 +33,7 @@ namespace player {
         return position;
     }
 
-    inline SDL_FRect player_sprite_position = create_sprite_position(250, 250, 48, 48);
+    inline SDL_FRect player_sprite_position = create_sprite_position(500, 500, 48, 48);
 
     inline SDL_FRect* getPlayerSprite(int col, int row) 
     {
@@ -67,14 +67,11 @@ namespace player {
     extern int player_target_grid_x;
     extern int player_target_grid_y;
     
-    // Movement and collision functions that can be called from mapTile
     bool is_position_blocked(int grid_x, int grid_y);
     void move_player(float delta_time);
     
-    // Initialize player
     void init_player();
     
-    // Player tracking function
     void player_tracker();
 
 }

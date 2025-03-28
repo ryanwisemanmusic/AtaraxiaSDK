@@ -121,6 +121,9 @@ namespace player
         player_grid_x = static_cast<int>(player_sprite_position.x / 48.0f);
         player_grid_y = static_cast<int>(player_sprite_position.y / 48.0f);
         player_direction = last_direction;
+
+        camera::x = player_sprite_position.x;
+        camera::y = player_sprite_position.y;
     }
 
     void render(SDL_Renderer* renderer)
