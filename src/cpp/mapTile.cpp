@@ -28,7 +28,7 @@ namespace two_d_tiles
         }
     }
 
-    void handle_events(SDL_Event* event)
+    void handle_events(SDL_Event* /* event */)
     {
     }
 
@@ -43,7 +43,7 @@ namespace two_d_tiles
     that soon, our collision system will be setup to handle how we process
     sprites with player, a better colission system
     */
-    void update(float delta_time)
+    void update(float /* delta_time */)
     {
         // Call player_tracker to update player position info
         player::player_tracker();
@@ -82,10 +82,11 @@ namespace two_d_tiles
         int viewportWidth = 9600; 
         int viewportHeight = 9600; 
         
-        int startCol = std::max(0, static_cast<int>((camX - viewportWidth/2) / 48) - 2);
-        int endCol = std::min(499, static_cast<int>((camX + viewportWidth/2) / 48) + 2);
-        int startRow = std::max(0, static_cast<int>((camY - viewportHeight/2) / 48) - 2);
-        int endRow = std::min(499, static_cast<int>((camY + viewportHeight/2) / 48) + 2);
+        // Variables for future dynamic rendering implementation
+        [[maybe_unused]] int startCol = std::max(0, static_cast<int>((camX - viewportWidth/2) / 48) - 2);
+        [[maybe_unused]] int endCol = std::min(499, static_cast<int>((camX + viewportWidth/2) / 48) + 2);
+        [[maybe_unused]] int startRow = std::max(0, static_cast<int>((camY - viewportHeight/2) / 48) - 2);
+        [[maybe_unused]] int endRow = std::min(499, static_cast<int>((camY + viewportHeight/2) / 48) + 2);
         
         if (SDL_Texture* texture = tile_map.getTileTexture("0"))
         {

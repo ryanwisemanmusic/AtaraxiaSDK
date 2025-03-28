@@ -25,8 +25,8 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event)
 
     if (event->type == SDL_EVENT_MOUSE_BUTTON_DOWN)
     {
-        int x = event->button.x;
-        int y = event->button.y;
+        [[maybe_unused]] int x = event->button.x;
+        [[maybe_unused]] int y = event->button.y;
         if (currentScene == SceneState::MAIN_MENU)
         {
             currentScene = SceneState::GAME;

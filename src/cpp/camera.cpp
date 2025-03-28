@@ -7,7 +7,7 @@ namespace camera
         entities[entities_count++] = cam_obj.entity;
     }
 
-    void update(float delta_time)
+    void update(float /* delta_time */)
     {
         // Log positions for debugging
         //SDL_Log("Camera position: (%.2f, %.2f)", x, y);

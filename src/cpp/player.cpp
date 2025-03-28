@@ -47,7 +47,7 @@ namespace player
         }
     }
 
-    void handle_events(SDL_Event* event)
+    void handle_events(SDL_Event* /* event */)
     {
     }
 
@@ -99,11 +99,12 @@ namespace player
 
         move_player(delta_time);
 
-        int grid_x = static_cast<int>(player_sprite_position.x / 48.0f);
-        int grid_y = static_cast<int>(player_sprite_position.y / 48.0f);
+        // Variables for future use in grid-based movement
+        [[maybe_unused]] int grid_x = static_cast<int>(player_sprite_position.x / 48.0f);
+        [[maybe_unused]] int grid_y = static_cast<int>(player_sprite_position.y / 48.0f);
         
-        int prev_grid_x = static_cast<int>(prev_x / 48.0f);
-        int prev_grid_y = static_cast<int>(prev_y / 48.0f);
+        [[maybe_unused]] int prev_grid_x = static_cast<int>(prev_x / 48.0f);
+        [[maybe_unused]] int prev_grid_y = static_cast<int>(prev_y / 48.0f);
 
         if (player_is_moving) 
         {
