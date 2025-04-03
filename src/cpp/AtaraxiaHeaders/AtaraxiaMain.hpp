@@ -10,12 +10,16 @@
 //Native Headers
 #include <iostream>
 #include <array>
+#include <algorithm>
 
 #include "AtaraxiaTime.hpp"
+
+#include "compressor.hpp"
 
 //Global variables
 inline SDL_Window* window = nullptr;
 inline SDL_Renderer* renderer = nullptr;
+inline Compressor compressor(-20.0f, 4.0f, 5.0f, 50.0f, 44100.0f);
 
 constexpr int ScreenWidth = 600;
 constexpr int ScreenHeight = 600;
