@@ -5,15 +5,12 @@
 
 namespace camera
 {
-    // Define a camera object structure
     struct CameraObject {
         Entity entity;
     };
 
-    // Create a camera object instance
     inline CameraObject camera_object;
 
-    // Declare variables as inline to avoid duplicate symbol errors
     inline float x, y, w, h;
 
     inline void create_entity(CameraObject& cam_obj);
