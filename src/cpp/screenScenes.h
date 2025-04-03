@@ -5,6 +5,8 @@ enum class SceneState
 {
     MAIN_MENU,
     GAME,
+    NETWORK_TEST,
+    COMPRESSOR,
     END_SCREEN
 };
 
