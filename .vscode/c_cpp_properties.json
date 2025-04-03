@@ -14,7 +14,9 @@
                 "${workspaceFolder}/assets",
                 "${workspaceFolder}/src/cpp/AtaraxiaHeaders",
                 "${workspaceFolder}/src/cpp",
-                "${workspaceFolder}/src/cpp/GUI_Init"
+                "${workspaceFolder}/src/cpp/GUI_Init",
+                "${workspaceFolder}/CompressorAU",
+                "/Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/Headers"
             ],
             "defines": [],
             "macFrameworkPath": [
