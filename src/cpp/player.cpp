@@ -193,7 +193,7 @@ namespace player
         {
             if (input::up()) 
             {
-                player_sprite_position.y -= 50 * delta_time;
+                player_sprite_position.y -= 100 * delta_time;
             }
             if (input::down()) 
             {
