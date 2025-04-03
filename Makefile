@@ -18,9 +18,10 @@ FFMPEG_INCLUDE := /opt/homebrew/Cellar/ffmpeg/7.1.1_1/include
 FFMPEG_LIB := /opt/homebrew/Cellar/ffmpeg/7.1.1_1/lib
 SQLITE_INCLUDE := /opt/homebrew/Cellar/sqlite/3.49.1/include
 SQLITE_LIB := /opt/homebrew/Cellar/sqlite/3.49.1/lib
+ACCELERATE_INCLUDE := /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/Headers
 
 # Platform libraries
-PLATFORM_LIBS = -framework Cocoa -framework OpenGL -lobjc
+PLATFORM_LIBS = -framework Cocoa -framework OpenGL -framework Accelerate -lobjc
 
 # Header directories
 HEADER = -isystem$(SDL3_INCLUDE) \
@@ -28,13 +29,15 @@ HEADER = -isystem$(SDL3_INCLUDE) \
          -I$(SDL3_TTF_INCLUDE) \
          -I$(FFMPEG_INCLUDE) \
          -I$(SQLITE_INCLUDE) \
+         -I$(ACCELERATE_INCLUDE) \
          -Iinclude/cpp_headers \
          -Iinclude/objc_headers \
          -Isrc/objc \
          -Idatabase \
          -Isrc/cpp/AtaraxiaHeaders \
          -Isrc/cpp \
-         -Isrc/cpp/GUI_Init
+         -Isrc/cpp/GUI_Init \
+         -ICompressorAU
 
 # Library flags
 LIB_FLAGS = -L$(SDL3_LIB) -L$(SDL3_IMAGE_LIB) -L$(SDL3_TTF_LIB) -L$(SDL3_MIXER_LIB) -L$(FFMPEG_LIB) -L$(SQLITE_LIB) \
@@ -53,7 +56,8 @@ SRC_CPP = src/cpp/main.cpp \
           src/cpp/videoRendering.cpp \
           src/cpp/screenScenes.cpp \
           database/SDLColors.cpp \
-          database/gameScores.cpp
+          database/gameScores.cpp \
+          CompressorAU/compressor.cpp
 SRC_OBJC = src/objc/cocoaToolbarUI.mm
 
 # Object files
