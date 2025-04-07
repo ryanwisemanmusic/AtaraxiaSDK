@@ -9,4 +9,6 @@
 #include "screenScenes.h"
 #include "Ataraxia2DCamera.hpp"
 
+extern bool TWO_D_Enabled;
+extern bool THREE_D_Enabled;
 #endif

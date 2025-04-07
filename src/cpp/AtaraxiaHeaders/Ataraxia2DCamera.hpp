@@ -5,7 +5,8 @@
 
 namespace camera
 {
-    struct CameraObject {
+    struct CameraObject 
+    {
         Entity entity;
     };
 

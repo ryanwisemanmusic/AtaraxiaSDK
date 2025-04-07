@@ -15,6 +15,7 @@ This is where we render everything in the main screen.
 #include "AtaraxiaMacros.hpp"
 #include "AtaraxiaTime.hpp"
 #include "Ataraxia2DCamera.hpp"
+#include "AtaraxiaGame.hpp"
 #include "compressor.hpp"
 
 //Related Windowing actions
